@@ -4,17 +4,32 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.mid_year_registration"
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        abortOnError false
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+    lintOptions {
+
+        abortOnError false
+
+    }
+    defaultConfig {
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
 }
 
