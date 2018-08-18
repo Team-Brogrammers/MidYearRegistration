@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="administrator">Administrtor?</string>
+    <string name="sign_up">SIGN UP</string>
 </resources>
