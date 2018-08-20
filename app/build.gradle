@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
 
 android {
     compileSdkVersion 27
@@ -33,6 +34,16 @@ android {
         multiDexEnabled = true
     }
 }
+
+coveralls {
+    jacocoReportPath = "${buildDir}/reports/coverage/debug/report.xml"
+}
+
+tasks.coveralls {
+    dependsOn 'connectedAndroidTest'
+    onlyIf { System.env.'CI' }
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

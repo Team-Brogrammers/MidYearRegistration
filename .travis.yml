@@ -41,3 +41,10 @@ cache:
     - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
     - $HOME/.gradle/wrapper     #Cache the gradle
 
+after_failure:
+  - ./gradlew clean check --debug
+
+script:
+  - ./gradlew connectedAndroidTest coveralls # run Coveralls task after every build
+
+
