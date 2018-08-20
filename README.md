@@ -1,7 +1,3 @@
 # Mid-year Registration
 
-## Abstract:
-Automation of the mid-year registration process for wits university.
-
-## Platform Details:
-Mobile app for android 5.0+.
+[![Build Status](https://travis-ci.org/Socialate/furry-sniffle.png?branch=master)](https://travis-ci.org/Socialate/furry-sniffle) Travis CI

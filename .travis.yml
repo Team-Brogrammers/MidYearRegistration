@@ -50,5 +50,6 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-Script:
+script:
   - ./gradlew build connectedCheck
+
