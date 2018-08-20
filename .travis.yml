@@ -41,5 +41,3 @@ cache:
     - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
     - $HOME/.gradle/wrapper     #Cache the gradle
     
-script:
-  - ./gradlew connectedAndroidTest
