@@ -1,18 +1,17 @@
 language: android
 android:
   components:
-    # use the latest revision of Android SDK Tools
-     - tools
-     - android-22
-     - android-27
-     - platform-tools
-     - build-tools-27.0.3
-     - extra-android-m2repository
-     - tools
+    - tools
+    - android-22
+    - android-27
+    - platform-tools
+    - build-tools-27.0.3
+    - extra-android-m2repository
+    - tools
 
-    # Specify at least one system image for running emulator(s) during tests
+    # To run emulator during your tests
     - sys-img-armeabi-v7a-android-22
-sudo: enabled
+  sudo: enabled
 
 before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
@@ -37,9 +36,10 @@ after_failure:
   - $TRAVIS_TEST_RESULT
 
 cache:
-  directories:                  #Cache all dirs under .gradle folder
+  directories:      #Cache all dirs under .gradle folder
     - $HOME/.gradle/daemon      #Cache daemon logs
     - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
     - $HOME/.gradle/wrapper     #Cache the gradle
-
-
+    
+script:
+  - ./gradlew connectedAndroidTest
