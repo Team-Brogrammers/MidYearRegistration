@@ -38,8 +38,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
     @SmallTest
     public void testUserInput(){
-        onView(withId(R.id.emailEditText)).perform(typeText("invalidsocialate.com"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("furry"), closeSoftKeyboard());
+        onView(withId(R.id.emailEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
     }
 

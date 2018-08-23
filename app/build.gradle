@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 27
@@ -25,16 +24,6 @@ android {
             testCoverageEnabled true
         }
     }
-
-    testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
-        animationsDisabled true
-
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
     lintOptions {
 
         abortOnError false
@@ -44,32 +33,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
-}
-
-jacoco {
-    toolVersion = '0.8.0'
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-}
-
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/java"
-
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
-    ])
 }
 
 coveralls {
