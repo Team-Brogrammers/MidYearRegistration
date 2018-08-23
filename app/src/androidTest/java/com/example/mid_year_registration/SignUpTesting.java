@@ -2,6 +2,8 @@ package com.example.mid_year_registration;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.MediumTest;
+import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -28,9 +30,10 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SignUpTesting {
     @Rule
-    public ActivityTestRule<MainActivity> mainActivityActivityTestRule=
-            new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<SignUpActivity> mainActivityActivityTestRule=
+            new ActivityTestRule<>(SignUpActivity.class);
     @Test
+    @SmallTest
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
@@ -39,6 +42,7 @@ public class SignUpTesting {
     }
 
     @Test
+    @MediumTest
     public void clickTextInputLayout(){
         onView(withId(R.id.witsImageView)).check(matches(isDisplayed()));
 
