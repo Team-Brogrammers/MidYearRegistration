@@ -37,15 +37,12 @@ public class SignUpTesting {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-
         assertEquals("com.example.mid_year_registration", appContext.getPackageName());
     }
 
     @Test
     @MediumTest
     public void clickTextInputLayout(){
-        onView(withId(R.id.witsImageView)).check(matches(isDisplayed()));
-
         onView(withId(R.id.usernameEditText)).perform(click(),typeText("1153631@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.usernameEditText)).check(matches(isDisplayed()));
 
