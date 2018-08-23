@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? sign up</string>
+    <string name="email_address">Email address</string>
+    <string name="need_an_account">Need an account?</string>
+    <string name="password">password</string>
+    <string name="wits_mid_year_registration">Wits Mid-Year Registration</string>
+    <string name="forgot_password">Forgot password?</string>
 </resources>

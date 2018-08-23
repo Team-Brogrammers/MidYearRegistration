@@ -2,14 +2,11 @@ package com.example.mid_year_registration;
 
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-
-import com.example.mid_year_registration.MainActivity;
-import com.example.mid_year_registration.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -27,7 +24,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     @SmallTest
     public void testButton(){
-        onView(withId(R.id.button)).check(matches(isClickable()));
+        onView(withId(R.id.introTextView)).check(matches(isDisplayed()));
     }
 
 }
