@@ -43,7 +43,7 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:hint="@string/loginpassword"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
