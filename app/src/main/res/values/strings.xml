@@ -11,7 +11,7 @@
     <string name="administrator">Administrator?</string>
     <string name="sign_up">SIGN UP</string>
     <string name="logo">Wits Logo</string>
-    <string name="signuppassword">signupPassword</string>
-    <string name="loginpassword">loginPassword</string>
+    <string name="signuppassword">Password</string>
+    <string name="loginpassword">Password</string>
 
 </resources>
