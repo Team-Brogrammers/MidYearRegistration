@@ -13,5 +13,6 @@
     <string name="logo">Wits Logo</string>
     <string name="signuppassword">signupPassword</string>
     <string name="loginpassword">loginPassword</string>
+    <string name="welcome_to_the_wits_mid_year_registration">Welcome To The Wits Mid-Year Registration</string>
 
 </resources>

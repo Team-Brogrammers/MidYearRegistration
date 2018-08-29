@@ -27,8 +27,9 @@ public class SignUpActivity extends AppCompatActivity {
     Button button;
     CheckBox checkBox;
 
-    String userName, userPass;
-    String checkAdminPrev;
+    static String userName;
+    static String userPass;
+    static String checkAdminPrev;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -68,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    class SummaryAsyncTask extends AsyncTask<Void, Void, Boolean> {
+     private static class SummaryAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         private void postData(String mail, String pass, String check) {
 
