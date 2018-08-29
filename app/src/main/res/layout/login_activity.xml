@@ -79,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
             android:text="@string/need_an_account"
+            android:onClick="needAccount"
             android:textSize="18sp" />
 
         <TextView
