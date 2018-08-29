@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="submit">Submit Form</string>
+    <string name="course_name">Course Code:</string>
+    <string name="add_image">Add Image</string>
+    <string name="convert">Convert to PDF</string>
+    <string name="std_no">Student number:</string>
 </resources>
