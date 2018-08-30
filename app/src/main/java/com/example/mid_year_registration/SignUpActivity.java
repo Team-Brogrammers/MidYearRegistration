@@ -20,12 +20,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText e1, e2;
-    Button button;
-    CheckBox checkBox;
+    private static EditText e1;
+    private static EditText e2;
+    private Button button;
+    private CheckBox checkBox;
 
     static String userName;
     static String userPass;
@@ -41,14 +44,14 @@ public class SignUpActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.submitButton);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
 
-        userName = e1.getText().toString();
-        userPass = e2.getText().toString();
-
-        if(checkBox.isChecked()) {
-            checkAdminPrev = "coordinator";
-        }else{
-            checkAdminPrev = "student";
-        }
+//        userName = e1.getText().toString();
+//        userPass = e2.getText().toString();
+//
+//        if(checkBox.isChecked()) {
+//            checkAdminPrev = "coordinator";
+//        }else{
+//            checkAdminPrev = "student";
+//        }
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -61,10 +64,28 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     checkAdminPrev = "student";
                 }
+
                 new SummaryAsyncTask().execute((Void) null);
-                Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
+
+                // Get text from email and password field
+                userName = e1.getText().toString();
+                if (!isValidEmail(userName)) {
+                    //Set error message for email field
+                    e1.setError("Invalid Email");
+                }
+
+                userPass = e2.getText().toString();
+                if (!isValidPassword(userPass)) {
+                    //Set error message for password field
+                    e2.setError("Password cannot be empty");
+                }
+
+                if(isValidEmail(userPass) && isValidPassword(userPass)) {
+                    Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -94,9 +115,29 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            // Validation Completed
             postData(userName, userPass, checkAdminPrev);
 
             return null;
         }
     }
+
+    // validating email address
+    private static boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // validating password
+    private static boolean isValidPassword(String pass) {
+        if (pass != null && pass.length() >= 4) {
+            return true;
+        }
+        return false;
+    }
+
 }
