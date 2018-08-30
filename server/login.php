@@ -1,34 +1,31 @@
 <?php
-	$username = "rhea";
-	$password = "brograms";
-	$database = "mid_year_registration";
-	$link = mysqli_connect("127.0.0.1", $username, $password, $database);
-	$output=array();
+         include 'config.php';
 
-	if($_SERVER["REQUEST_METHOD"] == "POST") {
-      		// username and password sent from android form
+         // Check whether username or password is set from android
+     if(isset($_POST['username']) && isset($_POST['password']))
+     {
+          // Innitialize Variable
+          $result='';
+          $username = $_POST['username'];
+          $password = $_POST['password'];
 
-  		$myemail = mysqli_real_escape_string($db,$_POST['user_email']);
-      		$mypassword = mysqli_real_escape_string($db,$_POST['password']);
+          // Query database for row exist or not
+          $sql = 'SELECT * FROM user WHERE user_email = :username AND user_pass = :password';
+          $stmt = $conn->prepare($sql);
+          $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+          $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+          $stmt->execute();
+          if($stmt->rowCount())
+          {
+                $result="true";
+          }
+          elseif(!$stmt->rowCount())
+          {
+                $result="false";
+          }
 
-      		$sql = "SELECT * FROM user WHERE user_email = '$myemail' and user = '$user_pass'";
-      		$result = mysqli_query($db,$sql);
-      		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      		$active = $row['active'];
+                  // send result back to android
+                  echo $result;
+        }
 
-      		$count = mysqli_num_rows($result);
-
-      		// If result matched $myusername and $mypassword, table row must be 1 row
-
-      		if($count == 1) {
-			//TODO: login has been successful, should we return some kind of auth token?
-			$output = True;
-
-      		}else {
-         		$error = "Your Login Name or Password is invalid";
-      		}
-   	}
-
-	echo json_encode($output, $error);
 ?>
-

@@ -29,7 +29,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     public void testVisibility(){
         onView(withId(R.id.emailEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
-        onView(withId(R.id.appTitleTextView)).check(matches(isDisplayed()));
+        //onView(withId(R.id.appTitleTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.loginButton)).check(matches(isClickable()));
         onView(withId(R.id.resetPasswordTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.creatAccountTextView)).check(matches(isDisplayed()));
@@ -37,8 +37,27 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     }
 
     @SmallTest
-    public void testUserInput(){
+    public void testValidInput(){
         onView(withId(R.id.emailEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        onView(withId(R.id.loginButton)).perform(click());
+    }
+
+    @SmallTest
+    public void testNoPassword(){
+        onView(withId(R.id.emailEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.loginButton)).perform(click());
+    }
+
+    @SmallTest
+    public void testNoEmail(){
+        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        onView(withId(R.id.loginButton)).perform(click());
+    }
+
+    @SmallTest
+    public void testInvalidEmail(){
+        onView(withId(R.id.emailEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
     }
