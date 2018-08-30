@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,8 @@ import java.util.Date;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.example.mid_year_registration.R.layout.activity_student_upload;
+
 public class StudentUpload extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener {
 
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
@@ -53,7 +56,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_upload);
+        setContentView(activity_student_upload);
 
         course=findViewById(R.id.etCourse);
         stdNo=findViewById(R.id.stdNoEditText);
@@ -91,6 +94,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId()==android.R.id.home) {
@@ -98,7 +107,33 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             startActivity(intent);
             finish();
         }
+        else if(item.getItemId()==R.id.action_logout){
+            Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         return super.onOptionsItemSelected(item);
+       /* switch (item.getItemId()) {
+            case R.id.home:
+                Intent backIntent = new Intent(StudentUpload.this,LoginActivity.class);
+                startActivity(backIntent);
+                finish();
+                return true;
+
+            case R.id.action_logout:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }*/
     }
 
     public void openPdf(View view){
