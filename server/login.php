@@ -1,20 +1,31 @@
 <?php
-   $con=mysqli_connect("127.0.0.1","s1153631","s1153631","d1153631");
+         include 'config.php';
 
-   if (mysqli_connect_errno($con)) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-   }
+         // Check whether username or password is set from android
+     if(isset($_POST['username']) && isset($_POST['password']))
+     {
+          // Innitialize Variable
+          $result='';
+          $username = $_POST['username'];
+          $password = $_POST['password'];
 
-   $user_email = $_POST['user_email'];
-   $user_pass = $_POST['user_pass'];
-   $result = mysqli_query($con,"SELECT * FROM user where
-   user_email='$user_email' and user_pass='$user_pass'");
-   $row = mysqli_fetch_array($result);
-   $data = $row[0];
+          // Query database for row exist or not
+          $sql = 'SELECT * FROM user WHERE user_email = :username AND user_pass = :password';
+          $stmt = $conn->prepare($sql);
+          $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+          $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+          $stmt->execute();
+          if($stmt->rowCount())
+          {
+                $result="true";
+          }
+          elseif(!$stmt->rowCount())
+          {
+                $result="false";
+          }
 
-   if($data){
-      echo $data;
-   }
+                  // send result back to android
+                  echo $result;
+        }
 
-   mysqli_close($con);
 ?>
