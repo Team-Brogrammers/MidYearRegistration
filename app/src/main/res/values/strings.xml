@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? sign up</string>
+    <string name="need_an_account">Need an account?</string>
+    <string name="wits_mid_year_registration">Wits Mid-Year Registration</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="username">Username</string>
+    <string name="administrator">Administrator?</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="logo">Wits Logo</string>
+    <string name="signuppassword">signupPassword</string>
+    <string name="loginpassword">loginPassword</string>
+    <string name="welcome_to_the_wits_mid_year_registration">Welcome To The Wits Mid-Year Registration</string>
+    <string name="password">Password</string>
+    <string name="are_you_a_course_coordinator">Are you a course coordinator?</string>
+    <string name="email_address_login">Email address</string>
+    <string name="password_login">Password</string>
+    <string name="email_address">Email address</string>
+    <string name="logout">Logout</string>
+
     <string name="submit">Submit Form</string>
     <string name="course_name">Course Code:</string>
     <string name="add_image">Add Image</string>
