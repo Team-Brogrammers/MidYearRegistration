@@ -55,6 +55,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
+    boolean imageSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +149,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         else if(!checkString(mCourse)){
             course.setError("Course code is upper case and numbers only");
         }
-        else if(hasImage(ivImage)){
+        else if(!imageSelected){
             Context context = getApplicationContext();
             CharSequence text = "Please select add and image";
             int duration = Toast.LENGTH_SHORT;
@@ -291,7 +292,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 bmp = BitmapFactory.decodeFile(filePath);
                 ivImage.setImageURI(selectedImageUri);
 
-                if(course.getText().toString() != "" || stdNo.getText().toString() !="") {
+                imageSelected = true;
                     PdfDocument pdf = new PdfDocument();
                     PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
                     PdfDocument.Page page = pdf.startPage(pageInfo);
@@ -330,7 +331,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     }
 
                     pdf.close();
-                }
+
 
             }
 
