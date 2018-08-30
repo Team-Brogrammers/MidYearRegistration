@@ -11,27 +11,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-    }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if(id == R.id.action_logout){
-            onLogout();
-            return true;
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * This function logs users out the application
-     */
-    private boolean onLogout() {
-        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-        startActivity(intent);
-        MainActivity.this.finish();
-        return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()==android.R.id.home) {
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

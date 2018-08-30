@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -34,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
     static String userPass;
     static String checkAdminPrev;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
@@ -43,6 +44,12 @@ public class SignUpActivity extends AppCompatActivity {
         e2 = findViewById(R.id.passwordEditText);
         button = (Button) findViewById(R.id.submitButton);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
+
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 //        userName = e1.getText().toString();
 //        userPass = e2.getText().toString();
@@ -88,6 +95,17 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()==android.R.id.home) {
+            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
      private static class SummaryAsyncTask extends AsyncTask<Void, Void, Boolean> {

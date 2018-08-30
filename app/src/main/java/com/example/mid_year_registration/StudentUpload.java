@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
+
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+
 
         addImage.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -80,9 +90,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     }
 
-    public void addImage(View v){
-        // Open the camera and get an image of the form
-       
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()==android.R.id.home) {
+            Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void openPdf(View view){
