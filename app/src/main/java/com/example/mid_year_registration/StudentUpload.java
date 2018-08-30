@@ -149,14 +149,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         else if(!checkString(mCourse)){
             course.setError("Course code is upper case and numbers only");
         }
-        else if(!imageSelected){
+        /*else if(!imageSelected){
             Context context = getApplicationContext();
-            CharSequence text = "Please select add and image";
+            CharSequence text = "Please select add an image";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-        }
+        }*/
 
 
 
@@ -292,7 +292,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 bmp = BitmapFactory.decodeFile(filePath);
                 ivImage.setImageURI(selectedImageUri);
 
-                imageSelected = true;
+                //imageSelected = true;
                     PdfDocument pdf = new PdfDocument();
                     PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
                     PdfDocument.Page page = pdf.startPage(pageInfo);
