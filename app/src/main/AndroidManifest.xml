@@ -20,7 +20,6 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".LoginActivity">
-        <activity android:name=".StudentUpload">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +33,12 @@
         <activity android:name=".SignUpActivity">
         </activity>
 
-        <activity android:name=".CoordinatorActivity"></activity>
+        <activity android:name=".CoordinatorActivity">
+        </activity>
+
+        <activity android:name=".StudentUpload">
+        </activity>
+
     </application>
 
 </manifest>
