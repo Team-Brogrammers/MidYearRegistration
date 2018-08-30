@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
 
                 // The URL address where our php file resides
-                url = new URL("http://lamp.ms.wits.ac.za/~s1153631/login.php");
+                url = new URL("http://lamp.ms.wits.ac.za/~s1153631/login2.php");
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -193,19 +193,26 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             //this method will be running on UI thread
-
+            System.out.println(result);
             pdLoading.dismiss();
 
-            if(result.equalsIgnoreCase("true"))
-            {
-                /* Here launching another activity when login successful. If you persist login state
+            if (result.equalsIgnoreCase("student")) {
+                /* Here launching the student activity when login successful. If you persist login state
                 use sharedPreferences of Android. and logout button to clear sharedPreferences.
                  */
 
-                Intent intent = new Intent(LoginActivity.this,StudentUpload.class);
+                Intent intent = new Intent(LoginActivity.this, StudentUpload.class);
                 startActivity(intent);
-                LoginActivity.this.finish();
+//                LoginActivity.this.finish();
 
+            }else if(result.equalsIgnoreCase("coordinator")){
+                /* Here launching the coordinator activity when login successful. If you persist login state
+                use sharedPreferences of Android. and logout button to clear sharedPreferences.
+                 */
+
+                Intent intent = new Intent(LoginActivity.this, CoordinatorActivity.class);
+                startActivity(intent);
+//                LoginActivity.this.finish();
             }else if (result.equalsIgnoreCase("false")){
 
                 // If username and password does not match display a error message
