@@ -90,6 +90,7 @@ dependencies {
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'pub.devrel:easypermissions:1.3.0'
     implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.7.1'

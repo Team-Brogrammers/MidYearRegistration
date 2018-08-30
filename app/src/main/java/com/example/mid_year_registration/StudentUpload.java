@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,7 +41,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class StudentUpload extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener {
 
-    static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
+    private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
     Button addImage;
     EditText course, stdNo;
@@ -128,10 +129,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals("Camera")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    //startActivityForResult(intent, REQUEST_CAMERA);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
+
+                    //if (intent.resolveActivity(getPackageManager()) != null) {
+                        //startActivityForResult(intent, REQUEST_CAMERA);
+                    //}
+                    final String cameraPermission = Manifest.permission.CAMERA;
+                    //if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
                         startActivityForResult(intent, REQUEST_CAMERA);
-                    }
+                    //}
 
 
                 } else if (items[i].equals("Gallery")) {
@@ -167,8 +172,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             if(requestCode==REQUEST_CAMERA){
 
-                Bundle bundle = data.getExtras();
-                Bitmap bmp = (Bitmap) bundle.get("data");
+                //Bundle bundle = data.getExtras();
+                Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
 
 
@@ -191,45 +196,54 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 bmp = BitmapFactory.decodeFile(filePath);
                 ivImage.setImageURI(selectedImageUri);
 
+                if(course.getText().toString() != "" || stdNo.getText().toString() !="") {
+                    PdfDocument pdf = new PdfDocument();
+                    PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
+                    PdfDocument.Page page = pdf.startPage(pageInfo);
 
-                PdfDocument pdf=new PdfDocument();
-                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
-                PdfDocument.Page page = pdf.startPage(pageInfo);
+                    Canvas canvas = page.getCanvas();
 
-                Canvas canvas = page.getCanvas();
+                    Paint paint = new Paint();
+                    paint.setColor(Color.parseColor("#ffffff"));
+                    canvas.drawPaint(paint);
+                    bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+                    paint.setColor(Color.BLUE);
+                    canvas.drawBitmap(bmp, 0, 0, null);
+                    pdf.finishPage(page);
 
-                Paint paint = new Paint();
-                paint.setColor(Color.parseColor("#ffffff"));
-                canvas.drawPaint(paint);
-                bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
-                paint.setColor(Color.BLUE);
-                canvas.drawBitmap(bmp, 0, 0 , null);
-                pdf.finishPage(page);
+                    //String targetPdf = "/test.pdf";
+                    File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                    if (!root.exists()) {
+                        root.mkdir();
+                    }
 
-                //String targetPdf = "/test.pdf";
-                File root = new File(Environment.getExternalStorageDirectory(),"PDF folder");
-                if(!root.exists()){
-                    root.mkdir();
+                    String mCourse = course.getText().toString();
+                    String mStdNo = stdNo.getText().toString();
+
+                    Date today = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateToStr = format.format(today);
+
+                    File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+                    try {
+                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                        pdf.writeTo(fileOutputStream);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    pdf.close();
                 }
+                else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "course Code and Student number! fields are required!";
+                    int duration = Toast.LENGTH_SHORT;
 
-                String mCourse=course.getText().toString();
-                String mStdNo=stdNo.getText().toString();
-
-                Date today = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String dateToStr = format.format(today);
-
-                File file = new File(root, mStdNo+"_"+mCourse+"_"+"_"+dateToStr+".pdf");
-                try  {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    pdf.writeTo(fileOutputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
-
-                pdf.close();
             }
 
         }
