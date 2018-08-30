@@ -18,5 +18,6 @@
     <string name="email_address_login">Email address</string>
     <string name="password_login">Password</string>
     <string name="email_address">Email address</string>
+    <string name="logout">Logout</string>
 
 </resources>
