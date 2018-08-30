@@ -46,7 +46,7 @@ public class SignUpTesting {
         onView(withId(R.id.usernameEditText)).perform(click(),typeText("1153631@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.usernameEditText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.passwordEditText)).perform(typeText("1234"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("as1234"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
 
         onView(withId(R.id.adminCheckBox)).check(matches(isClickable()));
@@ -55,6 +55,25 @@ public class SignUpTesting {
         onView(withId(R.id.submitButton)).check(matches(isClickable()));
         onView(withId(R.id.submitButton)).perform(click());
 
+    }
+
+    @SmallTest
+    public void testNoPassword(){
+        onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
+    }
+
+    @SmallTest
+    public void testNoEmail(){
+        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
+    }
+
+    @SmallTest
+    public void testInvalidEmail(){
+        onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
     }
 
 }
