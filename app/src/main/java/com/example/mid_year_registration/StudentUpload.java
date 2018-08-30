@@ -11,10 +11,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,14 +70,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
 
-        if(getSupportActionBar() != null){
-            //enable back button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-
-
         addImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -102,69 +97,118 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==android.R.id.home) {
-            Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else if(item.getItemId()==R.id.action_logout){
+        if(item.getItemId()==R.id.action_logout){
             Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
             startActivity(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);
-       /* switch (item.getItemId()) {
-            case R.id.home:
-                Intent backIntent = new Intent(StudentUpload.this,LoginActivity.class);
-                startActivity(backIntent);
-                finish();
-                return true;
 
-            case R.id.action_logout:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
+    }
 
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
+    private boolean isValidStudentNo(String pass) {
+        if (pass != null && pass.length() >= 7) {
+            return true;
+        }
+        return false;
+    }
 
-        }*/
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
     }
 
     public void openPdf(View view){
-        File root = new File(Environment.getExternalStorageDirectory(),"PDF folder");
-        Date today = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateToStr = format.format(today);
+
         String mCourse=course.getText().toString();
         String mStdNo=stdNo.getText().toString();
 
-        File file = new File(root, mStdNo+"_"+mCourse+"_"+"_"+dateToStr+".pdf");
-        String results = mStdNo+"_"+mCourse+"_"+"_"+dateToStr+".pdf";
-        text.setText(results);
+        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
 
-       // course.setText("");
-        //stdNo.setText("");
+            course.setError("input is empty!");
+            stdNo.setError("input is empty!");
+        }
+        else if( mStdNo.isEmpty()){
+            stdNo.setError("student number is empty!");
+        }
 
-        pdfView.fromFile(file)
-                .defaultPage(0).enableSwipe(true)
-                .swipeHorizontal(false)
-                .onPageChange(this)
-                .enableAnnotationRendering(true)
-                .onLoad(this)
-                .scrollHandle(new DefaultScrollHandle(this))
-                .load();
-        Context context = getApplicationContext();
-        CharSequence text = "Image Successfully converted!";
-        int duration = Toast.LENGTH_SHORT;
+        else if(mCourse.isEmpty()){
+            course.setError("Course code is empty!");
+        }
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        else if(!isValidStudentNo(mStdNo)) {
+            stdNo.setError("invalid student number!");
+        }
+        else if(!checkString(mCourse)){
+            course.setError("Course code is upper case and numbers only");
+        }
+        else if(hasImage(ivImage)){
+            Context context = getApplicationContext();
+            CharSequence text = "Please select add and image";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
+
+
+        else {
+            File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+            Date today = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String dateToStr = format.format(today);
+
+
+            File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+            text.setText(results);
+
+            // course.setText("");
+            //stdNo.setText("");
+
+            pdfView.fromFile(file)
+                    .defaultPage(0).enableSwipe(true)
+                    .swipeHorizontal(false)
+                    .onPageChange(this)
+                    .enableAnnotationRendering(true)
+                    .onLoad(this)
+                    .scrollHandle(new DefaultScrollHandle(this))
+                    .load();
+            Context context = getApplicationContext();
+            CharSequence text = "Image Successfully converted!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+    }
+
+    private static boolean checkString(String mCourse) {
+        char ch;
+        boolean capitalFlag = false;
+        boolean lowerCaseFlag = false;
+        boolean numberFlag = false;
+        for(int i=0;i < mCourse.length();i++) {
+            ch = mCourse.charAt(i);
+            if( Character.isDigit(ch)) {
+                numberFlag = true;
+            }
+            else if (Character.isUpperCase(ch)) {
+                capitalFlag = true;
+            } else if (Character.isLowerCase(ch)) {
+                lowerCaseFlag = true;
+            }
+            if(numberFlag && capitalFlag && !lowerCaseFlag)
+                return true;
+        }
+        return false;
     }
 
     private void SelectImage(){
@@ -287,14 +331,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                     pdf.close();
                 }
-                else{
-                    Context context = getApplicationContext();
-                    CharSequence text = "course Code and Student number! fields are required!";
-                    int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
             }
 
         }
