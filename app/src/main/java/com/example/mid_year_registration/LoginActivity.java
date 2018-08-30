@@ -20,6 +20,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,14 +48,47 @@ public class LoginActivity extends AppCompatActivity {
 
         // Get text from email and password field
         final String email = etEmail.getText().toString();
-        final String password = etPassword.getText().toString();
+        if (!isValidEmail(email)) {
+            //Set error message for email field
+            etEmail.setError("Invalid Email");
+        }
 
-        // Initialize  AsyncLogin() class with email and password
-        new AsyncLogin().execute(email,password);
+        final String password = etPassword.getText().toString();
+        if (!isValidPassword(password)) {
+            //Set error message for password field
+            etPassword.setError("Password cannot be empty");
+        }
+
+        if(isValidEmail(email) && isValidPassword(password))
+        {
+            // Validation Completed
+            // Initialize  AsyncLogin() class with email and password
+            new AsyncLogin().execute(email,password);
+        }
+
+
 
     }
 
-    // Link to send to new activity(SignUpActivity) on click
+    // validating email address
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // validating password
+    private boolean isValidPassword(String pass) {
+        if (pass != null && pass.length() >= 4) {
+            return true;
+        }
+        return false;
+    }
+
+    // Triggers when Need an account? text is clicked
     public void needAccount(View view) {
         Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
         startActivity(intent);

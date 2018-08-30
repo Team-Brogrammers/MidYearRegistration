@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_address"
+            android:drawableLeft="@mipmap/account_outline"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/loginpassword"
+            android:drawableLeft="@mipmap/lock_outline"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
