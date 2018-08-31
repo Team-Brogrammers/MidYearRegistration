@@ -84,7 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorAccent"
-            android:onClick="addImage"
             android:text="@string/add_image"
             tools:layout_editor_absoluteY="89dp" />
 
@@ -122,7 +121,7 @@
             tools:layout_editor_absoluteY="295dp" />
 
         <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/myPdfView"
+            android:id="@+id/pdfView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
