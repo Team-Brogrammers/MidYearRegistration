@@ -87,7 +87,12 @@ public class SignUpActivity extends AppCompatActivity {
                     e2.setError("Password cannot be empty");
                 }
 
-                if(isValidEmail(userPass) && isValidPassword(userPass)) {
+                if(!checkBox.isChecked()) {
+                    Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, StudentUpload.class);
+                    startActivity(intent);
+                }
+                else{
                     Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -96,6 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
