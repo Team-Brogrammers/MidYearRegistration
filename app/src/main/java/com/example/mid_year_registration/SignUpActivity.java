@@ -1,9 +1,13 @@
 package com.example.mid_year_registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +15,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,22 +29,41 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUpActivity extends AppCompatActivity {
+import static com.example.mid_year_registration.LoginActivity.CONNECTION_TIMEOUT;
+import static com.example.mid_year_registration.LoginActivity.READ_TIMEOUT;
+
+
+
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static EditText e1;
     private static EditText e2;
     private Button button;
     private CheckBox checkBox;
-
+    private ProgressDialog progressDialog;
     static String userName;
     static String userPass;
     static String checkAdminPrev;
+    static String studentNumber;
 
-    protected void onCreate(Bundle savedInstanceState)  {
+    /*Firebase Libraies*/
+    private FirebaseAuth firebaseAuth;
+
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
@@ -44,58 +72,45 @@ public class SignUpActivity extends AppCompatActivity {
         e2 = findViewById(R.id.passwordEditText);
         button = (Button) findViewById(R.id.submitButton);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
 
+        /*Check whether the user is already signed in*/
+        if(firebaseAuth.getCurrentUser() != null){
+            //finish();
+            /*Take the user to home*/
+        }
         if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-//        userName = e1.getText().toString();
-//        userPass = e2.getText().toString();
-//
-//        if(checkBox.isChecked()) {
-//            checkAdminPrev = "coordinator";
-//        }else{
-//            checkAdminPrev = "student";
-//        }
-
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                userName = e1.getText().toString();
-                userPass = e2.getText().toString();
-                if(checkBox.isChecked()) {
-                    checkAdminPrev = "coordinator";
-                }else{
-                    checkAdminPrev = "student";
-                }
-
-                new SummaryAsyncTask().execute((Void) null);
-
-                // Get text from email and password field
-                userName = e1.getText().toString();
-                if (!isValidEmail(userName)) {
-                    //Set error message for email field
-                    e1.setError("Invalid Email");
-                }
-
-                userPass = e2.getText().toString();
-                if (!isValidPassword(userPass)) {
-                    //Set error message for password field
-                    e2.setError("Password cannot be empty");
-                }
-
-                if(isValidEmail(userPass) && isValidPassword(userPass)) {
-                    Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
+        button.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        if(v == button){
+            registerUser();
+        }
+    }
+
+    private void registerUser() {
+        userName = e1.getText().toString().trim();
+        userPass = e2.getText().toString().trim();
+
+        /*Validate user inputs*/
+        if(TextUtils.isEmpty(userName)){
+            Toast.makeText(getApplicationContext(),
+                    "Email cannot be empty",
+                    Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(userPass)){
+            Toast.makeText(getApplicationContext(),
+                    "Password cannot be empty",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -108,54 +123,30 @@ public class SignUpActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-     private static class SummaryAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        /*Add user information to the database*/
+        progressDialog.setMessage("You are being registered...");
+        progressDialog.show();
 
-        private void postData(String mail, String pass, String check) {
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://lamp.ms.wits.ac.za/~s1153631/signup.php");
-
-            try {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
-                nameValuePairs.add(new BasicNameValuePair("user_email", mail));
-                nameValuePairs.add(new BasicNameValuePair("user_pass", pass));
-                nameValuePairs.add(new BasicNameValuePair("user_type", check));
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-
-            }
-            catch(Exception e)
-            {
-                Log.e("log_tag", "Error:  "+e.toString());
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // Validation Completed
-            postData(userName, userPass, checkAdminPrev);
-
-            return null;
-        }
+        firebaseAuth.createUserWithEmailAndPassword(userName,userPass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if(task.isSuccessful()){
+                            /*Successfully Registered*/
+                            Toast.makeText(getApplicationContext(),
+                                    "Registered",
+                                    Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(),Home.class));
+                        }else{
+                            Toast.makeText(getApplicationContext(),
+                                    "Ooops! We've encountered a problem.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
-
-    // validating email address
-    private static boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    // validating password
-    private static boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() >= 4) {
-            return true;
-        }
-        return false;
-    }
-
 }
+
+
+
