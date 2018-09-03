@@ -112,8 +112,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     Toast.LENGTH_SHORT).show();
         }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+   /* public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId()==android.R.id.home) {
             Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
@@ -121,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
         /*Add user information to the database*/
         progressDialog.setMessage("You are being registered...");
@@ -137,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(getApplicationContext(),
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),Home.class));
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else{
                             Toast.makeText(getApplicationContext(),
                                     "Ooops! We've encountered a problem.",
