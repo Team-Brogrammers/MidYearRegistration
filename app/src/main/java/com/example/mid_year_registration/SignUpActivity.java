@@ -5,13 +5,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -38,18 +45,22 @@ import java.util.regex.Pattern;
 import static com.example.mid_year_registration.LoginActivity.CONNECTION_TIMEOUT;
 import static com.example.mid_year_registration.LoginActivity.READ_TIMEOUT;
 
-public class SignUpActivity extends AppCompatActivity {
+
+
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static EditText e1;
     private static EditText e2;
     private Button button;
     private CheckBox checkBox;
-
+    private ProgressDialog progressDialog;
     static String userName;
     static String userPass;
     static String checkAdminPrev;
-
     static String studentNumber;
+
+    /*Firebase Libraies*/
+    private FirebaseAuth firebaseAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,102 +71,65 @@ public class SignUpActivity extends AppCompatActivity {
         e2 = findViewById(R.id.passwordEditText);
         button = (Button) findViewById(R.id.submitButton);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userName = e1.getText().toString();
-                userPass = e2.getText().toString();
-                if(checkBox.isChecked()) {
-                    checkAdminPrev = "coordinator";
-                }else{
-                    checkAdminPrev = "student";
-                }
-                new SummaryAsyncTask().execute((Void) null);
-
-                // Get text from email and password field
-                userName = e1.getText().toString();
-
-                if (!isValidEmail(userName)) {
-                    //Set error message for email field
-                    e1.setError("Invalid Email");
-                }
-
-
-                if(userName.contains("@wits.ac.za") && checkAdminPrev.equals("coordinator")){
-
-                }
-
-                userPass = e2.getText().toString();
-                if (!isValidPassword(userPass)) {
-                    //Set error message for password field
-                    e2.setError("Password cannot be empty");
-                }
-
-                if(isValidEmail(userPass)
-                        && isValidPassword(userPass)
-                        && userName.contains("@students.wits.ac.za")
-                        && checkAdminPrev.equals("student")){
-                    Toast.makeText(SignUpActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
-    }
-
-    private static class SummaryAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-        private void postData(String mail, String pass, String check) {
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://lamp.ms.wits.ac.za/~s1153631/signup.php");
-            HttpPost verify = new HttpPost("http://lamp.ms.wits.ac.za/~s1153631/verify.php");
-
-
-            try {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
-                nameValuePairs.add(new BasicNameValuePair("user_email", mail));
-                nameValuePairs.add(new BasicNameValuePair("user_pass", pass));
-                nameValuePairs.add(new BasicNameValuePair("user_type", check));
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-
-            }
-            catch(Exception e)
-            {
-                Log.e("log_tag", "Error:  "+e.toString());
-            }
+        /*Check whether the user is already signed in*/
+        if(firebaseAuth.getCurrentUser() != null){
+            //finish();
+            /*Take the user to home*/
         }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // Validation Completed
-            postData(userName, userPass, checkAdminPrev);
+        button.setOnClickListener(this);
+    }
 
-            return null;
+    @Override
+    public void onClick(View v) {
+        if(v == button){
+            registerUser();
         }
     }
 
-    // validating email address
-    private static boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private void registerUser() {
+        userName = e1.getText().toString().trim();
+        userPass = e2.getText().toString().trim();
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    // validating password
-    private static boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() >= 4) {
-            return true;
+        /*Validate user inputs*/
+        if(TextUtils.isEmpty(userName)){
+            Toast.makeText(getApplicationContext(),
+                    "Email cannot be empty",
+                    Toast.LENGTH_SHORT).show();
         }
-        return false;
-    }
+        if(TextUtils.isEmpty(userPass)){
+            Toast.makeText(getApplicationContext(),
+                    "Password cannot be empty",
+                    Toast.LENGTH_SHORT).show();
+        }
 
+        /*Add user information to the database*/
+        progressDialog.setMessage("You are being registered...");
+        progressDialog.show();
+
+        firebaseAuth.createUserWithEmailAndPassword(userName,userPass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if(task.isSuccessful()){
+                            /*Successfully Registered*/
+                            Toast.makeText(getApplicationContext(),
+                                    "Registered",
+                                    Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(),Home.class));
+                        }else{
+                            Toast.makeText(getApplicationContext(),
+                                    "Ooops! We've encountered a problem.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }
+
+
+
