@@ -2,69 +2,84 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
+    // Firebase instance variables
+    private FirebaseAuth mAuth;
 
-    public static final int CONNECTION_TIMEOUT=10000;
-    public static final int READ_TIMEOUT=15000;
-    private EditText etEmail;
-    private EditText etPassword;
+    //Reference variables
+    private ProgressDialog mProgressDialog;
+    //private EditText etEmail, etPassword;
+    private ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        FirebaseApp.initializeApp(this);
+        mAuth = FirebaseAuth.getInstance();
+        mProgressDialog = new ProgressDialog(this);
+
         // Get Reference to variables
-        etEmail = (EditText) findViewById(R.id.emailEditText);
-        etPassword = (EditText) findViewById(R.id.passwordEditText);
+//        etEmail = (EditText) findViewById(R.id.emailEditText);
+//        etPassword = (EditText) findViewById(R.id.passwordEditText);
+        mConstraintLayout = findViewById(R.id.loginConstraintLayout);
 
     }
 
-    // Triggers when LOGIN Button clicked
+    /* Triggers when LOGIN Button clicked
+     * This is the sign in method, it is going to check if users are signed in.
+     * if they are there then we don't do anything we'll just adjust the views.
+     * if they aren't signed in then we try to sign them in, provided they gave
+     * correct credentials.
+     * */
     public void checkLogin(View arg0) {
+        String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
+        String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
 
-        // Get text from email and password field
-        final String email = etEmail.getText().toString();
-        if (!isValidEmail(email)) {
-            //Set error message for email field
-            etEmail.setError("Invalid Email");
-        }
+        if(!isValidEmail(email)){return;}
+        if(!isValidPassword(password)){return;}
 
-        final String password = etPassword.getText().toString();
-        if (!isValidPassword(password)) {
-            //Set error message for password field
-            etPassword.setError("Password cannot be empty");
-        }
+        mProgressDialog.setTitle("Logging In");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
 
-        if(isValidEmail(email) && isValidPassword(password))
-        {
-            // Validation Completed
-            // Initialize  AsyncLogin() class with email and password
-            new AsyncLogin().execute(email,password);
-        }
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            mProgressDialog.dismiss();
+                            Intent activity = new Intent(LoginActivity.this, StudentUpload.class);
+                            startActivity(activity);
+                            finish();
+
+                        } else {
+                            mProgressDialog.dismiss();
+                            Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG ).show();
+
+                        }
+                    }
+                });
 
 
 
@@ -95,135 +110,4 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.finish();
     }
 
-    private class AsyncLogin extends AsyncTask<String, String, String>
-    {
-        ProgressDialog pdLoading = new ProgressDialog(LoginActivity.this);
-        HttpURLConnection conn;
-        URL url = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tLoading...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
-
-        }
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-
-                // The URL address where our php file resides
-                url = new URL("http://lamp.ms.wits.ac.za/~s1153631/login2.php");
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "exception";
-            }
-            try {
-                // Setup HttpURLConnection class to send and receive data from php and mysql
-                conn = (HttpURLConnection)url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("POST");
-
-                // setDoInput and setDoOutput method depict handling of both send and receive
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                // Append parameters to URL
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("username", params[0])
-                        .appendQueryParameter("password", params[1]);
-                String query = builder.build().getEncodedQuery();
-
-                // Open connection for sending data
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                return "exception";
-            }
-
-            try {
-
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-                    // Pass data to onPostExecute method
-                    return(result.toString());
-
-                }else{
-
-                    return("unsuccessful");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "exception";
-            } finally {
-                conn.disconnect();
-            }
-
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            //this method will be running on UI thread
-            System.out.println(result);
-            pdLoading.dismiss();
-
-            if (result.equalsIgnoreCase("student")) {
-                /* Here launching the student activity when login successful. If you persist login state
-                use sharedPreferences of Android. and logout button to clear sharedPreferences.
-                 */
-
-                Intent intent = new Intent(LoginActivity.this, StudentUpload.class);
-                startActivity(intent);
-//                LoginActivity.this.finish();
-
-            }else if(result.equalsIgnoreCase("coordinator")){
-                /* Here launching the coordinator activity when login successful. If you persist login state
-                use sharedPreferences of Android. and logout button to clear sharedPreferences.
-                 */
-
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-//                LoginActivity.this.finish();
-            }else if (result.equalsIgnoreCase("false")){
-
-                // If username and password does not match display a error message
-                Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_LONG).show();
-
-            } else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
-
-                Toast.makeText(LoginActivity.this, "Oops! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
-
-            }
-        }
-
-    }
 }
