@@ -65,6 +65,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /*Take the user back to the login activity*/
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void registerUser() {
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
