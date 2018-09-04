@@ -25,6 +25,11 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     }
 
     @SmallTest
+    public void testImage(){
+        onView(withId(R.id.imageView3)).check(matches(isDisplayed()));
+    }
+
+    @SmallTest
     public void testInValidPassword(){
         onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
@@ -33,7 +38,6 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testValidStudent(){
-        onView(withId(R.id.imageView3)).check(matches(isDisplayed()));
         onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abcd1234"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());

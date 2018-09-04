@@ -74,9 +74,9 @@ dependencies {
 
     //If build config. includes a compile dependency for the support-annotations library and an
     // androidTestImplementation dependency for the espresso-core library
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
+    /*androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    })*/
 
 
     implementation 'com.google.firebase:firebase-core:16.0.3'
