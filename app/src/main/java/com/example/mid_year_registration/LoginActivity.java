@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             mProgressDialog.dismiss();
-                            Intent activity = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent activity = new Intent(LoginActivity.this, StudentUpload.class);
                             startActivity(activity);
                             finish();
 
