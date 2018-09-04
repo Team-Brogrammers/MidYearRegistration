@@ -38,16 +38,16 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testValidStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abcd1234"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("testing2@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
     @SmallTest
     public void testValidCoordinator(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing1@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abcd4321"), closeSoftKeyboard());
-        onView(withId(R.id.adminCheckBox)).perform(click());
+        onView(withId(R.id.usernameEditText)).perform(typeText("testing2@wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
+        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
