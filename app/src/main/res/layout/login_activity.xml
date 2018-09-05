@@ -92,6 +92,7 @@
             android:layout_weight="0.08"
             android:text="@string/forgot_password"
             android:textAlignment="textEnd"
+            android:onClick="resetPassword"
             android:textSize="18sp" />
     </LinearLayout>
 

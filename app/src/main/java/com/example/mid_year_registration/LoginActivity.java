@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // validating email address
-    private boolean isValidEmail(String email) {
+    static boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
@@ -110,4 +110,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    public void resetPassword(View view) {
+        Intent intent = new Intent(LoginActivity.this,PasswordResetActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

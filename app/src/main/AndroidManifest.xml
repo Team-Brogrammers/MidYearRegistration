@@ -29,7 +29,7 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".SignUpActivity"></activity>
         <activity android:name=".Home"></activity>
-        <activity android:name=".CoordinatorActivity">
+        <activity android:name=".PasswordResetActivity">
         </activity>
         <activity android:name=".StudentUpload">
         </activity>
