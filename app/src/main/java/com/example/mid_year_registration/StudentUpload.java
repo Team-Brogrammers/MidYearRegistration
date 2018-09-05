@@ -2,6 +2,7 @@ package com.example.mid_year_registration;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,11 +35,22 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -50,12 +62,18 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
-    Button addImage;
+    Button addImage, upload;
     EditText course, stdNo;
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
     boolean imageSelected = false;
+    Uri pdfUri;
+    ProgressDialog progressDialog;
+
+    //Firebase
+    FirebaseStorage storage; //Used for uploading pdfs
+    FirebaseDatabase database; //Used to store URLs of uploaded files
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +88,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
+        upload = findViewById(R.id.submitButton);
+
+        storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
+        database = FirebaseDatabase.getInstance();
 
         addImage.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -112,6 +134,58 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             return true;
         }
         return false;
+    }
+
+    public void uploadPdf(View view){
+        if(text!=null){ //an image has been converted
+            upload(pdfUri);
+        }
+        else{
+            Toast.makeText(StudentUpload.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
+        }
+        
+    }
+
+    private void upload(Uri pdfUri) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        StorageReference storageReference = storage.getReference(); //Returns root path
+        storageReference.child("Concessions").child(text.getText().toString()).putFile(pdfUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        String url = taskSnapshot.getUploadSessionUri().toString(); // returns url of uploaded file
+                        DatabaseReference databaseReference = database.getReference(); // return the path to root
+                        databaseReference.child(text.getText().toString()).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                    Toast.makeText(StudentUpload.this, "The file is succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(StudentUpload.this, "Couldn't upload the file to the database", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(StudentUpload.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                //track progress of our upload
+                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                progressDialog.setProgress(currentProgress);
+
+            }
+        });
+
     }
 
     private boolean hasImage(@NonNull ImageView view) {
@@ -309,6 +383,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                     //String targetPdf = "/test.pdf";
                     File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                    
                     if (!root.exists()) {
                         root.mkdir();
                     }
@@ -321,6 +396,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     String dateToStr = format.format(today);
 
                     File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+
                     try {
                         FileOutputStream fileOutputStream = new FileOutputStream(file);
                         pdf.writeTo(fileOutputStream);
@@ -331,6 +407,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     }
 
                     pdf.close();
+
+                    pdfUri = data.getData();
+
 
 
             }
