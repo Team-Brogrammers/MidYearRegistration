@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.example.mid_year_registration.LoginActivity.isValidEmail;
+import static com.example.mid_year_registration.LoginActivity.isValidPassword;
+
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static EditText e1;
@@ -26,8 +29,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ProgressDialog progressDialog;
     static String userName;
     static String userPass;
-    static String checkAdminPrev;
-    static String studentNumber;
 
     /*Firebase Libraies*/
     private FirebaseAuth firebaseAuth;
@@ -43,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
+        getSupportActionBar().setTitle("Create Account");
 
         /*Check whether the user is already signed in*/
         if(firebaseAuth.getCurrentUser() != null){
@@ -77,16 +79,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
 
-        /*Validate user inputs*/
-        if(TextUtils.isEmpty(userName)){
-            Toast.makeText(getApplicationContext(),
-                    "Email cannot be empty",
-                    Toast.LENGTH_SHORT).show();
+        // Validate user inputs
+        if(!isValidEmail(userName)){
+            e1.setError("Invalid email address!");
+            return;
         }
-        if(TextUtils.isEmpty(userPass)){
-            Toast.makeText(getApplicationContext(),
-                    "Password cannot be empty",
-                    Toast.LENGTH_SHORT).show();
+        if(!isValidPassword(userPass)){
+            e2.setError("Password can't be empty or less than 4 characters!");
+            return;
         }
 
    /* public boolean onOptionsItemSelected(MenuItem item) {
@@ -113,7 +113,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(getApplicationContext(),
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            if(checkBox.isChecked()){
+                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            }else {
+                                startActivity(new Intent(getApplicationContext(),StudentUpload.class));
+                            }
                         }else{
                             Toast.makeText(getApplicationContext(),
                                     "Ooops! We've encountered a problem.",

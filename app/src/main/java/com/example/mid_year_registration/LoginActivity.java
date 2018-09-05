@@ -26,7 +26,8 @@ public class LoginActivity extends AppCompatActivity {
 
     //Reference variables
     private ProgressDialog mProgressDialog;
-    //private EditText etEmail, etPassword;
+    private EditText etEmail;
+    private EditText etPassword;
     private ConstraintLayout mConstraintLayout;
 
     @Override
@@ -37,10 +38,11 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mProgressDialog = new ProgressDialog(this);
+        getSupportActionBar().setTitle("Mid Year Registration");
 
         // Get Reference to variables
-//        etEmail = (EditText) findViewById(R.id.emailEditText);
-//        etPassword = (EditText) findViewById(R.id.passwordEditText);
+        etEmail = (EditText) findViewById(R.id.emailEditText);
+        etPassword = (EditText) findViewById(R.id.passwordEditText);
         mConstraintLayout = findViewById(R.id.loginConstraintLayout);
 
     }
@@ -52,11 +54,17 @@ public class LoginActivity extends AppCompatActivity {
      * correct credentials.
      * */
     public void checkLogin(View arg0) {
-        String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
-        String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
 
-        if(!isValidEmail(email)){return;}
-        if(!isValidPassword(password)){return;}
+        if(!isValidEmail(email)){
+            etEmail.setError("Invalid email!");
+            return;
+        }
+        if(!isValidPassword(password)){
+            etPassword.setError("Password can't be less than 4 characters or null!");
+            return;
+        }
 
         mProgressDialog.setTitle("Logging In");
         mProgressDialog.setMessage("Please wait...");
@@ -76,12 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             mProgressDialog.dismiss();
                             Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG ).show();
-
                         }
                     }
                 });
-
-
 
     }
 
@@ -89,17 +94,17 @@ public class LoginActivity extends AppCompatActivity {
     static boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     // validating password
-    private boolean isValidPassword(String pass) {
+    static boolean isValidPassword(String pass) {
         if (pass != null && pass.length() >= 4) {
             return true;
         }
+
         return false;
     }
 

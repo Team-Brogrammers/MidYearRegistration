@@ -70,6 +70,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
 
+        getSupportActionBar().setTitle("Submit Concession Form");
+
         addImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
