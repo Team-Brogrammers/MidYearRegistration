@@ -24,14 +24,14 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
     @SmallTest
     public void testVisibility(){
         onView(withId(R.id.formImageView)).check(matches(isDisplayed()));
-        onView(withId(R.id.pdfView)).check(matches(isDisplayed()));
+        onView(withId(R.id.PdfView)).check(matches(isDisplayed()));
 
         onView(withId(R.id.stdNoEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.etCourse)).check(matches(isDisplayed()));
 
         onView(withId(R.id.btnAddImage)).check(matches(isDisplayed()));
         onView(withId(R.id.btnConvert)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnSubmit)).check(matches(isDisplayed()));
+        onView(withId(R.id.submitButton)).check(matches(isDisplayed()));
 
     }
 

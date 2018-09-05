@@ -1,7 +1,6 @@
 package com.example.mid_year_registration;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RelativeLayout parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            pdf =itemView.findViewById(R.id.pdfView);
+            pdf =itemView.findViewById(R.id.PdfView);
             docName=itemView.findViewById(R.id.formLinkTextview);
             parentLayout=itemView.findViewById(R.id.parentLayout);
 

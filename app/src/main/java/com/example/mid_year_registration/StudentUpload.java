@@ -49,7 +49,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -82,7 +81,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         course=findViewById(R.id.etCourse);
         stdNo=findViewById(R.id.stdNoEditText);
 
-        pdfView=findViewById(R.id.pdfView);
+        pdfView=findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
@@ -135,57 +134,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         return false;
     }
 
-    public void uploadPdf(View view){
-        if(text!=null){ //an image has been converted
-            upload(pdfUri);
-        }
-        else{
-            Toast.makeText(StudentUpload.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
-        }
-        
-    }
 
-    private void upload(Uri pdfUri) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading File...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
-
-        StorageReference storageReference = storage.getReference(); //Returns root path
-        storageReference.child("Concessions").child(text.getText().toString()).putFile(pdfUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String url = taskSnapshot.getUploadSessionUri().toString(); // returns url of uploaded file
-                        DatabaseReference databaseReference = database.getReference(); // return the path to root
-                        databaseReference.child(text.getText().toString()).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful())
-                                    Toast.makeText(StudentUpload.this, "The file is succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                else
-                                    Toast.makeText(StudentUpload.this, "Couldn't upload the file to the database", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(StudentUpload.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                //track progress of our upload
-                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                progressDialog.setProgress(currentProgress);
-
-            }
-        });
-
-    }
 
     private boolean hasImage(@NonNull ImageView view) {
         Drawable drawable = view.getDrawable();
@@ -333,6 +282,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     }
 
+    public void nextPage(View view){
+        Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
+        intent.putExtra("filename", text.getText().toString());
+        startActivity(intent);
+    }
+
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode,data);
@@ -463,7 +418,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                     pdf.close();
 
-                    pdfUri = data.getData();
+                    //pdfUri = ;
 
 
 
