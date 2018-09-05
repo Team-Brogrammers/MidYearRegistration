@@ -34,6 +34,8 @@ public class UploadActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Bundle bundle;
 
+    String filename;
+
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
@@ -52,7 +54,9 @@ public class UploadActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         bundle = getIntent().getExtras();
-        text.setText(bundle.getString("filename"));
+        filename = bundle.getString("filename");
+        text.setText(filename);
+
     }
 
     public void selectPdf(View view){
@@ -101,12 +105,10 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        String fileName = bundle.getString("filename");
-
                         String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
 
                         DatabaseReference databaseReference = database.getReference(); // return the path to root
-                        databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference.child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {

@@ -190,7 +190,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
 
             File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr /*+ ".pdf"*/;
             text.setText(results);
 
             // course.setText("");
