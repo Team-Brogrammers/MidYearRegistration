@@ -55,7 +55,7 @@ public class UploadActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
-        text.setText(filename);
+
 
     }
 
@@ -74,7 +74,7 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode,data);
         if(requestCode == 86 && resultCode == RESULT_OK && data!=null){
             pdfUri = data.getData();
-
+            text.setText(filename);
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
@@ -105,10 +105,12 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
+                       // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
 
-                        DatabaseReference databaseReference = database.getReference(); // return the path to root
-                        databaseReference.child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        String url = taskSnapshot.getUploadSessionUri().toString();
+                        DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
+                        final String pdfId = databaseReference.push().getKey();
+                        databaseReference.child(pdfId).child("Pdf Url").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
