@@ -29,11 +29,16 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     public void testVisibility(){
         onView(withId(R.id.emailEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
-        //onView(withId(R.id.appTitleTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.loginButton)).check(matches(isClickable()));
         onView(withId(R.id.resetPasswordTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.creatAccountTextView)).check(matches(isDisplayed()));
+        onView(withId(R.id.imageView2)).check(matches(isDisplayed()));
 
+    }
+
+    @SmallTest
+    public void testSignUp(){
+        onView(withId(R.id.creatAccountTextView)).perform(click());
     }
 
     @SmallTest
@@ -52,8 +57,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
     @SmallTest
     public void testValidInput3(){
-        onView(withId(R.id.emailEditText)).perform(typeText("test5@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("test5"), closeSoftKeyboard());
+        onView(withId(R.id.emailEditText)).perform(typeText("test0@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing0"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
     }
 

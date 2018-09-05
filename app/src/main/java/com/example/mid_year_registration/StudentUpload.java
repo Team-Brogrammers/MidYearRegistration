@@ -1,6 +1,5 @@
 package com.example.mid_year_registration;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -83,7 +82,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         course=findViewById(R.id.etCourse);
         stdNo=findViewById(R.id.stdNoEditText);
 
-        pdfView=findViewById(R.id.myPdfView);
+        pdfView=findViewById(R.id.pdfView);
 
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
@@ -300,13 +299,13 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 if (items[i].equals("Camera")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                    //if (intent.resolveActivity(getPackageManager()) != null) {
-                        //startActivityForResult(intent, REQUEST_CAMERA);
-                    //}
-                    final String cameraPermission = Manifest.permission.CAMERA;
-                    //if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivityForResult(intent, REQUEST_CAMERA);
-                    //}
+                    }
+                    /*final String cameraPermission = Manifest.permission.CAMERA;
+                    if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    }*/
 
 
                 } else if (items[i].equals("Gallery")) {
@@ -343,8 +342,64 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             if(requestCode==REQUEST_CAMERA){
 
                 //Bundle bundle = data.getExtras();
-                Bitmap bmp = (Bitmap) data.getExtras().get("data");
+                 bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
+
+                //Uri selectedImageUri = data.getData();
+
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                //Cursor cursor = getContentResolver().query(
+                //        selectedImageUri, filePathColumn, null, null, null);
+              //  cursor.moveToFirst();
+
+                //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+               // String filePath = cursor.getString(columnIndex);
+              //  cursor.close();
+
+                //bmp = BitmapFactory.decodeFile(filePath);
+               // ivImage.setImageURI(selectedImageUri);
+
+                //imageSelected = true;
+                PdfDocument pdf = new PdfDocument();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
+                PdfDocument.Page page = pdf.startPage(pageInfo);
+
+                Canvas canvas = page.getCanvas();
+
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor("#ffffff"));
+                canvas.drawPaint(paint);
+                bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+                paint.setColor(Color.BLUE);
+                canvas.drawBitmap(bmp, 0, 0, null);
+                pdf.finishPage(page);
+
+                //String targetPdf = "/test.pdf";
+                File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                if (!root.exists()) {
+                    root.mkdir();
+                }
+
+                String mCourse = course.getText().toString();
+                String mStdNo = stdNo.getText().toString();
+
+                Date today = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String dateToStr = format.format(today);
+
+                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    pdf.writeTo(fileOutputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                pdf.close();
 
 
 
