@@ -311,6 +311,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         else {
             Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
             intent.putExtra("filename", text.getText().toString());
+            intent.putExtra("studentNumber", stdNo.getText().toString());
+            intent.putExtra("courseCode", course.getText().toString());
             startActivity(intent);
         }
     }

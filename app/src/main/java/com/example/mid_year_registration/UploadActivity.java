@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +42,8 @@ public class UploadActivity extends AppCompatActivity {
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class UploadActivity extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
@@ -76,6 +82,7 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode,data);
         if(requestCode == 86 && resultCode == RESULT_OK && data!=null){
             pdfUri = data.getData();
+
             text.setText(filename+".pdf");
             pdfView.fromUri(pdfUri).
                     defaultPage(0).enableSwipe(true)
@@ -118,7 +125,19 @@ public class UploadActivity extends AppCompatActivity {
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
-                        databaseReference.child(pdfId).child("Pdf Url").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        String studentNo = bundle.getString("studentNumber");
+                        String courseCode = bundle.getString("courseCode");
+
+                        Concessions concessions = new Concessions(
+                                firebaseUser.getUid(),
+                                studentNo,
+                                filename,
+                                courseCode,
+                                url
+
+                        );
+
+                        databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
