@@ -54,8 +54,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+//        getActionBar().
 
         button.setOnClickListener(this);
     }
@@ -65,6 +67,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(v == button){
             registerUser();
         }
+    }
+
+    /*Enable the navigation bar back button*/
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /*Take the user back to the login activity*/
