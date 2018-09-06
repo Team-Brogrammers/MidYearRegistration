@@ -195,6 +195,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             // course.setText("");
             //stdNo.setText("");
+            //pdfView.fromUri()
 
             pdfView.fromFile(file)
                     .defaultPage(0).enableSwipe(true)
@@ -283,9 +284,33 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
     public void nextPage(View view){
-        Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
-        intent.putExtra("filename", text.getText().toString());
-        startActivity(intent);
+        String mCourse=course.getText().toString();
+        String mStdNo=stdNo.getText().toString();
+
+        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+
+            course.setError("input is empty!");
+            stdNo.setError("input is empty!");
+        }
+        else if( mStdNo.isEmpty()){
+            stdNo.setError("student number is empty!");
+        }
+
+        else if(mCourse.isEmpty()){
+            course.setError("Course code is empty!");
+        }
+
+        else if(!isValidStudentNo(mStdNo)) {
+            stdNo.setError("invalid student number!");
+        }
+        else if(!checkString(mCourse)){
+            course.setError("Course code is upper case and numbers only");
+        }
+        else {
+            Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
+            intent.putExtra("filename", text.getText().toString());
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +50,7 @@ public class UploadActivity extends AppCompatActivity {
         upload = findViewById(R.id.submitButton);
 
         text = findViewById(R.id.pdfNameTextView);
+        pdfView = findViewById(R.id.PdfView);
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
@@ -74,10 +76,16 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode,data);
         if(requestCode == 86 && resultCode == RESULT_OK && data!=null){
             pdfUri = data.getData();
-            text.setText(filename);
+            text.setText(filename+".pdf");
+            pdfView.fromUri(pdfUri).
+                    defaultPage(0).enableSwipe(true)
+                    .swipeHorizontal(false)
+                    .enableAnnotationRendering(true)
+                    .scrollHandle(new DefaultScrollHandle(this))
+                    .load();
         }
         else{
-            Toast.makeText(UploadActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -115,10 +123,10 @@ public class UploadActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(UploadActivity.this, "The file is succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadActivity.this, "The form is succesfully uploaded", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
-                                    Toast.makeText(UploadActivity.this, "Couldn't upload the file to the database", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
