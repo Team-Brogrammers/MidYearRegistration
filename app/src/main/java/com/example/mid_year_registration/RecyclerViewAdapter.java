@@ -1,6 +1,7 @@
 package com.example.mid_year_registration;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -68,11 +69,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick:clicked"+mDocNames.get(position));
-                Toast.makeText(mContext,mDocNames.get(position), Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(mContext, PdfActivity.class);
-                //mContext.startActivity(intent);
-
-
+//                Toast.makeText(mContext,mDocNames.get(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ViewConcessionActivity.class);
+                intent.putExtra("url", mDocuments.get(position));
+                mContext.startActivity(intent);
             }
         });
     }
