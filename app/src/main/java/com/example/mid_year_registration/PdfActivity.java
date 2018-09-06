@@ -12,6 +12,6 @@ public class PdfActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
 
-        pdfView = findViewById(R.id.pdfView);
+        pdfView = findViewById(R.id.PdfView);
     }
 }

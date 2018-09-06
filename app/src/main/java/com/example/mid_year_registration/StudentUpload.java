@@ -1,6 +1,7 @@
 package com.example.mid_year_registration;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,16 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,12 +60,18 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
-    Button addImage;
+    Button addImage, upload;
     EditText course, stdNo;
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
     boolean imageSelected = false;
+    Uri pdfUri;
+    ProgressDialog progressDialog;
+
+    //Firebase
+    FirebaseStorage storage; //Used for uploading pdfs
+    FirebaseDatabase database; //Used to store URLs of uploaded files
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +81,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         course=findViewById(R.id.etCourse);
         stdNo=findViewById(R.id.stdNoEditText);
 
-        pdfView=findViewById(R.id.pdfView);
+        pdfView=findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
+        upload = findViewById(R.id.submitButton);
+
+        storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
+        database = FirebaseDatabase.getInstance();
 
         getSupportActionBar().setTitle("Submit Concession Form");
 
@@ -114,6 +135,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         }
         return false;
     }
+
+
 
     private boolean hasImage(@NonNull ImageView view) {
         Drawable drawable = view.getDrawable();
@@ -169,11 +192,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
 
             File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr /*+ ".pdf"*/;
             text.setText(results);
 
             // course.setText("");
             //stdNo.setText("");
+            //pdfView.fromUri()
 
             pdfView.fromFile(file)
                     .defaultPage(0).enableSwipe(true)
@@ -259,6 +283,36 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         });
         builder.show();
 
+    }
+
+    public void nextPage(View view){
+        String mCourse=course.getText().toString();
+        String mStdNo=stdNo.getText().toString();
+
+        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+
+            course.setError("input is empty!");
+            stdNo.setError("input is empty!");
+        }
+        else if( mStdNo.isEmpty()){
+            stdNo.setError("student number is empty!");
+        }
+
+        else if(mCourse.isEmpty()){
+            course.setError("Course code is empty!");
+        }
+
+        else if(!isValidStudentNo(mStdNo)) {
+            stdNo.setError("invalid student number!");
+        }
+        else if(!checkString(mCourse)){
+            course.setError("Course code is upper case and numbers only");
+        }
+        else {
+            Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
+            intent.putExtra("filename", text.getText().toString());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -366,6 +420,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                     //String targetPdf = "/test.pdf";
                     File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                    
                     if (!root.exists()) {
                         root.mkdir();
                     }
@@ -378,6 +433,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     String dateToStr = format.format(today);
 
                     File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+
                     try {
                         FileOutputStream fileOutputStream = new FileOutputStream(file);
                         pdf.writeTo(fileOutputStream);
@@ -388,6 +444,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     }
 
                     pdf.close();
+
+                    //pdfUri = ;
+
 
 
             }
