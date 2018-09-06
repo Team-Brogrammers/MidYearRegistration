@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -40,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
-        button = (Button) findViewById(R.id.submitButton);
+        button = (Button) findViewById(R.id.submitButton1);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);

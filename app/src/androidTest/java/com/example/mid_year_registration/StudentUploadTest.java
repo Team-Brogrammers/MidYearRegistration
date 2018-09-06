@@ -31,7 +31,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
 
         onView(withId(R.id.btnAddImage)).check(matches(isDisplayed()));
         onView(withId(R.id.btnConvert)).check(matches(isDisplayed()));
-        onView(withId(R.id.submitButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.submitButton1)).check(matches(isDisplayed()));
 
     }
 

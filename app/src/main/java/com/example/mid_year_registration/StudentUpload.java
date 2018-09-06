@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,16 +35,8 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -68,6 +61,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
+    FloatingActionButton addImageFab, convertFab, nextFab;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -86,7 +80,19 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
         addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        upload = findViewById(R.id.submitButton);
+        upload = findViewById(R.id.submitButton1);
+
+        addImageFab = findViewById(R.id.addImageFab);
+        convertFab = findViewById(R.id.convertImageFab);
+        nextFab = findViewById(R.id.nextFab);
+
+        addImageFab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                SelectImage();
+            }
+        });
+
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
