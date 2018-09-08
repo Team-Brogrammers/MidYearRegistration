@@ -111,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
 
-                            if (user.isEmailVerified() == false) {
+                            if (!user.isEmailVerified()) {
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -137,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void SignIn(View view){
         if(user!=null){
         FirebaseAuth.getInstance().getCurrentUser().reload();
-        if (user.isEmailVerified() == true) {
+        if (user.isEmailVerified()) {
 
             Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
