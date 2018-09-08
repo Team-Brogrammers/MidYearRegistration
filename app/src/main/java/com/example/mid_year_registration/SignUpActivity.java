@@ -83,13 +83,13 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     "Email cannot be empty",
                     Toast.LENGTH_SHORT).show();
-            //e1.findFocus();
+            e1.findFocus();
         }
         if (TextUtils.isEmpty(userPass)) {
             Toast.makeText(getApplicationContext(),
                     "Password cannot be empty",
                     Toast.LENGTH_SHORT).show();
-            //e2.findFocus();
+            e2.findFocus();
         }
 
    if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPass)){
@@ -111,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
 
-                            if (!user.isEmailVerified()) {
+                            if (user.isEmailVerified() == false) {
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -137,11 +137,9 @@ public class SignUpActivity extends AppCompatActivity {
     public void SignIn(View view){
         if(user!=null){
         FirebaseAuth.getInstance().getCurrentUser().reload();
-        if (user.isEmailVerified()) {
+        if (user.isEmailVerified() == true) {
 
-            Toast.makeText(getApplicationContext(),
-                    "Email Verified!",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
 
