@@ -78,7 +78,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         pdfView=findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
-        addImage=findViewById(R.id.btnAddImage);
+       // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
         upload = findViewById(R.id.submitButton1);
 
@@ -94,17 +94,17 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         });
 
 
-        storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
+        storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage n
         database = FirebaseDatabase.getInstance();
 
         getSupportActionBar().setTitle("Submit Concession Form");
 
-        addImage.setOnClickListener(new View.OnClickListener(){
+       /*addImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 SelectImage();
             }
-        });
+        });*/
     }
 
     @Override
