@@ -26,9 +26,9 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".Home" />
-        <activity android:name=".CoordinatorActivity"></activity>
-        <activity android:name=".StudentUpload"></activity>
-        <activity android:name=".UploadActivity"></activity>
+        <activity android:name=".CoordinatorActivity" />
+        <activity android:name=".StudentUpload" />
+        <activity android:name=".UploadActivity" />
     </application>
 
 </manifest>
