@@ -34,7 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     static String userPass;
     static String checkAdminPrev;
     static String studentNumber;
-     static FirebaseUser user = null;
+    static FirebaseUser user = null;
 
 
     /*Firebase Libraies*/
@@ -92,6 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
             //e2.findFocus();
         }
 
+   if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPass)){
         progressDialog.setMessage("You are being registered...");
         progressDialog.show();
 
@@ -101,13 +102,15 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
+                            user = FirebaseAuth.getInstance().getCurrentUser();
+                            if(user != null)
 
                             /*Successfully Registered*/
 
                             Toast.makeText(getApplicationContext(),
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
-                            user = FirebaseAuth.getInstance().getCurrentUser();
+
                             if (!user.isEmailVerified()) {
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -120,6 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
                             }
 
 
+
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "Ooops! Email Account already in use!.",
@@ -127,32 +131,34 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }}
 
 
-
-    public void LaunchMainActivity(View view) {
+    public void SignIn(View view){
+        if(user!=null){
         FirebaseAuth.getInstance().getCurrentUser().reload();
-        if (user != null) {
-            if (user.isEmailVerified())
-            {
+        if (user.isEmailVerified()) {
 
-                Toast.makeText(getApplicationContext(),
-                        "Email Verified!",
-                        Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-
-
-        } }else {
             Toast.makeText(getApplicationContext(),
-                    "Fill in the fields and Click Verify button!",
+                    "Email Verified!",
+                    Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+
+        }}
+
+        else{
+            Toast.makeText(getApplicationContext(),
+                    "Enter your details and Sign Up first!",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
 
 }
+
+
+
 
 
 
