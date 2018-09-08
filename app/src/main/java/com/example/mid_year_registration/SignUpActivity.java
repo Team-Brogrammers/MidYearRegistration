@@ -92,7 +92,13 @@ public class SignUpActivity extends AppCompatActivity {
             e2.findFocus();
         }
 
-   if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPass)){
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(userName).matches() && !TextUtils.isEmpty(userName)){
+            Toast.makeText(getApplicationContext(),
+                    "Invalid Email format",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+   if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPass) && android.util.Patterns.EMAIL_ADDRESS.matcher(userName).matches()){
         progressDialog.setMessage("You are being registered...");
         progressDialog.show();
 
