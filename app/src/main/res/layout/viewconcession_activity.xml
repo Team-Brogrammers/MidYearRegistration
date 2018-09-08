@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:minHeight="206dp">
 
+
     <TextView
         android:id="@+id/Textview"
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.016" />
+
 
     <Button
         android:id="@+id/button"
@@ -36,6 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/Textview"
         app:layout_constraintVertical_bias="0.053" />
 
+
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -50,6 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button"
         app:layout_constraintVertical_bias="0.095" />
+
 
     <Button
         android:id="@+id/button4"
@@ -66,6 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button3"
         app:layout_constraintVertical_bias="0.093" />
 
+
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
@@ -80,5 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4"
         app:layout_constraintVertical_bias="0.136" />
+    
 
 </android.support.constraint.ConstraintLayout>
