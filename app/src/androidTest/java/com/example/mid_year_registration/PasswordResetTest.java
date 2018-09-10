@@ -1,7 +1,11 @@
 package com.example.mid_year_registration;
 
 import android.support.test.filters.SmallTest;
+import android.support.test.rule.ActivityTestRule;
 import android.test.ActivityInstrumentationTestCase2;
+
+import org.junit.Rule;
+import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -11,28 +15,15 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-public class PasswordResetTest extends ActivityInstrumentationTestCase2<PasswordResetActivity> {
-    PasswordResetActivity activity;
+public class PasswordResetTest {
+    @Rule
+    public ActivityTestRule<PasswordResetActivity> mActivityRule = new ActivityTestRule<>(
+            PasswordResetActivity.class);
 
-    public PasswordResetTest() {
-        super(PasswordResetActivity.class);
-    }
-
-    @Override
-    protected void setUp() throws Exception{
-        super.setUp();
-        activity = getActivity();
-    }
-
-    @SmallTest
-    public void invalidTest1(){
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
-        onView(withId(R.id.resetPasswordButton)).perform(click());
-    }
-
+    @Test
     @SmallTest
     public void invalidInputTest(){
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
