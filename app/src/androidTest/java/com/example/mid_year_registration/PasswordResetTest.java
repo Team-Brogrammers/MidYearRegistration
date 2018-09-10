@@ -22,9 +22,10 @@ public class PasswordResetTest {
 
     @Test
     @SmallTest
-    public void invalidInputTest(){
+    public void validInputTest() throws InterruptedException {
         onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.resetPasswordButton)).perform(click());
+        Thread.sleep(5000);
     }
 
 }

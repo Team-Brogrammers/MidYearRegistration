@@ -31,22 +31,22 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testInValidPassword(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("tes@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("ab"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
     @SmallTest
     public void testValidStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing5@student.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("testing5"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("test3@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing3"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
     @SmallTest
     public void testValidCoordinator(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing5@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("testing5"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("testing3@wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing3"), closeSoftKeyboard());
         onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
