@@ -19,8 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ViewConcessionActivity extends AppCompatActivity {
-
-
+    
     String url;
     FirebaseStorage storage;
     StorageReference storageReference;
