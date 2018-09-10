@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> mNames=new ArrayList<>();
     private ArrayList<String> mImageUrls=new ArrayList<>();
+    private ProgressDialog mProgressDialog;
 
     private static final String TAG="MainActivity";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -34,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        Log.d(TAG, "onCreate: started");
+        mProgressDialog = new ProgressDialog(MainActivity.this);
+        mProgressDialog.setTitle("Loading Concessions");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
 
         databaseRef = database.getReference().child("Concessions");
 
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
                     Log.d("Concession", concession.getPdfUrl());
-                    initImageBitmap(concession.getPdfUrl(), concession.courseCode);
+                    initImageBitmap(concession.getPdfUrl(), concession.pdfName);
                 }
                 initRecyclerView();
             }
@@ -58,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initImageBitmap(String url, String course){
+    private void initImageBitmap(String url, String name){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
         mImageUrls.add(url);
-        mNames.add(course);
+        mNames.add(name);
 
     }
 
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapter adapter= new RecyclerViewAdapter(this, mNames, mImageUrls);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mProgressDialog.dismiss();
     }
 
     @Override

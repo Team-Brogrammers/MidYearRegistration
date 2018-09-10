@@ -71,7 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Log.d(TAG, "onClick:clicked"+mDocNames.get(position));
 //                Toast.makeText(mContext,mDocNames.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ViewConcessionActivity.class);
-                intent.putExtra("url", mDocuments.get(position));
+                intent.putExtra("name", mDocNames.get(position));
                 mContext.startActivity(intent);
             }
         });
@@ -93,10 +93,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             pdf =itemView.findViewById(R.id.PdfView);
             docName=itemView.findViewById(R.id.formLinkTextview);
             parentLayout=itemView.findViewById(R.id.parentLayout);
-
-
-
-
         }
     }
 }

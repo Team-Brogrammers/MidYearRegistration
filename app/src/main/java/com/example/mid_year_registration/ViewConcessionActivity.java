@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -20,10 +21,11 @@ import java.io.IOException;
 
 public class ViewConcessionActivity extends AppCompatActivity {
 
-    String url;
+    String name;
     FirebaseStorage storage;
     StorageReference storageReference;
     File localPdf;
+    private ProgressDialog mProgressDialog;
 
 
     @Override
@@ -32,30 +34,39 @@ public class ViewConcessionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_concession);
 
         Intent intent = getIntent();
-        url = intent.getStringExtra("url");
-        Log.d("URL", url);
+        name = intent.getStringExtra("name");
+        Log.d("URL", name);
+
+        mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
+        mProgressDialog.setTitle("Loading Concession");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
 
         storage = FirebaseStorage.getInstance();
-//        storageReference = storage.getReferenceFromUrl(url);
+        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child(name + ".pdf");
+        Log.d("Ref", storageReference.toString());
         try{
             localPdf = File.createTempFile("documents", "pdf");
-//            storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                    /*Download to local file was successful*/
-//                    Log.d("Download", "Download Success");
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    /*Download to local file failed*/
-//                    Log.d("Download", "Download Failed!!");
-//                }
-//            });
+            storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    /*Download to local file was successful*/
+                    Log.d("Download", "Download Success");
+                    mProgressDialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    /*Download to local file failed*/
+                    Log.e("DownloadError", e.getMessage());
+                    Log.d("Download", "Download Failed!!");
+                    mProgressDialog.dismiss();
+                }
+            });
+
         } catch (IOException e){
             Toast.makeText(this,"File Creation Failed", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 }
