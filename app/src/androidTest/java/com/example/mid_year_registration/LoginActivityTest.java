@@ -48,17 +48,17 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         onView(withId(R.id.loginButton)).perform(click());
     }
 
-    @SmallTest
-    public void testValidInput2(){
-        onView(withId(R.id.emailEditText)).perform(typeText("test2@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("test2"), closeSoftKeyboard());
-        onView(withId(R.id.loginButton)).perform(click());
-    }
+//    @SmallTest
+//    public void testValidInput2(){
+//        onView(withId(R.id.emailEditText)).perform(typeText("test2@gmail.com"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
+//        onView(withId(R.id.loginButton)).perform(click());
+//    }
 
     @SmallTest
     public void testValidInput3(){
-        onView(withId(R.id.emailEditText)).perform(typeText("test0@student.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("testing0"), closeSoftKeyboard());
+        onView(withId(R.id.emailEditText)).perform(typeText("testing2@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
     }
 
