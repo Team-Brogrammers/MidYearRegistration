@@ -160,25 +160,33 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         String mCourse=course.getText().toString();
         String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+        if(mCourse.isEmpty() || mStdNo.isEmpty() ){
+            if(mCourse.isEmpty()) {
+                course.setError("input is empty!");
 
-            course.setError("input is empty!");
-            stdNo.setError("input is empty!");
+            }
+            else if(mStdNo.isEmpty()) {
+                stdNo.setError("input is empty!");
+            }
+            else if(mCourse.isEmpty() && mCourse.isEmpty()){
+                stdNo.setError("input is empty!");
+                course.setError("input is empty!");
+            }
         }
-        else if( mStdNo.isEmpty()){
-            stdNo.setError("student number is empty!");
+        else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
+            if(!isValidStudentNo(mStdNo)) {
+                stdNo.setError("invalid student number!");
+            }
+            else if(!checkString(mCourse)) {
+                course.setError("Course code is upper case and numbers only");
+            }
+            else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
+                stdNo.setError("invalid student number!");
+                course.setError("Course code is upper case and numbers only");
+            }
         }
 
-        else if(mCourse.isEmpty()){
-            course.setError("Course code is empty!");
-        }
 
-        else if(!isValidStudentNo(mStdNo)) {
-            stdNo.setError("invalid student number!");
-        }
-        else if(!checkString(mCourse)){
-            course.setError("Course code is upper case and numbers only");
-        }
         /*else if(!imageSelected){
             Context context = getApplicationContext();
             CharSequence text = "Please select add an image";
