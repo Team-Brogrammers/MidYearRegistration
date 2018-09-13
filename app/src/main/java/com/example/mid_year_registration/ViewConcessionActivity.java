@@ -35,7 +35,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
-        Log.d("URL", name);
+        Log.d("Name", name);
 
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
         mProgressDialog.setTitle("Loading Concession");
@@ -44,7 +44,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.show();
 
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child(name + ".pdf");
+        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name + ".pdf");
         Log.d("Ref", storageReference.toString());
         try{
             localPdf = File.createTempFile("documents", "pdf");
@@ -54,6 +54,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
                     /*Download to local file was successful*/
                     Log.d("Download", "Download Success");
                     mProgressDialog.dismiss();
+                    //TODO: Replace this toast by displaying the PDF
+                    Toast.makeText(ViewConcessionActivity.this, "Download Success", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -62,6 +64,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                     Log.e("DownloadError", e.getMessage());
                     Log.d("Download", "Download Failed!!");
                     mProgressDialog.dismiss();
+                    Toast.makeText(ViewConcessionActivity.this, "Download Failed!", Toast.LENGTH_SHORT).show();
                 }
             });
 
