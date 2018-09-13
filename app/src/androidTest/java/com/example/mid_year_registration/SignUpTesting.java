@@ -47,7 +47,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     public void testValidCoordinator(){
         onView(withId(R.id.usernameEditText)).perform(typeText("testing2@wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
-        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
+        onView(withId(R.id.adminCheckBox)).perform(click());
         onView(withId(R.id.submitButton1)).perform(click());
     }
 
