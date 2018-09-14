@@ -9,12 +9,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +25,10 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity {
 
     // Firebase instance variables
-    private FirebaseAuth mAuth;
+     FirebaseAuth mAuth;
+    boolean check = true;
+    String password;
+    String email;
 
     //Reference variables
     private ProgressDialog mProgressDialog;
@@ -52,38 +58,68 @@ public class LoginActivity extends AppCompatActivity {
      * correct credentials.
      * */
     public void checkLogin(View arg0) {
-        String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
-        String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
+
+
+        email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
+        password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
 
         if(!isValidEmail(email)){return;}
         if(!isValidPassword(password)){return;}
 
-        mProgressDialog.setTitle("Logging In");
-        mProgressDialog.setMessage("Please wait...");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            mProgressDialog.dismiss();
-                            Intent activity = new Intent(LoginActivity.this, StudentUpload.class);
-                            startActivity(activity);
-                            finish();
+        else {
+            //FirebaseAuth user = FirebaseAuth.getInstance();
 
-                        } else {
-                            mProgressDialog.dismiss();
-                            Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG ).show();
+            mAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<ProviderQueryResult> task) {
 
-                        }
-                    }
-                });
+                     check= task.getResult().getProviders().isEmpty();
+                     Check(check);
+
+                }
+            });
+
+        }
+        }
+
+        public void Check(boolean check){
+
+            if(check == false){
+
+                mProgressDialog.setTitle("Logging In");
+                Toast.makeText(LoginActivity.this, "Loggining in should take less than a second , Otherwise your password is wrong", Toast.LENGTH_LONG).show();
+
+                mProgressDialog.setMessage("Please wait...");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    mProgressDialog.dismiss();
+                                    Intent activity = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(activity);
+                                    finish();
+
+                                }
+                            }
+                        });
+
+
+            }
+
+            else {
+                mProgressDialog.dismiss();
+                Snackbar.make(mConstraintLayout, "Authentication Failed, User not registered!", Snackbar.LENGTH_LONG).show();
+
+            }
+        }
 
 
 
-    }
 
     // validating email address
     private boolean isValidEmail(String email) {

@@ -29,6 +29,7 @@
         <activity android:name=".CoordinatorActivity" />
         <activity android:name=".StudentUpload" />
         <activity android:name=".UploadActivity" />
+        <activity android:name=".view_module_courses"></activity>
     </application>
 
 </manifest>
