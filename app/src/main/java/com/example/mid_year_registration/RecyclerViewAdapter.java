@@ -24,14 +24,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
 
     private Context mContext;
-    private ArrayList<String> mDocNames= new ArrayList<>();
-    private ArrayList<String> mDocuments= new ArrayList<>();
+    private ArrayList<String> mDocNames;
+    private ArrayList<String> mDocuments;
+    private ArrayList<String> mStudentNos;
+    private ArrayList<String> mCourses;
     private AdapterView.OnItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments, ArrayList<String> mStudentNos, ArrayList<String> mCourses) {
         this.mContext = mContext;
         this.mDocNames = mDocNames;
         this.mDocuments = mDocuments;
+        this.mStudentNos = mStudentNos;
+        this.mCourses = mCourses;
     }
 
     @Override
@@ -69,9 +73,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick:clicked"+mDocNames.get(position));
-//                Toast.makeText(mContext,mDocNames.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ViewConcessionActivity.class);
                 intent.putExtra("name", mDocNames.get(position));
+                intent.putExtra("studentNo", mStudentNos.get(position));
+                intent.putExtra("course", mCourses.get(position));
                 mContext.startActivity(intent);
             }
         });

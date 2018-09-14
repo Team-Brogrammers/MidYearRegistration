@@ -6,4 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".ViewConcessionActivity">
 
+    <TextView
+        android:id="@+id/tvConcessionStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/colorAccent"
+        tools:text="@string/std_no" />
+
+    <TextView
+        android:id="@+id/tvConcessionStudentVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@id/tvConcessionStudent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvConcessionCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/course_name"
+        app:layout_constraintTop_toBottomOf="@id/tvConcessionStudent"
+        tools:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/tvConcessionCourseVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvConcessionStudent"
+        app:layout_constraintLeft_toRightOf="@id/tvConcessionStudent"/>
 </android.support.constraint.ConstraintLayout>

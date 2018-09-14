@@ -23,8 +23,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> mNames=new ArrayList<>();
-    private ArrayList<String> mImageUrls=new ArrayList<>();
+    private ArrayList<String> mNames = new ArrayList<>();
+    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mStudentNos = new ArrayList<>();
+    private ArrayList<String> mCourses = new ArrayList<>();
     private ProgressDialog mProgressDialog;
 
     private static final String TAG="MainActivity";
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
                     Log.d("Concession", concession.getPdfUrl());
-                    initImageBitmap(concession.getPdfUrl(), concession.pdfName);
+                    initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                 }
                 initRecyclerView();
             }
@@ -64,18 +66,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initImageBitmap(String url, String name){
+    private void initImageBitmap(String url, String name, String studentNo, String course){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
         mImageUrls.add(url);
         mNames.add(name);
-
+        mStudentNos.add(studentNo);
+        mCourses.add(course);
     }
 
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init RecyclerView");
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter= new RecyclerViewAdapter(this, mNames, mImageUrls);
+        RecyclerViewAdapter adapter= new RecyclerViewAdapter(this, mNames, mImageUrls, mStudentNos, mCourses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressDialog.dismiss();

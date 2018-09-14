@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -22,10 +23,14 @@ import java.io.IOException;
 public class ViewConcessionActivity extends AppCompatActivity {
 
     String name;
+    String course;
+    String studentNo;
     FirebaseStorage storage;
     StorageReference storageReference;
     File localPdf;
     private ProgressDialog mProgressDialog;
+    TextView tvStudentNo;
+    TextView tvCourseCode;
 
 
     @Override
@@ -35,10 +40,17 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
-        Log.d("Name", name);
+        studentNo = intent.getStringExtra("studentNo");
+        course = intent.getStringExtra("course");
+
+        tvStudentNo = (TextView) findViewById(R.id.tvConcessionStudentVal);
+        tvCourseCode = (TextView) findViewById(R.id.tvConcessionCourseVal);
+
+        tvStudentNo.setText(studentNo);
+        tvCourseCode.setText(course);
 
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
-        mProgressDialog.setTitle("Loading Concession");
+        mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
