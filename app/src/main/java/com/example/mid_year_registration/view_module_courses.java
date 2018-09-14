@@ -10,46 +10,39 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import javax.annotation.Nullable;
 
 public class view_module_courses extends AppCompatActivity {
 
-    private TextView editText;
-    private TextView textView;
-    private FirebaseFirestore mFirestore;
+
+
     @Override
+   /* protected  void onStart() {
+
+       super.onStart();
+        mFirestore.collection("mid-year-registration-ef4af").document("Courses").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                String username = documentSnapshot.getString("math");
+            }
+        });
+    }*/
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_module_courses);
 
-        editText =(TextView)findViewById(R.id.text_message);
-        textView =(TextView)findViewById(R.id.view_field);
 
-        CollectCourses();
+
+
     }
 
     public void CollectCourses(){
-        mFirestore = FirebaseFirestore.getInstance();
 
-        mFirestore.collection("mid-year-registration-ef4af").document("Courses").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            public static final String FIRE_LOG = "Fire_log";
-
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot.exists() && documentSnapshot!= null) {
-                        String username = documentSnapshot.getString("math");
-                        textView.setText(username);
-                    }
-
-                }
-                else{
-                    Log.d(FIRE_LOG, "Erro : "+task.getException().getMessage());
-                }
-            }
-        });
 
     }
 

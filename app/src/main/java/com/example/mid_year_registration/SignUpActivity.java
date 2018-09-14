@@ -39,11 +39,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     /*Firebase Libraies*/
     static FirebaseAuth firebaseAuth;
+    LoginActivity loginActivity = new LoginActivity();
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
+
+
+
 
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
@@ -141,12 +145,14 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     public void SignIn(View view){
+
         if(user!=null){
         FirebaseAuth.getInstance().getCurrentUser().reload();
         if (user.isEmailVerified()) {
-
             Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+
 
 
         }}
@@ -155,6 +161,7 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     "Enter your details and Sign Up first!",
                     Toast.LENGTH_SHORT).show();
+
         }
     }
 

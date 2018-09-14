@@ -30,10 +30,12 @@ public class LoginActivity extends AppCompatActivity {
     String password;
     String email;
 
+
     //Reference variables
     private ProgressDialog mProgressDialog;
     //private EditText etEmail, etPassword;
     private ConstraintLayout mConstraintLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,8 @@ public class LoginActivity extends AppCompatActivity {
      * if they aren't signed in then we try to sign them in, provided they gave
      * correct credentials.
      * */
-    public void checkLogin(View arg0) {
 
+    public void checkLogin(View arg0) {
 
         email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
         password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
@@ -66,10 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         if(!isValidEmail(email)){return;}
         if(!isValidPassword(password)){return;}
 
-
         else {
             //FirebaseAuth user = FirebaseAuth.getInstance();
-
             mAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
                 @Override
                 public void onComplete(@NonNull Task<ProviderQueryResult> task) {
@@ -85,10 +85,8 @@ public class LoginActivity extends AppCompatActivity {
 
         public void Check(boolean check){
 
-            if(check == false){
-
+            if(check == false ){
                 mProgressDialog.setTitle("Logging In");
-                Toast.makeText(LoginActivity.this, "Loggining in should take less than a second , Otherwise your password is wrong", Toast.LENGTH_LONG).show();
 
                 mProgressDialog.setMessage("Please wait...");
                 mProgressDialog.setCanceledOnTouchOutside(false);
@@ -105,18 +103,25 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
 
                                 }
+                                else{
+                                    Toast.makeText(LoginActivity.this, "Password is Invalid", Toast.LENGTH_LONG).show();
+
+                                }
+                                mProgressDialog.dismiss();
                             }
                         });
 
 
             }
-
             else {
-                mProgressDialog.dismiss();
+
+
                 Snackbar.make(mConstraintLayout, "Authentication Failed, User not registered!", Snackbar.LENGTH_LONG).show();
 
             }
         }
+
+
 
 
 
