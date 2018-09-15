@@ -32,8 +32,7 @@
         <activity android:name=".PdfActivity"></activity>
         <activity android:name=".StudentUpload"></activity>
         <activity android:name=".UploadActivity"></activity>
-        <activity android:name=".PasswordResetActivity">
-        </activity>
+        <activity android:name=".PasswordResetActivity"></activity>
 
     </application>
 
