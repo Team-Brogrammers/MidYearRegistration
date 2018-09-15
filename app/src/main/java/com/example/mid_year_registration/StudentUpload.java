@@ -144,7 +144,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
 
 
-    private boolean hasImage(@NonNull ImageView view) {
+    /*private boolean hasImage(@NonNull ImageView view) {
         Drawable drawable = view.getDrawable();
         boolean hasImage = (drawable != null);
 
@@ -153,7 +153,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         }
 
         return hasImage;
-    }
+    }*/
 
     public void openPdf(View view){
 
