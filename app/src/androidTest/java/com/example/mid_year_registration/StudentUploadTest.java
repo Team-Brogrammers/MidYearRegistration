@@ -3,6 +3,7 @@ package com.example.mid_year_registration;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
@@ -12,13 +13,17 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -53,6 +58,29 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.nextFab)).check(matches(isDisplayed()));
 
     }
+
+    /*private String getString(int resId){
+        return getInstrumentation().getTargetContext().getString(resId);
+    }
+
+    public void testUI() {
+        onView(withContentDescription(getString(R.id.action_logout))).perform(click());
+        onView(withContentDescription(getString(R.id.action_logout))).perform(click());
+    }
+
+    @SmallTest
+    public void testClickInsertItem() {
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withContentDescription(R.menu.main_menu)).perform(click());
+    }
+
+    @SmallTest
+    public void menuLogout() {
+        onView(withContentDescription(R.id.action_logout))
+                .perform(click());
+        onView(withText("Logout")).perform(click());
+        intended(hasComponent(LoginActivity.class.getName()));
+    }*/
 
     @SmallTest
     public void testValidInput(){
@@ -116,7 +144,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.convertImageFab)).perform(click());
     }
 
-    @Test
+    @SmallTest
     public void activityResult_DisplaysImage() {
         // Build the result to return when the activity is launched.
 

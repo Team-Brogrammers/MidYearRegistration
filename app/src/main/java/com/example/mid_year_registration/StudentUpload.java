@@ -199,19 +199,41 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
 
         else {
+            PdfDocument pdf = new PdfDocument();
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
+            PdfDocument.Page page = pdf.startPage(pageInfo);
+
+            Canvas canvas = page.getCanvas();
+
+            Paint paint = new Paint();
+            paint.setColor(Color.parseColor("#ffffff"));
+            canvas.drawPaint(paint);
+            bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+            paint.setColor(Color.BLUE);
+            canvas.drawBitmap(bmp, 0, 0, null);
+            pdf.finishPage(page);
+
+            //String targetPdf = "/test.pdf";
             File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+            if (!root.exists()) {
+                root.mkdir();
+            }
+
             Date today = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String dateToStr = format.format(today);
 
+            File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                pdf.writeTo(fileOutputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-            String results = mStdNo + "_" + mCourse + "_" + "_" + dateToStr /*+ ".pdf"*/;
-            text.setText(results);
-
-            // course.setText("");
-            //stdNo.setText("");
-            //pdfView.fromUri()
+            pdf.close();
 
             pdfView.fromFile(file)
                     .defaultPage(0).enableSwipe(true)
@@ -222,10 +244,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
             Context context = getApplicationContext();
-            CharSequence text = "Image Successfully converted!";
+            CharSequence meessage = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
 
-            Toast toast = Toast.makeText(context, text, duration);
+            text.setText(mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+
+            Toast toast = Toast.makeText(context, meessage, duration);
             toast.show();
         }
     }
@@ -360,45 +384,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                // ivImage.setImageURI(selectedImageUri);
 
                 //imageSelected = true;
-                PdfDocument pdf = new PdfDocument();
-                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
-                PdfDocument.Page page = pdf.startPage(pageInfo);
-
-                Canvas canvas = page.getCanvas();
-
-                Paint paint = new Paint();
-                paint.setColor(Color.parseColor("#ffffff"));
-                canvas.drawPaint(paint);
-                bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
-                paint.setColor(Color.BLUE);
-                canvas.drawBitmap(bmp, 0, 0, null);
-                pdf.finishPage(page);
-
-                //String targetPdf = "/test.pdf";
-                File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-                if (!root.exists()) {
-                    root.mkdir();
-                }
-
-                String mCourse = course.getText().toString();
-                String mStdNo = stdNo.getText().toString();
-
-                Date today = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String dateToStr = format.format(today);
-
-                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    pdf.writeTo(fileOutputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                pdf.close();
-
 
 
             }else if(requestCode==SELECT_FILE){

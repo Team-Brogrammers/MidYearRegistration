@@ -1,11 +1,15 @@
 package com.example.mid_year_registration;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static junit.framework.Assert.assertEquals;
 
 
@@ -120,6 +124,7 @@ import static junit.framework.Assert.assertEquals;
             String stdNo = instance.getStudentNo();
             assertEquals(expStdNo, stdNo);
         }
+
 
 
 
