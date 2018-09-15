@@ -30,9 +30,10 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     }
 
     @SmallTest
-    public void testInValidPassword(){
+    public void testInValidPassword() throws InterruptedException {
         onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
+        Thread.sleep(1);
         onView(withId(R.id.submitButton1)).perform(click());
     }
 
@@ -67,9 +68,10 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 //    }
 
     @SmallTest
-    public void testInvalidEmail(){
+    public void testInvalidEmail() throws InterruptedException {
         onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        Thread.sleep(1);
         onView(withId(R.id.submitButton1)).perform(click());
     }
 

@@ -6,6 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
@@ -69,8 +70,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     }
 
     @SmallTest
-    public void testNoEmail(){
+    public void testNoEmail() throws InterruptedException {
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
+        Thread.sleep(1);
         onView(withId(R.id.loginButton)).perform(click());
     }
 
