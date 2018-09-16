@@ -16,6 +16,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -103,33 +104,37 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.convertImageFab)).perform(click());
     }
 
-    @SmallTest
-    public void testValidInput3(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
-        onView(withId(R.id.convertImageFab)).perform(click());
-    }
 
     @SmallTest
-    public void testValidInput4(){
+    public void testValidInput3(){
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText("MATH3005"), closeSoftKeyboard());
         onView(withId(R.id.convertImageFab)).perform(click());
     }
 
     @SmallTest
-    public void testValidInput5(){
+    public void testValidInput4(){
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText("Math3005"), closeSoftKeyboard());
         onView(withId(R.id.convertImageFab)).perform(click());
     }
 
     @SmallTest
-    public void testValidInput6(){
+    public void testValidInput5(){
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText(""), closeSoftKeyboard());
         onView(withId(R.id.convertImageFab)).perform(click());
     }
+
+    /*@SmallTest
+    public void testValidInput6() throws InterruptedException {
+        Thread.sleep(2);
+        onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
+        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard(), scrollTo());
+        Thread.sleep(10);
+        onView(withId(R.id.convertImageFab)).perform(click());
+    }*/
+
     @SmallTest
     public void testValidInput7(){
         onView(withId(R.id.stdNoEditText)).perform(typeText(""), closeSoftKeyboard());
