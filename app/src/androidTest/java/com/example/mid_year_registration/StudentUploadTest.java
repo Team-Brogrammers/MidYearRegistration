@@ -126,14 +126,13 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.convertImageFab)).perform(click());
     }
 
-    /*@SmallTest
+    @SmallTest
     public void testValidInput6() throws InterruptedException {
-        Thread.sleep(2);
+
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard(), scrollTo());
-        Thread.sleep(10);
+        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
         onView(withId(R.id.convertImageFab)).perform(click());
-    }*/
+    }
 
     @SmallTest
     public void testValidInput7(){

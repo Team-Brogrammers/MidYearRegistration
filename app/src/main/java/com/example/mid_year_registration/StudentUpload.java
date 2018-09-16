@@ -185,6 +185,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 course.setError("Course code is upper case and numbers only");
             }
         }
+        else if(bmp == null){
+            Context context = getApplicationContext();
+            CharSequence meessage = "Please select an image!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, meessage, duration).show();
+        }
 
 
         /*else if(!imageSelected){
