@@ -80,7 +80,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
        // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        upload = findViewById(R.id.submitButton1);
+        upload = findViewById(R.id.submitButton);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);

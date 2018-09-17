@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
-        button = (Button) findViewById(R.id.submitButton1);
+        button = (Button) findViewById(R.id.submitButton);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);

@@ -29,9 +29,9 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.stdNoEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.etCourse)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.btnAddImage)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnConvert)).check(matches(isDisplayed()));
-        onView(withId(R.id.submitButton1)).check(matches(isDisplayed()));
+        onView(withId(R.id.addImageFab)).check(matches(isDisplayed()));
+        onView(withId(R.id.convertImageFab)).check(matches(isDisplayed()));
+        onView(withId(R.id.nextFab)).check(matches(isDisplayed()));
 
     }
 
