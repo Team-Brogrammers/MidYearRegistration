@@ -145,6 +145,8 @@ public class UploadActivity extends AppCompatActivity {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
                                     Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
                                     Toast.makeText(UploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();

@@ -12,7 +12,7 @@ import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 public class CoordinatorMenuActivity extends AppCompatActivity {
 
-    String arrayName[] = { "Upload Request", "View Request", "Veiw Request 1","Veiw Request 2", "Veiw Request 3"};
+    String arrayName[] = { "View Student Request(s)", "View Request", "Reset Password","Logout", "View All My Responses"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +23,34 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu2);
         circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.view_menu,R.drawable.close_menu)
-               // .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_request)
-                //.addSubMenu(Color.parseColor("#30A400"), R.drawable.view_request)
-                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.view_request1)
-                //.addSubMenu(Color.parseColor("#8A39FF"), R.drawable.view_request2)
-                //.addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request3)
+                .addSubMenu(Color.parseColor("#258CFF"), R.drawable.uploadsicon)
+                .addSubMenu(Color.parseColor("#30A400"), R.drawable.view_refresh)
+                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.resetp)
+                .addSubMenu(Color.parseColor("#8A39FF"), R.drawable.if_exit_28363)
+                .addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request1)
                 .setOnMenuSelectedListener(new OnMenuSelectedListener() {
 
                     @Override
                     public void onMenuSelected(int index) {
-                        Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                        if(arrayName[index].contains("Upload Request")){
+
+                        if(arrayName[index].contains("View Student Request(s)")){
+                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(CoordinatorMenuActivity.this, MainActivity.class);
+                            startActivity(activity);
+                        }
+                        if(arrayName[index].contains("View All My Responses")){ // it should go to a page where the student will view his submitted request
+                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            //Intent activity = new Intent(StudentMenuActivity.this, StudentViewRequest.class);
+                            //startActivity(activity);
+                        }
+                        if(arrayName[index].contains("Reset Password")){
+                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            Intent activity = new Intent(CoordinatorMenuActivity.this, PasswordResetActivity.class);
+                            startActivity(activity);
+                        }
+                        if(arrayName[index].contains("Logout")){
+                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            Intent activity = new Intent(CoordinatorMenuActivity.this, LoginActivity.class);
                             startActivity(activity);
                         }
                     }
