@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
      * correct credentials.
      * */
     public void checkLogin(View arg0) {
-        String email = etEmail.getText().toString();
+        final String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
         if(!isValidEmail(email)){
@@ -77,9 +77,15 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             mProgressDialog.dismiss();
-                            Intent activity = new Intent(LoginActivity.this, StudentUpload.class);
-                            startActivity(activity);
-                            finish();
+                            if(email.contains("@students.wits.ac.za")) {
+                                Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
+                                startActivity(activity);
+                                //finish();
+                            }else if(email.contains("@wits.ac.za")) {
+                                Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
+                                startActivity(activity);
+                                //finish();
+                            }
 
                         } else {
                             mProgressDialog.dismiss();
