@@ -67,8 +67,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .enableDoubletap(true)
                 .pages(0)
                 .load();
-
-        holder.docName.setText(mDocNames.get(position));
+        String displayText = mStudentNos.get(position) + "\n" + mCourses.get(position);
+        holder.docName.setText(displayText);
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
