@@ -23,11 +23,11 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu2);
         circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.view_menu,R.drawable.close_menu)
-                .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_request)
-                .addSubMenu(Color.parseColor("#30A400"), R.drawable.view_request)
+               // .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_request)
+                //.addSubMenu(Color.parseColor("#30A400"), R.drawable.view_request)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.view_request1)
-                .addSubMenu(Color.parseColor("#8A39FF"), R.drawable.view_request2)
-                .addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request3)
+                //.addSubMenu(Color.parseColor("#8A39FF"), R.drawable.view_request2)
+                //.addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request3)
                 .setOnMenuSelectedListener(new OnMenuSelectedListener() {
 
                     @Override

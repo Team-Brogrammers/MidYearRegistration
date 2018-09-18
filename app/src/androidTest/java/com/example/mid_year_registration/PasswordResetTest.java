@@ -23,9 +23,9 @@ public class PasswordResetTest {
     @Test
     @SmallTest
     public void validInputTest() throws InterruptedException {
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.resetPasswordButton)).perform(click());
-        Thread.sleep(5000);
+        Thread.sleep(7000);
     }
 
 }

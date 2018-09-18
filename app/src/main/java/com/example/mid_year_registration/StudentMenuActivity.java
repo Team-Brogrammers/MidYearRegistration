@@ -14,7 +14,7 @@ import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 public class StudentMenuActivity extends AppCompatActivity {
 
-    String arrayName[] = { "Upload Request", "View Request", "Veiw Request 1","Veiw Request 2", "Veiw Request 3"};
+    String arrayName[] = { "Upload Request", "This one does noothing thus far", "Reset Password","Logout", "View Request"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,11 @@ public class StudentMenuActivity extends AppCompatActivity {
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu);
         circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.view_menu,R.drawable.close_menu)
-                .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_request)
-                .addSubMenu(Color.parseColor("#30A400"), R.drawable.view_request)
-                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.view_request1)
-                .addSubMenu(Color.parseColor("#8A39FF"), R.drawable.view_request2)
-                .addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request3)
+                .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_form)
+                .addSubMenu(Color.parseColor("#30A400"), R.drawable.view_refresh)
+                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.resetp)
+                .addSubMenu(Color.parseColor("#8A39FF"), R.drawable.if_logout_63128)
+                .addSubMenu(Color.parseColor("#FF6A00"), R.drawable.view_request1)
                 .setOnMenuSelectedListener(new OnMenuSelectedListener() {
 
                     @Override
@@ -40,6 +40,20 @@ public class StudentMenuActivity extends AppCompatActivity {
                             Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
                             startActivity(activity);
                         }
+                        if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request
+                            //Intent activity = new Intent(StudentMenuActivity.this, StudentViewRequest.class);
+                            //startActivity(activity);
+                        }
+                        if(arrayName[index].contains("Reset Password")){
+                            Intent activity = new Intent(StudentMenuActivity.this, PasswordResetActivity.class);
+                            startActivity(activity);
+                        }
+                        if(arrayName[index].contains("Logout")){
+                            Intent activity = new Intent(StudentMenuActivity.this, LoginActivity.class);
+                            startActivity(activity);
+                        }
+
+
                     }
 
                 }).setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {
