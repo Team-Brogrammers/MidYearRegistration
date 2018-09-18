@@ -7,12 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -31,6 +34,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     TextView tvStudentNo;
     TextView tvCourseCode;
+    WebView pdfView;
 
 
     @Override
@@ -45,6 +49,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
         tvStudentNo = (TextView) findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = (TextView) findViewById(R.id.tvConcessionCourseVal);
+        pdfView = (WebView) findViewById(R.id.wvPdfView);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
@@ -58,30 +63,25 @@ public class ViewConcessionActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name + ".pdf");
         Log.d("Ref", storageReference.toString());
-        try{
-            localPdf = File.createTempFile("documents", "pdf");
-            storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    /*Download to local file was successful*/
-                    Log.d("Download", "Download Success");
-                    mProgressDialog.dismiss();
-                    //TODO: Replace this toast by displaying the PDF
-                    Toast.makeText(ViewConcessionActivity.this, "Download Success", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    /*Download to local file failed*/
-                    Log.e("DownloadError", e.getMessage());
-                    Log.d("Download", "Download Failed!!");
-                    mProgressDialog.dismiss();
-                    Toast.makeText(ViewConcessionActivity.this, "Download Failed!", Toast.LENGTH_SHORT).show();
-                }
-            });
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Uri result = task.getResult();
 
-        } catch (IOException e){
-            Toast.makeText(this,"File Creation Failed", Toast.LENGTH_SHORT).show();
-        }
+               /* Webview is still not loading pdf*/
+//                Log.d("Result", result.toString());
+//                pdfView.loadUrl(result.toString());
+
+                mProgressDialog.dismiss();
+
+                /* Open PDF in a PDF reader*/
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(result,"application/pdf");
+                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                Intent intent = Intent.createChooser(target, "Open File");
+                startActivity(intent);
+            }
+        });
+
     }
 }
