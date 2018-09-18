@@ -2,15 +2,13 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +37,8 @@ public class UploadActivity extends AppCompatActivity {
 
     String filename;
 
+    FloatingActionButton attachment, send;
+
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
@@ -50,11 +50,13 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        addPdf = findViewById(R.id.selectPdfButton);
-        upload = findViewById(R.id.submitButton);
+       // addPdf = findViewById(R.id.selectPdfButton);
+        //upload = findViewById(R.id.submitButton1);
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
+
+        //attachment = findViewById(R.id.)
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
@@ -142,7 +144,9 @@ public class UploadActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(UploadActivity.this, "The form is succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
                                     Toast.makeText(UploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();

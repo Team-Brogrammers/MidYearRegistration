@@ -30,6 +30,9 @@
         <activity android:name=".UploadActivity" />
         <activity android:name=".PasswordResetActivity"></activity>
         <activity android:name=".ViewConcessionActivity"></activity>
+        <activity android:name=".CoordinatorMenuActivity"></activity>
+        <activity android:name=".StudentMenuActivity"></activity>
+
     </application>
 
 </manifest>

@@ -27,4 +27,5 @@
     <string name="std_no">Student number:</string>
     <string name="reset_email_address">Email address...</string>
     <string name="reset_password">Reset Password</string>
+    <string name="press_the_menu_button_above">Press the menu button above</string>
 </resources>

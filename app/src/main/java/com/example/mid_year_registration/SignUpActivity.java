@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -114,9 +113,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     "Registered",
                                     Toast.LENGTH_SHORT).show();
                             if(checkBox.isChecked()){
-                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                startActivity(new Intent(getApplicationContext(),CoordinatorMenuActivity.class));
                             }else {
-                                startActivity(new Intent(getApplicationContext(),StudentUpload.class));
+                                startActivity(new Intent(getApplicationContext(),StudentMenuActivity.class));
                             }
                         }else{
                             Toast.makeText(getApplicationContext(),
