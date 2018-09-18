@@ -68,7 +68,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testInvalidEmail(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }

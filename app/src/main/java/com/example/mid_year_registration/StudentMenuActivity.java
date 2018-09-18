@@ -14,14 +14,14 @@ import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 public class StudentMenuActivity extends AppCompatActivity {
 
-    String arrayName[] = { "Upload Request", "This one does noothing thus far", "Reset Password","Logout", "View Request"};
+    String arrayName[] = { "Upload Request", "Add/View Courses", "Reset Password","Logout", "View Request"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_menu_activity);
 
-        getSupportActionBar().setTitle("Mid Year Registration");
+        getSupportActionBar().setTitle("Main Menu");
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu);
         circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.view_menu,R.drawable.close_menu)
@@ -34,21 +34,30 @@ public class StudentMenuActivity extends AppCompatActivity {
 
                     @Override
                     public void onMenuSelected(int index) {
-                        Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
 
                         if(arrayName[index].contains("Upload Request")){
+                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request
+                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             //Intent activity = new Intent(StudentMenuActivity.this, StudentViewRequest.class);
                             //startActivity(activity);
                         }
+                        //allow user to add courses which they're coordinating
+                        if(arrayName[index].contains("Add/View Courses")){
+                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            Intent activity = new Intent(StudentMenuActivity.this, AddCoursesActivity.class);
+                            startActivity(activity);
+                        }
                         if(arrayName[index].contains("Reset Password")){
+                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(StudentMenuActivity.this, PasswordResetActivity.class);
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("Logout")){
+                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(StudentMenuActivity.this, LoginActivity.class);
                             startActivity(activity);
                         }
