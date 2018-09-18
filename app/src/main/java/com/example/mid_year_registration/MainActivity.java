@@ -37,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        getSupportActionBar().setTitle("Mid Year Registration");
+        /* Set up the action bar */
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         mProgressDialog = new ProgressDialog(MainActivity.this);
         mProgressDialog.setTitle("Loading Concessions");
@@ -63,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
-
     }
 
     private void initImageBitmap(String url, String name, String studentNo, String course){
@@ -95,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.action_logout) {
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if(item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(MainActivity.this,CoordinatorMenuActivity.class);
             startActivity(intent);
             finish();
         }
