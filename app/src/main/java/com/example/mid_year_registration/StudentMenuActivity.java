@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,7 +24,7 @@ public class StudentMenuActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Mid Year Registration");
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu);
-        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.close_menu,R.drawable.close_menu)
+        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.view_menu,R.drawable.close_menu)
                 .addSubMenu(Color.parseColor("#258CFF"), R.drawable.upload_request)
                 .addSubMenu(Color.parseColor("#30A400"), R.drawable.view_request)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.view_request1)
@@ -35,6 +36,10 @@ public class StudentMenuActivity extends AppCompatActivity {
                     public void onMenuSelected(int index) {
                         Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
 
+                        if(arrayName[index].contains("Upload Request")){
+                            Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
+                            startActivity(activity);
+                        }
                     }
 
                 }).setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {

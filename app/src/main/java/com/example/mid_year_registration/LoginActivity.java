@@ -80,11 +80,11 @@ public class LoginActivity extends AppCompatActivity {
                             if(email.contains("@students.wits.ac.za")) {
                                 Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
                                 startActivity(activity);
-                                //finish();
+
                             }else if(email.contains("@wits.ac.za")) {
                                 Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
                                 startActivity(activity);
-                                //finish();
+
                             }
 
                         } else {
