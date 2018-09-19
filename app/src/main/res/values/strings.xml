@@ -25,4 +25,12 @@
     <string name="add_image">Add Image</string>
     <string name="convert">Convert to PDF</string>
     <string name="std_no">Student number:</string>
+    <string name="reset_email_address">Email address...</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="press_the_menu_button_above">Press the menu button above</string>
+    <string name="course_code_e_g_phys1000">Course code e.g PHYS1000</string>
+    <string name="course_code_e_g_math1000">Course code e.g MATH1000</string>
+    <string name="course_code_e_g_coms1000">Course code e.g COMS1000</string>
+    <string name="email_address2">Email Address</string>
+    <string name="update">Update</string>
 </resources>

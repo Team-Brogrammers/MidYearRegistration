@@ -23,7 +23,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUpActivity extends AppCompatActivity {
+import static com.example.mid_year_registration.LoginActivity.isValidEmail;
+import static com.example.mid_year_registration.LoginActivity.isValidPassword;
+
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static EditText e1;
     private static EditText e2;
@@ -38,16 +41,12 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     /*Firebase Libraies*/
-    static FirebaseAuth firebaseAuth;
-    LoginActivity loginActivity = new LoginActivity();
+    private FirebaseAuth firebaseAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
-
-
-
 
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
@@ -57,17 +56,24 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         /*Check whether the user is already signed in*/
-        if (firebaseAuth.getCurrentUser() != null) {
+        if(firebaseAuth.getCurrentUser() != null){
             //finish();
             /*Take the user to home*/
         }
-        if (getSupportActionBar() != null) {
+        if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        button.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        if(v == button){
+            registerUser();
+        }
     }
 
     /*Take the user back to the login activity*/
@@ -78,35 +84,37 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    public void registerUser(View view) {
+    private void registerUser() {
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
 
         /*Validate user inputs*/
-        if (TextUtils.isEmpty(userName)) {
+        if(TextUtils.isEmpty(userName)){
             Toast.makeText(getApplicationContext(),
                     "Email cannot be empty",
                     Toast.LENGTH_SHORT).show();
-            e1.findFocus();
         }
-        if (TextUtils.isEmpty(userPass)) {
+        if(TextUtils.isEmpty(userPass)){
             Toast.makeText(getApplicationContext(),
                     "Password cannot be empty",
                     Toast.LENGTH_SHORT).show();
-            e2.findFocus();
         }
 
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(userName).matches() && !TextUtils.isEmpty(userName)){
-            Toast.makeText(getApplicationContext(),
-                    "Invalid Email format",
-                    Toast.LENGTH_SHORT).show();
-        }
+   /* public boolean onOptionsItemSelected(MenuItem item) {
 
-   if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPass) && android.util.Patterns.EMAIL_ADDRESS.matcher(userName).matches()){
+        if(item.getItemId()==android.R.id.home) {
+            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
+        /*Add user information to the database*/
         progressDialog.setMessage("You are being registered...");
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
+        firebaseAuth.createUserWithEmailAndPassword(userName,userPass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -164,12 +172,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         }
     }
-
-
 }
-
-
-
 
 
 

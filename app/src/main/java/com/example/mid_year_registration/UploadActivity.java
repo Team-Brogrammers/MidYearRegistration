@@ -2,23 +2,24 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,22 +37,31 @@ public class UploadActivity extends AppCompatActivity {
 
     String filename;
 
+    FloatingActionButton attachment, send;
+
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        addPdf = findViewById(R.id.selectPdfButton);
-        upload = findViewById(R.id.submitButton);
+       // addPdf = findViewById(R.id.selectPdfButton);
+        //upload = findViewById(R.id.submitButton1);
 
         text = findViewById(R.id.pdfNameTextView);
+        pdfView = findViewById(R.id.PdfView);
+
+        //attachment = findViewById(R.id.)
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
@@ -74,10 +84,17 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode,data);
         if(requestCode == 86 && resultCode == RESULT_OK && data!=null){
             pdfUri = data.getData();
-            text.setText(filename);
+
+            text.setText(filename+".pdf");
+            pdfView.fromUri(pdfUri).
+                    defaultPage(0).enableSwipe(true)
+                    .swipeHorizontal(false)
+                    .enableAnnotationRendering(true)
+                    .scrollHandle(new DefaultScrollHandle(this))
+                    .load();
         }
         else{
-            Toast.makeText(UploadActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -110,15 +127,29 @@ public class UploadActivity extends AppCompatActivity {
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
-                        databaseReference.child(pdfId).child("Pdf Url").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        String studentNo = bundle.getString("studentNumber");
+                        String courseCode = bundle.getString("courseCode");
+
+                        Concessions concessions = new Concessions(
+                                firebaseUser.getUid(),
+                                studentNo,
+                                filename,
+                                courseCode,
+                                url
+
+                        );
+
+                        databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(UploadActivity.this, "The file is succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
-                                    Toast.makeText(UploadActivity.this, "Couldn't upload the file to the database", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

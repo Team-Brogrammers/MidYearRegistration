@@ -31,22 +31,22 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testInValidPassword(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing0@student.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("testing0@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
     @SmallTest
     public void testValidStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing2@student.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 
     @SmallTest
     public void testValidCoordinator(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("testing2@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
         onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
@@ -68,9 +68,9 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testInvalidEmail(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
-        onView(withId(R.id.submitButton)).perform(click());
+        //onView(withId(R.id.submitButton)).perform(click());
     }
 
 //    @SmallTest
