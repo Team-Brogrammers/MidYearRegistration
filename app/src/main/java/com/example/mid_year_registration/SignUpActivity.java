@@ -88,54 +88,56 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
 
-        /*Validate user inputs*/
-        if(TextUtils.isEmpty(userName)){
-            Toast.makeText(getApplicationContext(),
-                    "Email cannot be empty",
-                    Toast.LENGTH_SHORT).show();
+        if(!isValidEmail(userName)){
+            e1.setError("Invalid email!");
+            return;
         }
-        if(TextUtils.isEmpty(userPass)){
-            Toast.makeText(getApplicationContext(),
-                    "Password cannot be empty",
-                    Toast.LENGTH_SHORT).show();
+        if(!isValidPassword(userPass)){
+            e2.setError("Password can't be less than 4 characters or null!");
+            return;
         }
 
-        /*Add user information to the database*/
-        progressDialog.setMessage("You are being registered...");
-        progressDialog.show();
+        if((userName.contains("@wits.ac.za")) || (userName.contains("@students.wits.ac.za"))) {
+            /*Add user information to the database*/
+            progressDialog.setMessage("You are being registered...");
+            progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(userName,userPass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            user = FirebaseAuth.getInstance().getCurrentUser();
-                            if(user != null)
+            firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null)
 
-                            /*Successfully Registered*/
+                                    /*Successfully Registered*/
 
-                            Toast.makeText(getApplicationContext(),
-                                    "Registered",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),
+                                            "Registered",
+                                            Toast.LENGTH_SHORT).show();
 
-                            if (!user.isEmailVerified()) {
-                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                                if (!user.isEmailVerified()) {
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
 
+                                }
+
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Ooops! Email Account already in use!.",
+                                        Toast.LENGTH_SHORT).show();
                             }
-
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "Ooops! Email Account already in use!.",
-                                    Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        }else {
+            e1.setError("Wits email required");
+            return;
+        }
     }
 
     public void SignIn(View view){
@@ -143,14 +145,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(user!=null){
             FirebaseAuth.getInstance().getCurrentUser().reload();
             if (user.isEmailVerified()) {
-                Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                if (userName.contains("@students.wits.ac.za")) {
+                    Intent activity = new Intent(SignUpActivity.this, StudentMenuActivity.class);
+                    startActivity(activity);
+
+                } else if (userName.contains("@wits.ac.za")) {
+                    Intent activity = new Intent(SignUpActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(activity);
+
+                }
             }
         }else{
             Toast.makeText(getApplicationContext(),
                     "Enter your details and Sign Up first!",
                     Toast.LENGTH_SHORT).show();
-
         }
     }
 }
