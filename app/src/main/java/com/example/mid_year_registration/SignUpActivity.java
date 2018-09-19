@@ -100,16 +100,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     Toast.LENGTH_SHORT).show();
         }
 
-   /* public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(item.getItemId()==android.R.id.home) {
-            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
         /*Add user information to the database*/
         progressDialog.setMessage("You are being registered...");
         progressDialog.show();
@@ -134,13 +124,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
-
                                     }
                                 });
 
                             }
-
-
 
                         } else {
                             Toast.makeText(getApplicationContext(),
@@ -149,23 +136,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
-    }}
-
+    }
 
     public void SignIn(View view){
 
         if(user!=null){
-        FirebaseAuth.getInstance().getCurrentUser().reload();
-        if (user.isEmailVerified()) {
-            Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-
-
-
-        }}
-
-        else{
+            FirebaseAuth.getInstance().getCurrentUser().reload();
+            if (user.isEmailVerified()) {
+                Toast.makeText(getApplicationContext(), "Email Verified!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        }else{
             Toast.makeText(getApplicationContext(),
                     "Enter your details and Sign Up first!",
                     Toast.LENGTH_SHORT).show();
