@@ -83,11 +83,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-firestore:17.1.0'
 
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 
     implementation 'com.github.Hitomis:CircleMenu:v1.1.0'
 
 
+    implementation project(path: ':lib')
 }
 apply plugin: 'com.google.gms.google-services'
