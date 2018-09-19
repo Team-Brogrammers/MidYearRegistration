@@ -14,7 +14,7 @@ import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 public class StudentMenuActivity extends AppCompatActivity {
 
-    String arrayName[] = { "Upload Request", "Add/View Courses", "Reset Password","Logout", "View Request"};
+    String arrayName[] = { "Upload Request", "", "Reset Password","Logout", "View Request"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,10 @@ public class StudentMenuActivity extends AppCompatActivity {
                             //startActivity(activity);
                         }
                         //allow user to add courses which they're coordinating
-                        if(arrayName[index].contains("Add/View Courses")){
+                        if(arrayName[index].contains("")){
                             Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(StudentMenuActivity.this, AddCoursesActivity.class);
-                            startActivity(activity);
+                            //Intent activity = new Intent(StudentMenuActivity.this, AddCoursesActivity.class);
+                            //startActivity(activity);
                         }
                         if(arrayName[index].contains("Reset Password")){
                             Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
