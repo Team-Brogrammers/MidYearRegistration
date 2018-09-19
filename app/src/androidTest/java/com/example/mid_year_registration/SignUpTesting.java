@@ -38,7 +38,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
 
     @SmallTest
     public void testValidStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
@@ -70,7 +70,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     public void testInvalidEmail(){
         onView(withId(R.id.usernameEditText)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
-        onView(withId(R.id.submitButton)).perform(click());
+        //onView(withId(R.id.submitButton)).perform(click());
     }
 
 //    @SmallTest

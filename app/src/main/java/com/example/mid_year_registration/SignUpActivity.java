@@ -88,16 +88,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-   /* public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(item.getItemId()==android.R.id.home) {
-            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
         /*Add user information to the database*/
         progressDialog.setMessage("You are being registered...");
         progressDialog.show();
