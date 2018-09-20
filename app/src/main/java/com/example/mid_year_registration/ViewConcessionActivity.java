@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +52,12 @@ public class ViewConcessionActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         studentNo = intent.getStringExtra("studentNo");
         course = intent.getStringExtra("course");
-        
+        getSupportActionBar().setTitle("View Concession");
+        /* Set up the action bar */
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         tvStudentNo = (TextView) findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = (TextView) findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
@@ -96,5 +103,27 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(ViewConcessionActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if(item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(ViewConcessionActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
