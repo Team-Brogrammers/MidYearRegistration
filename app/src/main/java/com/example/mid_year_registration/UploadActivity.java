@@ -37,7 +37,7 @@ public class UploadActivity extends AppCompatActivity {
 
     String filename;
 
-    FloatingActionButton attachment, send;
+    FloatingActionButton attachment, sendToserver;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -50,7 +50,8 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-       // addPdf = findViewById(R.id.selectPdfButton);
+        sendToserver = findViewById(R.id.uploadFab);
+        sendToserver.setEnabled(false);
         //upload = findViewById(R.id.submitButton1);
 
         text = findViewById(R.id.pdfNameTextView);
@@ -92,6 +93,8 @@ public class UploadActivity extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
+
+            sendToserver.setEnabled(true);
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();

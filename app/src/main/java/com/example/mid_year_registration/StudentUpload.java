@@ -61,7 +61,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
-    FloatingActionButton addImageFab, convertFab, nextFab;
+    FloatingActionButton addImageFab, convertFab, nextFab,uploadButton;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -80,11 +80,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
        // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        upload = findViewById(R.id.submitButton);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
+        uploadButton = findViewById(R.id.uploadFab);
         nextFab = findViewById(R.id.nextFab);
+
+
+        convertFab.setEnabled(false);
+        uploadButton.setEnabled(false);
 
         addImageFab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -216,6 +220,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             Context context = getApplicationContext();
             CharSequence text = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
+            uploadButton.setEnabled(true);
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
@@ -274,6 +279,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                         intent.setType("image/*");
                         //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
                         startActivityForResult(intent, SELECT_FILE);
+                        convertFab.setEnabled(true);
                     }
 
                     else {
@@ -445,6 +451,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     try {
                         FileOutputStream fileOutputStream = new FileOutputStream(file);
                         pdf.writeTo(fileOutputStream);
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -463,4 +470,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
 
+    public void uploadPdf(View view) {
+    }
 }
