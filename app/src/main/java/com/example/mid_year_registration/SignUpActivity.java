@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lib.ValidateEmail;
+//import com.example.lib.ValidateEmail;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -28,10 +30,11 @@ import static com.example.mid_year_registration.LoginActivity.isValidPassword;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static EditText e1;
-    private static EditText e2;
+    private  EditText e1;
+    private  EditText e2;
     private Button button;
     private CheckBox checkBox;
+    private ConstraintLayout mConstraintLayout;
     private ProgressDialog progressDialog;
     static String userName;
     static String userPass;
@@ -51,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
         button = (Button) findViewById(R.id.submitButton);
+        mConstraintLayout = findViewById(R.id.signupConstraintLayout);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -97,8 +101,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if((userName.contains("@wits.ac.za")) || (userName.contains("@students.wits.ac.za"))) {
+        if((userName.endsWith("@wits.ac.za")) || (userName.endsWith("@students.wits.ac.za"))) {
             /*Add user information to the database*/
+
+
+            /***Check Box should be clicked by a Coordinator Only*/
+          if(userName.endsWith("@students.wits.ac.za") && checkBox.isChecked()){
+                Snackbar.make(mConstraintLayout, "CheckBox must be checked by a coordinator only!", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            else if(!userName.endsWith("@students.wits.ac.za") && !checkBox.isChecked()){
+                Snackbar.make(mConstraintLayout, "CheckBox must be checked!", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+
             progressDialog.setMessage("You are being registered...");
             progressDialog.show();
 
