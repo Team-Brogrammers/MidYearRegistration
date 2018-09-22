@@ -63,6 +63,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     ProgressDialog progressDialog;
     FloatingActionButton addImageFab, convertFab, nextFab,uploadButton;
 
+
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
@@ -87,8 +88,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         nextFab = findViewById(R.id.nextFab);
 
 
-        convertFab.setEnabled(false);
-        uploadButton.setEnabled(false);
+        convertFab.setVisibility(View.INVISIBLE);
+        uploadButton.setVisibility(View.INVISIBLE);
 
         addImageFab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -161,13 +162,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     public void openPdf(View view){
 
-        String mCourse=course.getText().toString();
+       String mCourse=course.getText().toString();
         String mStdNo=stdNo.getText().toString();
 
         if(mCourse.isEmpty() && mStdNo.isEmpty() ){
 
             course.setError("input is empty!");
             stdNo.setError("input is empty!");
+
         }
         else if( mStdNo.isEmpty()){
             stdNo.setError("student number is empty!");
@@ -220,10 +222,11 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             Context context = getApplicationContext();
             CharSequence text = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
-            uploadButton.setEnabled(true);
-
+            uploadButton.setVisibility(View.VISIBLE);
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+
+            Toast.makeText(StudentUpload.this, "You can now submit your form", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -252,6 +255,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
         final CharSequence[] items={"Camera","Gallery", "Cancel"};
 
+        Toast.makeText(StudentUpload.this, "fill in the details first please", Toast.LENGTH_LONG).show();
         AlertDialog.Builder builder = new AlertDialog.Builder(StudentUpload.this);
         builder.setTitle("Add Image");
 
@@ -259,41 +263,47 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (items[i].equals("Camera")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(intent, REQUEST_CAMERA);
-                    }
+
+                    if (items[i].equals("Camera")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(intent, REQUEST_CAMERA);
+                        }
                     /*final String cameraPermission = Manifest.permission.CAMERA;
                     if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }*/
 
 
-                } else if (items[i].equals("Gallery")) {
+                    } else if (items[i].equals("Gallery")) {
 
-                    final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    if (EasyPermissions.hasPermissions(StudentUpload.this, galleryPermissions)) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
-                        //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
-                        startActivityForResult(intent, SELECT_FILE);
-                        convertFab.setEnabled(true);
+                        final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        if (EasyPermissions.hasPermissions(StudentUpload.this, galleryPermissions)) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
+                            startActivityForResult(intent, SELECT_FILE);
+                            convertFab.setVisibility(View.VISIBLE);
+
+                        } else {
+                            EasyPermissions.requestPermissions(StudentUpload.this, "Access for storage",
+                                    101, galleryPermissions);
+
+                        }
+
+                        Toast.makeText(StudentUpload.this, "Convert this Image to PDF", Toast.LENGTH_LONG).show();
+
+
+                    } else if (items[i].equals("Cancel")) {
+                        dialogInterface.dismiss();
                     }
 
-                    else {
-                             EasyPermissions.requestPermissions(StudentUpload.this, "Access for storage",
-                            101, galleryPermissions);
-                     }
-
-
-                } else if (items[i].equals("Cancel")) {
-                    dialogInterface.dismiss();
-                }
             }
         });
         builder.show();
+
 
     }
 
@@ -312,6 +322,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
         else if(mCourse.isEmpty()){
             course.setError("Course code is empty!");
+
         }
 
         else if(!isValidStudentNo(mStdNo)) {
