@@ -270,12 +270,13 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivityForResult(intent, REQUEST_CAMERA);
+
                         }
                     /*final String cameraPermission = Manifest.permission.CAMERA;
                     if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }*/
-
+                        convertFab.setVisibility(View.VISIBLE);
 
                     } else if (items[i].equals("Gallery")) {
 
