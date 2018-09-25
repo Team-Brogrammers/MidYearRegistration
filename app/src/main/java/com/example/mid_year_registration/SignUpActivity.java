@@ -4,31 +4,44 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.example.lib.ValidateEmail;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.example.mid_year_registration.LoginActivity.isValidEmail;
 import static com.example.mid_year_registration.LoginActivity.isValidPassword;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static EditText e1;
-    private static EditText e2;
+    private  EditText e1;
+    private  EditText e2;
     private Button button;
     private CheckBox checkBox;
+    private ConstraintLayout mConstraintLayout;
     private ProgressDialog progressDialog;
     static String userName;
     static String userPass;
+    static String checkAdminPrev;
+    static String studentNumber;
+    static FirebaseUser user = null;
+
 
     /*Firebase Libraies*/
     private FirebaseAuth firebaseAuth;
@@ -41,10 +54,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         e1 = findViewById(R.id.usernameEditText);
         e2 = findViewById(R.id.passwordEditText);
         button = (Button) findViewById(R.id.submitButton);
+        mConstraintLayout = findViewById(R.id.signupConstraintLayout);
         checkBox = (CheckBox) findViewById(R.id.adminCheckBox);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
-        getSupportActionBar().setTitle("Create Account");
 
         /*Check whether the user is already signed in*/
         if(firebaseAuth.getCurrentUser() != null){
@@ -88,52 +101,90 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
 
-        // Validate user inputs
         if(!isValidEmail(userName)){
-            e1.setError("Invalid email address!");
+            e1.setError("Invalid email!");
             return;
         }
         if(!isValidPassword(userPass)){
-            e2.setError("Password can't be empty or less than 4 characters!");
+            e2.setError("Password can't be less than 4 characters or null!");
             return;
         }
 
-   /* public boolean onOptionsItemSelected(MenuItem item) {
+        if((userName.endsWith("@wits.ac.za")) || (userName.endsWith("@students.wits.ac.za"))) {
+            /*Add user information to the database*/
 
-        if(item.getItemId()==android.R.id.home) {
-            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
-        /*Add user information to the database*/
-        progressDialog.setMessage("You are being registered...");
-        progressDialog.show();
+            /***Check Box should be clicked by a Coordinator Only*/
+          if(userName.endsWith("@students.wits.ac.za") && checkBox.isChecked()){
+                Snackbar.make(mConstraintLayout, "CheckBox must be checked by a coordinator only!", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            else if(!userName.endsWith("@students.wits.ac.za") && !checkBox.isChecked()){
+                Snackbar.make(mConstraintLayout, "CheckBox must be checked!", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
 
-        firebaseAuth.createUserWithEmailAndPassword(userName,userPass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if(task.isSuccessful()){
-                            /*Successfully Registered*/
-                            Toast.makeText(getApplicationContext(),
-                                    "Registered",
-                                    Toast.LENGTH_SHORT).show();
-                            if(checkBox.isChecked()){
-                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                            }else {
-                                startActivity(new Intent(getApplicationContext(),StudentUpload.class));
+            progressDialog.setMessage("You are being registered...");
+            progressDialog.show();
+
+            firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null)
+
+                                    /*Successfully Registered*/
+
+                                    Toast.makeText(getApplicationContext(),
+                                            "Registered",
+                                            Toast.LENGTH_SHORT).show();
+
+                                if (!user.isEmailVerified()) {
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Ooops! Email Account already in use!.",
+                                        Toast.LENGTH_SHORT).show();
                             }
-                        }else{
-                            Toast.makeText(getApplicationContext(),
-                                    "Ooops! We've encountered a problem.",
-                                    Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        }else {
+            e1.setError("Wits email required");
+            return;
+        }
+    }
+
+    public void SignIn(View view){
+
+        if(user!=null){
+            FirebaseAuth.getInstance().getCurrentUser().reload();
+            if (user.isEmailVerified()) {
+                if (userName.contains("@students.wits.ac.za")) {
+                    Intent activity = new Intent(SignUpActivity.this, StudentMenuActivity.class);
+                    startActivity(activity);
+
+                } else if (userName.contains("@wits.ac.za")) {
+                    Intent activity = new Intent(SignUpActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(activity);
+
+                }
+            }
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "Enter your details and Sign Up first!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

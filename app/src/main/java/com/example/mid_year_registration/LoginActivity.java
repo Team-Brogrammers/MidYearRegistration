@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
      * correct credentials.
      * */
     public void checkLogin(View arg0) {
-        String email = etEmail.getText().toString();
+        final String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
         if(!isValidEmail(email)){
@@ -66,27 +66,38 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        mProgressDialog.setTitle("Logging In");
-        mProgressDialog.setMessage("Please wait...");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        if((email.contains("@wits.ac.za")) || (email.contains("@students.wits.ac.za"))) {
+            mProgressDialog.setTitle("Logging In");
+            mProgressDialog.setMessage("Please wait...");
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            mProgressDialog.dismiss();
-                            Intent activity = new Intent(LoginActivity.this, StudentUpload.class);
-                            startActivity(activity);
-                            finish();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                mProgressDialog.dismiss();
+                                if (email.contains("@students.wits.ac.za")) {
+                                    Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
+                                    startActivity(activity);
 
-                        } else {
-                            mProgressDialog.dismiss();
-                            Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG ).show();
+                                } else if (email.contains("@wits.ac.za")) {
+                                    Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
+                                    startActivity(activity);
+
+                                }
+
+                            } else {
+                                mProgressDialog.dismiss();
+                                Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }else {
+            etEmail.setError("Wits email required");
+            return;
+        }
 
     }
 
