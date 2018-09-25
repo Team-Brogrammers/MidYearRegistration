@@ -10,9 +10,12 @@
         android:id="@+id/tvConcessionStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Student Number:"
         app:layout_constraintRight_toLeftOf="@id/tvConcessionStudentVal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/colorAccent" />
 
@@ -20,19 +23,22 @@
         android:id="@+id/tvConcessionStudentVal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
+        android:text="TextView"
         app:layout_constraintLeft_toRightOf="@id/tvConcessionStudent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvConcessionCourse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
         android:text="@string/course_name"
+        app:layout_constraintEnd_toStartOf="@+id/tvConcessionCourseVal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvConcessionStudent"
         tools:background="@color/colorAccent" />
 
@@ -40,15 +46,14 @@
         android:id="@+id/tvConcessionCourseVal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
+        android:text="TextView"
         app:layout_constraintTop_toBottomOf="@id/tvConcessionStudent"
-        app:layout_constraintLeft_toRightOf="@id/tvConcessionCourse"/>
+        tools:layout_editor_absoluteX="108dp" />
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/CoordPdfView"
-        android:layout_width="384dp"
+        android:layout_width="0dp"
         android:layout_height="412dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
