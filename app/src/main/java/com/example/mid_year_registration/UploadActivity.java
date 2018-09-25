@@ -94,7 +94,7 @@ public class UploadActivity extends AppCompatActivity {
         if(requestCode == 86 && resultCode == RESULT_OK && data!=null){
             pdfUri = data.getData();
 
-            text.setText(filename+".pdf");
+            text.setText(filename);
             pdfView.fromUri(pdfUri).
                     defaultPage(0).enableSwipe(true)
                     .swipeHorizontal(false)

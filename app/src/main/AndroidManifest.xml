@@ -28,8 +28,9 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".StudentUpload" />
-        <activity android:name=".UploadActivity" />
+        <activity android:name=".PdfActivity"></activity>
+        <activity android:name=".StudentUpload"></activity>
+        <activity android:name=".UploadActivity"></activity>
         <activity android:name=".PasswordResetActivity"></activity>
         <activity android:name=".ViewConcessionActivity"></activity>
         <activity android:name=".AddCoursesActivity"/>
