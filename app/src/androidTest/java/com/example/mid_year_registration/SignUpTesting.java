@@ -8,6 +8,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
@@ -25,67 +26,71 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     }
 
     @SmallTest
-    public void testImage(){
+    public void testVisibility(){
         onView(withId(R.id.imageView3)).check(matches(isDisplayed()));
+        onView(withId(R.id.usernameEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.submitButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.adminCheckBox)).check(matches(isClickable()));
     }
 
-    @SmallTest
-    public void testNoEmailNoPassowrd(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-
-    @SmallTest
-    public void testNoEmail(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg12345"), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-    @SmallTest
-    public void testNoPassword(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-
-    @SmallTest
-    public void testInValidPassword(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
-       // onView(withId(R.id.submitButton)).perform(click());
-    }
-
-
-    @SmallTest
-    public void testIfCheckBoxIsClikedByStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("adcded4563"), closeSoftKeyboard());
-        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-    @SmallTest
-    public void testIfCheckeBoxNotClickedByCoordinator(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-
-
-    @SmallTest
-    public void testValidStudent(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidCoordinator(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
-        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-    }
+//    @SmallTest
+//    public void testNoEmailNoPassowrd(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//
+//    @SmallTest
+//    public void testNoEmail(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg12345"), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//    @SmallTest
+//    public void testNoPassword(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//
+//    @SmallTest
+//    public void testInValidPassword(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
+//       // onView(withId(R.id.submitButton)).perform(click());
+//    }
+//
+//
+//    @SmallTest
+//    public void testIfCheckBoxIsClikedByStudent(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("adcded4563"), closeSoftKeyboard());
+//        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//    @SmallTest
+//    public void testIfCheckeBoxNotClickedByCoordinator(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//
+//
+//    @SmallTest
+//    public void testValidStudent(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
+//
+//    @SmallTest
+//    public void testValidCoordinator(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
+//        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
+//        //onView(withId(R.id.submitButton)).perform(click());
+//    }
 
 
 
