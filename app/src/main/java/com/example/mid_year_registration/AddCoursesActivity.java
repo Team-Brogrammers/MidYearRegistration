@@ -74,6 +74,10 @@ public class AddCoursesActivity extends AppCompatActivity{
 
         // initialize progressbar
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Logging In");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
 
         // Display current user profile details
         mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
@@ -89,6 +93,8 @@ public class AddCoursesActivity extends AppCompatActivity{
                 getEmail.setText(user_email);
                 getCourse2.setText(user_course2);
                 getCourse3.setText(user_course3);
+
+                mProgressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
