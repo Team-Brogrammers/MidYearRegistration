@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,6 +59,13 @@ public class UploadActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.PdfView);
 
         //attachment = findViewById(R.id.)
+
+        getSupportActionBar().setTitle("Upload Concession");
+        /* Set up the action bar */
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
         database = FirebaseDatabase.getInstance();
@@ -172,5 +181,26 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UploadActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if(item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(UploadActivity.this,StudentUpload.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

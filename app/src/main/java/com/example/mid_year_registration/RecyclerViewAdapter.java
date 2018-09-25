@@ -1,6 +1,7 @@
 package com.example.mid_year_registration;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,14 +24,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
 
     private Context mContext;
-    private ArrayList<String> mDocNames= new ArrayList<>();
-    private ArrayList<String> mDocuments= new ArrayList<>();
+    private ArrayList<String> mDocNames;
+    private ArrayList<String> mDocuments;
+    private ArrayList<String> mStudentNos;
+    private ArrayList<String> mCourses;
     private AdapterView.OnItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments, ArrayList<String> mStudentNos, ArrayList<String> mCourses) {
         this.mContext = mContext;
         this.mDocNames = mDocNames;
         this.mDocuments = mDocuments;
+        this.mStudentNos = mStudentNos;
+        this.mCourses = mCourses;
     }
 
     @Override
@@ -62,17 +67,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .enableDoubletap(true)
                 .pages(0)
                 .load();
-
-        holder.docName.setText(mDocNames.get(position));
+        String displayText = mStudentNos.get(position) + "\n" + mCourses.get(position);
+        holder.docName.setText(displayText);
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick:clicked"+mDocNames.get(position));
-                Toast.makeText(mContext,mDocNames.get(position), Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(mContext, PdfActivity.class);
-                //mContext.startActivity(intent);
-
-
+                Intent intent = new Intent(mContext, ViewConcessionActivity.class);
+                intent.putExtra("name", mDocNames.get(position));
+                intent.putExtra("studentNo", mStudentNos.get(position));
+                intent.putExtra("course", mCourses.get(position));
+                mContext.startActivity(intent);
             }
         });
     }
@@ -93,10 +98,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             pdf =itemView.findViewById(R.id.PdfView);
             docName=itemView.findViewById(R.id.formLinkTextview);
             parentLayout=itemView.findViewById(R.id.parentLayout);
-
-
-
-
         }
     }
 }

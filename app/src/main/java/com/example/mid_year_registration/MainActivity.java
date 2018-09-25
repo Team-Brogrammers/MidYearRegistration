@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,67 +11,105 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView editText;
-    private TextView textView;
-    private FirebaseFirestore mFirestore;
+    private ArrayList<String> mNames = new ArrayList<>();
+    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mStudentNos = new ArrayList<>();
+    private ArrayList<String> mCourses = new ArrayList<>();
+    private ProgressDialog mProgressDialog;
+
+    private static final String TAG="MainActivity";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        editText =(TextView)findViewById(R.id.text_message);
-        textView =(TextView)findViewById(R.id.view_field);
+        getSupportActionBar().setTitle("Mid Year Registration");
+        /* Set up the action bar */
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        Button button = (Button)findViewById(R.id.view_courses);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mProgressDialog = new ProgressDialog(MainActivity.this);
+        mProgressDialog.setTitle("Loading Concessions");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
+        databaseRef = database.getReference().child("Concessions");
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view){
-                mFirestore = FirebaseFirestore.getInstance();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                    Concessions concession = childSnap.getValue(Concessions.class);
+                    Log.d("Concession", concession.getPdfUrl());
+                    initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                }
+                initRecyclerView();
+            }
 
-                mFirestore.collection("mid-year-registration-ef4af").document("Courses").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    public static final String FIRE_LOG = "Fire_log";
-
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                        if(task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if(documentSnapshot.exists() && documentSnapshot!= null) {
-                                String username = documentSnapshot.getString("math");
-                                textView.setText(username);
-                            }
-
-                        }
-                        else{
-                            Log.d(FIRE_LOG, "Erro : "+task.getException().getMessage());
-                        }
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
     }
 
+    private void initImageBitmap(String url, String name, String studentNo, String course){
+        Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
+        mImageUrls.add(url);
+        mNames.add(name);
+        mStudentNos.add(studentNo);
+        mCourses.add(course);
+    }
 
-    /*public void OnClick(View view){
-        Intent intent = new Intent(MainActivity.this,view_module_courses.class);
+    private void initRecyclerView(){
+        Log.d(TAG, "initRecyclerView: init RecyclerView");
+        RecyclerView recyclerView=findViewById(R.id.recyclerView);
+        RecyclerViewAdapter adapter= new RecyclerViewAdapter(this, mNames, mImageUrls, mStudentNos, mCourses);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mProgressDialog.dismiss();
+    }
 
-        startActivity(intent);
-        finish();
-    }*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if(item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(MainActivity.this,CoordinatorMenuActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
