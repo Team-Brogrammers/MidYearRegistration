@@ -12,7 +12,7 @@ import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 public class CoordinatorMenuActivity extends AppCompatActivity {
 
-    String arrayName[] = { "View Student Request(s)", "Add Courses", "Reset Password","Logout", "View All My Responses"};
+    String arrayName[] = { "Upload Student's Form", "Add Courses", "Reset Password","Logout", "View Student Request(s)"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,13 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
 
                         if(arrayName[index].contains("View Student Request(s)")){
                             Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, MainActivity.class);
-                            startActivity(activity);
-                        }
-                        if(arrayName[index].contains("View All My Responses")){ // it should go to a page where the student will view his submitted request
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             //Intent activity = new Intent(StudentMenuActivity.this, StudentViewRequest.class);
                             //startActivity(activity);
+                        }
+                        if(arrayName[index].contains("Upload Student's Form")){ // it should go to a page where the student will view his submitted request
+                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            Intent activity = new Intent(CoordinatorMenuActivity.this, CoordinatorUpload.class);
+                            startActivity(activity);
                         }
                         if(arrayName[index].contains("Add Courses")){
                             Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();

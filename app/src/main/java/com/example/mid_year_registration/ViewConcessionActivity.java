@@ -62,7 +62,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
         }
         tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
-        final Button button = findViewById(R.id.Respondbutton);
         pdfView = findViewById(R.id.CoordPdfView);
 
         tvStudentNo.setText(studentNo);
@@ -96,13 +95,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                startActivity(intent);
                 mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
-
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent activityChangeIntent = new Intent(ViewConcessionActivity.this, CoordinatorUpload.class);
-                        ViewConcessionActivity.this.startActivity(activityChangeIntent);
-                    }
-                });
 
             }
         }).addOnFailureListener(new OnFailureListener() {
