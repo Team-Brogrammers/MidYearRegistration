@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,5 +126,11 @@ public class ViewConcessionActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void respond(View view) {
+        Intent intent = new Intent(ViewConcessionActivity.this, CoordinatorUpload.class);
+        startActivity(intent);
+        finish();
     }
 }

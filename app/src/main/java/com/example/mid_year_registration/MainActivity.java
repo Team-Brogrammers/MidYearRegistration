@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        getSupportActionBar().setTitle("Mid Year Registration");
+        getSupportActionBar().setTitle("Student Requests");
         /* Set up the action bar */
         if(getSupportActionBar() != null){
             //enable back button
