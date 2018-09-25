@@ -98,11 +98,6 @@ public class AddCoursesActivity extends AppCompatActivity{
         UpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mProgressDialog.setTitle("Updating Profile");
-//                mProgressDialog.setMessage("Please wait...");
-//                mProgressDialog.setCanceledOnTouchOutside(false);
-//                mProgressDialog.show();
-
                 // update account changes
                 updateAccount();
             }
