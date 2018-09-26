@@ -51,7 +51,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/stdNoEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Student Number"
                 android:inputType="textPersonName" />
@@ -64,7 +64,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/etCourse"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Course Code"
                 android:inputType="textPersonName" />
