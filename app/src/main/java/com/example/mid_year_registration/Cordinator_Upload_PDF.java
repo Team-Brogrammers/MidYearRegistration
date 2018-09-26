@@ -51,7 +51,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cordinator__upload__pdf);
+        setContentView(R.layout.activity_coordinator_upload);
 
 
         text = findViewById(R.id.pdfNameTextView);
