@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,11 +19,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +42,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -82,9 +78,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         pdfView=findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
-       // addImage=findViewById(R.id.btnAddImage);
+        // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        upload = findViewById(R.id.submitButton);
+        //upload = findViewById(R.id.submitButton1);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
@@ -102,10 +98,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         database = FirebaseDatabase.getInstance();
 
         getSupportActionBar().setTitle("Submit Concession Form");
-        if(getSupportActionBar() != null){
-            //enable back button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
        /*addImage.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -139,11 +131,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             startActivity(intent);
             finish();
         }
-        if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(StudentUpload.this,StudentMenuActivity.class);
-            startActivity(intent);
-            finish();
-        }
         return super.onOptionsItemSelected(item);
 
     }
@@ -160,11 +147,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     /*private boolean hasImage(@NonNull ImageView view) {
         Drawable drawable = view.getDrawable();
         boolean hasImage = (drawable != null);
-
         if (hasImage && (drawable instanceof BitmapDrawable)) {
             hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
         }
-
         return hasImage;
     }*/
 
@@ -210,7 +195,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             Context context = getApplicationContext();
             CharSequence text = "Please select add an image";
             int duration = Toast.LENGTH_SHORT;
-
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }*/
@@ -306,20 +290,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals("Camera")) {
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        Log.d("Camera", "Needs permission");
-                        String[] permission =  {android.Manifest.permission.CAMERA};
-                        ActivityCompat.requestPermissions(StudentUpload.this ,permission, REQUEST_CAMERA);
-                    }
-                    else{
-                        Log.d("Camera", "Has permission");
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivityForResult(intent, REQUEST_CAMERA);
-                        }
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent, REQUEST_CAMERA);
                     }
-
+                    /*final String cameraPermission = Manifest.permission.CAMERA;
+                    if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    }*/
 
 
                 } else if (items[i].equals("Gallery")) {
@@ -333,9 +312,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     }
 
                     else {
-                             EasyPermissions.requestPermissions(StudentUpload.this, "Access for storage",
-                            101, galleryPermissions);
-                     }
+                        EasyPermissions.requestPermissions(StudentUpload.this, "Access for storage",
+                                101, galleryPermissions);
+                    }
 
 
                 } else if (items[i].equals("Cancel")) {
@@ -388,7 +367,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             if(requestCode==REQUEST_CAMERA){
 
                 //Bundle bundle = data.getExtras();
-                 bmp = (Bitmap) data.getExtras().get("data");
+                bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
 
                 //Uri selectedImageUri = data.getData();
@@ -398,14 +377,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                 //Cursor cursor = getContentResolver().query(
                 //        selectedImageUri, filePathColumn, null, null, null);
-              //  cursor.moveToFirst();
+                //  cursor.moveToFirst();
 
                 //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-               // String filePath = cursor.getString(columnIndex);
-              //  cursor.close();
+                // String filePath = cursor.getString(columnIndex);
+                //  cursor.close();
 
                 //bmp = BitmapFactory.decodeFile(filePath);
-               // ivImage.setImageURI(selectedImageUri);
+                // ivImage.setImageURI(selectedImageUri);
 
                 //imageSelected = true;
 
@@ -429,48 +408,48 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 ivImage.setImageURI(selectedImageUri);
 
                 //imageSelected = true;
-                    PdfDocument pdf = new PdfDocument();
-                    PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
-                    PdfDocument.Page page = pdf.startPage(pageInfo);
+                PdfDocument pdf = new PdfDocument();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
+                PdfDocument.Page page = pdf.startPage(pageInfo);
 
-                    Canvas canvas = page.getCanvas();
+                Canvas canvas = page.getCanvas();
 
-                    Paint paint = new Paint();
-                    paint.setColor(Color.parseColor("#ffffff"));
-                    canvas.drawPaint(paint);
-                    bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
-                    paint.setColor(Color.BLUE);
-                    canvas.drawBitmap(bmp, 0, 0, null);
-                    pdf.finishPage(page);
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor("#ffffff"));
+                canvas.drawPaint(paint);
+                bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+                paint.setColor(Color.BLUE);
+                canvas.drawBitmap(bmp, 0, 0, null);
+                pdf.finishPage(page);
 
-                    //String targetPdf = "/test.pdf";
-                    File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-                    
-                    if (!root.exists()) {
-                        root.mkdir();
-                    }
+                //String targetPdf = "/test.pdf";
+                File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
 
-                    String mCourse = course.getText().toString();
-                    String mStdNo = stdNo.getText().toString();
+                if (!root.exists()) {
+                    root.mkdir();
+                }
 
-                    Date today = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    String dateToStr = format.format(today);
+                String mCourse = course.getText().toString();
+                String mStdNo = stdNo.getText().toString();
 
-                    File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+                Date today = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String dateToStr = format.format(today);
 
-                    try {
-                        FileOutputStream fileOutputStream = new FileOutputStream(file);
-                        pdf.writeTo(fileOutputStream);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
 
-                    pdf.close();
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    pdf.writeTo(fileOutputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                    //pdfUri = ;
+                pdf.close();
+
+                //pdfUri = ;
 
 
 
