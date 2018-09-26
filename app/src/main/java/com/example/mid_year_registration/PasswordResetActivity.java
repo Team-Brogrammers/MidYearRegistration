@@ -8,6 +8,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,9 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.password_reset_activity);
 
+        /*babck button*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         emailEditText = findViewById(R.id.resetPasswordEditText);
         passwordResetButton = findViewById(R.id.resetPasswordButton);
         constraintLayout = findViewById(R.id.resetPasswordConstraintLayout);
@@ -56,6 +61,22 @@ public class PasswordResetActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     private boolean isvalideEmail() {
         String email = emailEditText.getText().toString().trim();
 

@@ -170,11 +170,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(user!=null){
             FirebaseAuth.getInstance().getCurrentUser().reload();
             if (user.isEmailVerified()) {
-                if (userName.contains("@students.wits.ac.za")) {
+                if (userName.endsWith("@students.wits.ac.za")) {
                     Intent activity = new Intent(SignUpActivity.this, StudentMenuActivity.class);
                     startActivity(activity);
 
-                } else if (userName.contains("@wits.ac.za")) {
+                } else if (userName.endsWith("@wits.ac.za")) {
                     Intent activity = new Intent(SignUpActivity.this, CoordinatorMenuActivity.class);
                     startActivity(activity);
 

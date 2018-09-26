@@ -24,8 +24,8 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email_address_login"
             android:drawableStart="@mipmap/baseline_account_box_black_18"
+            android:hint="@string/wits_email_login"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 

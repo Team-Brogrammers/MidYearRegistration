@@ -78,11 +78,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 mProgressDialog.dismiss();
-                                if (email.contains("@students.wits.ac.za")) {
+                                if (email.endsWith("@students.wits.ac.za")) {
                                     Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
                                     startActivity(activity);
 
-                                } else if (email.contains("@wits.ac.za")) {
+                                } else if (email.endsWith("@wits.ac.za")) {
                                     Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
 
