@@ -33,4 +33,8 @@
     <string name="course_code_e_g_coms1000">Course code e.g COMS1000</string>
     <string name="email_address2">Email Address</string>
     <string name="update">Update</string>
+    <string name="respond">Respond</string>
+    <string name="wits_email">Wits email</string>
+    <string name="wits_email_address">Wits email address</string>
+    <string name="wits_email_login">Wits email</string>
 </resources>

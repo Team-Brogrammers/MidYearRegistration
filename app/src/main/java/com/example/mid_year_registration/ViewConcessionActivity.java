@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +60,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        tvStudentNo = (TextView) findViewById(R.id.tvConcessionStudentVal);
-        tvCourseCode = (TextView) findViewById(R.id.tvConcessionCourseVal);
+        tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
+        tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
 
         tvStudentNo.setText(studentNo);
@@ -93,6 +95,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                startActivity(intent);
                 mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -103,6 +106,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
     }
 
     @Override
@@ -126,4 +132,5 @@ public class ViewConcessionActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
