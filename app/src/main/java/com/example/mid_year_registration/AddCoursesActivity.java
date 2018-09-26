@@ -52,6 +52,8 @@ public class AddCoursesActivity extends AppCompatActivity{
 
         // set toolbar title
         getSupportActionBar().setTitle("Add Edit View Courses");
+        /*Back button*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuthor = ANONYMOUS;
 
