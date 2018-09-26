@@ -83,6 +83,9 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
 
+        convertFab.setVisibility(View.INVISIBLE);
+        nextFab.setVisibility(View.INVISIBLE);
+
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -263,6 +266,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             Toast toast = Toast.makeText(context, meessage, duration);
             toast.show();
+            nextFab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -313,7 +317,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                         }
                     }
 
-
+                    convertFab.setVisibility(View.VISIBLE);
 
                 } else if (items[i].equals("Gallery")) {
 
@@ -329,7 +333,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                         EasyPermissions.requestPermissions(CoordinatorUploadActivity.this, "Access for storage",
                                 101, galleryPermissions);
                     }
-
+                    convertFab.setVisibility(View.VISIBLE);
 
                 } else if (items[i].equals("Cancel")) {
                     dialogInterface.dismiss();

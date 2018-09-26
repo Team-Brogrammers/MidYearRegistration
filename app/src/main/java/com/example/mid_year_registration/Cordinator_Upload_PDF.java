@@ -40,7 +40,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
 
     String filename;
 
-    FloatingActionButton attachment, send;
+    FloatingActionButton UploadButton;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -56,6 +56,8 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
+        UploadButton=findViewById(R.id.uploadFab);
+        UploadButton.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -79,6 +81,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 86);
+        UploadButton.setVisibility(View.VISIBLE);
 
         //}
     }
