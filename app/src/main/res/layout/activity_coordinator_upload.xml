@@ -138,7 +138,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/white"
-            app:srcCompat="@drawable/upload_image"
+            app:srcCompat="@drawable/upload_logo_upload"
             tools:layout_editor_absoluteX="304dp"
             tools:layout_editor_absoluteY="95dp" />
 
