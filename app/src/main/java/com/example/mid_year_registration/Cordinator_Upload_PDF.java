@@ -75,10 +75,10 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
     }
     public void selectPdf(View view){
         // if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-        /*Intent intent = new Intent();
+        Intent intent = new Intent();
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 86);*/
+        startActivityForResult(intent, 86);
 
         //}
     }
@@ -103,12 +103,12 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
     }
 
     public void uploadPdf(View view){
-       /* if(text!=null){ //an image has been converted
+       if(text!=null){ //an image has been converted
             upload(pdfUri);
         }
         else{
             Toast.makeText(Cordinator_Upload_PDF.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
     }
 
