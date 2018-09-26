@@ -12,7 +12,7 @@ import android.widget.ImageView;
 public class Camera extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
 
-    ImageView imageview;
+   /* ImageView imageview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class Camera extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 
 
 }
