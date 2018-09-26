@@ -35,6 +35,9 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.password_reset_activity);
 
+        /*babck button*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         emailEditText = findViewById(R.id.resetPasswordEditText);
         passwordResetButton = findViewById(R.id.resetPasswordButton);
         constraintLayout = findViewById(R.id.resetPasswordConstraintLayout);
