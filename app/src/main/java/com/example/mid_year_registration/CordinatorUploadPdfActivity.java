@@ -29,7 +29,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class Cordinator_Upload_PDF extends AppCompatActivity {
+public class CordinatorUploadPdfActivity extends AppCompatActivity {
 
     Button addPdf, upload;
     PDFView pdfView;
@@ -101,7 +101,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
                     .load();
         }
         else{
-            Toast.makeText(Cordinator_Upload_PDF.this, "Please select your file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CordinatorUploadPdfActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -110,7 +110,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
             upload(pdfUri);
         }
         else{
-            Toast.makeText(Cordinator_Upload_PDF.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CordinatorUploadPdfActivity.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -146,17 +146,19 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
 
                         );
 
+                        String email= firebaseAuth.getCurrentUser().getEmail();
+
                         databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(Cordinator_Upload_PDF.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(Cordinator_Upload_PDF.this, CoordinatorMenuActivity.class);
+                                    Toast.makeText(CordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(CordinatorUploadPdfActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }
                                 else {
-                                    Toast.makeText(Cordinator_Upload_PDF.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CordinatorUploadPdfActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -165,7 +167,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Cordinator_Upload_PDF.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CordinatorUploadPdfActivity.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -189,12 +191,12 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_logout) {
-            Intent intent = new Intent(Cordinator_Upload_PDF.this,LoginActivity.class);
+            Intent intent = new Intent(CordinatorUploadPdfActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(Cordinator_Upload_PDF.this,StudentUpload.class);
+            Intent intent = new Intent(CordinatorUploadPdfActivity.this,StudentUpload.class);
             startActivity(intent);
             finish();
         }

@@ -25,15 +25,14 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".PdfActivity" />
         <activity android:name=".StudentUpload" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".CordinatorUploadPdfActivity"/>
         <activity android:name=".ViewConcessionActivity" />
         <activity android:name=".AddCoursesActivity" />
         <activity android:name=".CoordinatorMenuActivity" />
         <activity android:name=".StudentMenuActivity" />
-        <activity android:name=".Cordinator_Upload_PDF" />
         <activity android:name=".CoordinatorUploadActivity"></activity>
     </application>
 

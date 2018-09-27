@@ -99,7 +99,7 @@
                 android:id="@+id/stdNoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Lecture Name"
+                android:hint="@string/student_number3"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
@@ -112,7 +112,7 @@
                 android:id="@+id/etCourse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Course Code"
+                android:hint="@string/course_code2"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
