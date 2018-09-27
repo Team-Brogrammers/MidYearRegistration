@@ -24,7 +24,7 @@ public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<Coor
         super.setUp();
         activity = getActivity();
     }
-    
+
     @Test
     @SmallTest
     public void testStudentNumberValidation(){
