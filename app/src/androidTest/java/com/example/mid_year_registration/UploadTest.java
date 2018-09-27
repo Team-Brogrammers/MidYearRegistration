@@ -25,13 +25,13 @@ public class UploadTest extends ActivityInstrumentationTestCase2<UploadActivity>
         activity = getActivity();
     }
 
-//    @SmallTest
-//    public void testVisibility() {
-//        /*I am only Testing the visibility here.*/
-//        onView(withId(R.id.textView2)).check(matches(isDisplayed()));
-//        onView(withId(R.id.attachmentFab)).check(matches(isDisplayed()));
-//        onView(withId(R.id.uploadFab)).check(matches(isDisplayed()));
-//    }
+    @SmallTest
+    public void testVisibility() {
+        /*I am only Testing the visibility here.*/
+        //onView(withId(R.id.textView2)).check(matches(isDisplayed()));
+        //onView(withId(R.id.attachmentFab)).check(matches(isDisplayed()));
+        //onView(withId(R.id.uploadFab)).check(matches(isDisplayed()));
+    }
 
 /*
     @Test
