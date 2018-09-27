@@ -143,7 +143,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
     }
 
-    private boolean isValidStudentNo(String pass) {
+    public boolean isValidStudentNo(String pass) {
         if (pass != null && pass.length() >= 7) {
             return true;
         }
@@ -269,7 +269,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
     }
 
-    private static boolean checkString(String mCourse) {
+    public static boolean checkString(String mCourse) {
         char ch;
         boolean capitalFlag = false;
         boolean lowerCaseFlag = false;
@@ -477,4 +477,5 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
 
 }
+
 

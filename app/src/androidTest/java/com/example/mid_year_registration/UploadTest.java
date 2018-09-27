@@ -1,6 +1,7 @@
 package com.example.mid_year_registration;
 
 
+import android.content.Intent;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -22,6 +23,11 @@ public class UploadTest extends ActivityInstrumentationTestCase2<UploadActivity>
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        Intent intent = new Intent();
+        intent.putExtra("filename", "test.pdf");
+        intent.putExtra("studentNumber", "1234567");
+        intent.putExtra("courseCode", "COMS1001");
+        setActivityIntent(intent);
         activity = getActivity();
     }
 
