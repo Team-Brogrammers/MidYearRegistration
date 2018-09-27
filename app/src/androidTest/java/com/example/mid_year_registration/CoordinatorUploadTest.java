@@ -23,10 +23,5 @@ public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<Coor
         activity = getActivity();
     }
 
-    @SmallTest
-    public void testVisibility(){
 
-        onView(withId(R.id.textView)).check(matches(isDisplayed()));
-
-    }
 }

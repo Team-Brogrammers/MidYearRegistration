@@ -24,13 +24,13 @@ public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2
         activity = getActivity();
     }
 
-    @SmallTest
-    public void testVisibility(){
-        onView(withId(R.id.tvConcessionCourse)).check(matches(isDisplayed()));
-        onView(withId(R.id.tvConcessionStudent)).check(matches(isDisplayed()));
-        onView(withId(R.id.tvConcessionCourseVal)).check(matches(isDisplayed()));
-        onView(withId(R.id.tvConcessionStudentVal)).check(matches(isDisplayed()));
-        onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
-    }
+//    @SmallTest
+//    public void testVisibility(){
+//        onView(withId(R.id.tvConcessionCourse)).check(matches(isDisplayed()));
+//        onView(withId(R.id.tvConcessionStudent)).check(matches(isDisplayed()));
+//        onView(withId(R.id.tvConcessionCourseVal)).check(matches(isDisplayed()));
+//        onView(withId(R.id.tvConcessionStudentVal)).check(matches(isDisplayed()));
+//        onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
+//    }
 
 }
