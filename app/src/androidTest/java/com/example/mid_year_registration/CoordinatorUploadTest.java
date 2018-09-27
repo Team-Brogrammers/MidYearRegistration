@@ -11,11 +11,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 
-public class CoordinatorMenuTest extends ActivityInstrumentationTestCase2<CoordinatorMenuActivity> {
+public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<CoordinatorUploadActivity> {
     Activity activity;
 
-    public CoordinatorMenuTest(){
-       super(CoordinatorMenuActivity.class);}
+    public CoordinatorUploadTest(){
+        super(CoordinatorUploadActivity.class);}
 
     @Override
     protected void setUp() throws Exception {
@@ -26,8 +26,7 @@ public class CoordinatorMenuTest extends ActivityInstrumentationTestCase2<Coordi
     @SmallTest
     public void testVisibility(){
 
-        onView(withId(R.id.textView4)).check(matches(isDisplayed()));
-        onView(withId(R.id.circle_menu2)).check(matches(isDisplayed()));
+        onView(withId(R.id.textView)).check(matches(isDisplayed()));
 
     }
 }
