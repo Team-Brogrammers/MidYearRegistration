@@ -36,10 +36,10 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
     }
 
-    @SmallTest
-    public void testSignUp(){
-        onView(withId(R.id.creatAccountTextView)).perform(click());
-    }
+//    @SmallTest
+//    public void testSignUp(){
+//        onView(withId(R.id.creatAccountTextView)).perform(click());
+//    }
 
     @SmallTest
     public void testEmailValidation(){
