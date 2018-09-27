@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.content.Intent;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 import static android.support.test.espresso.Espresso.onView;
@@ -16,21 +17,21 @@ public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2
     @Override
     protected void setUp() throws Exception{
         super.setUp();
-        /*Intent intent = new Intent();
-        intent.putExtra("name", "1425376_COMS2001__2018-09-20");
-        intent.putExtra("studentNo","1425376");
-        intent.putExtra("course","COMS2001");
-        setActivityIntent(intent);*/
+        Intent intent = new Intent();
+        intent.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
+        intent.putExtra("studentNo","9876543");
+        intent.putExtra("course","COMS1099");
+        setActivityIntent(intent);
         activity = getActivity();
     }
 
-//    @SmallTest
-//    public void testVisibility(){
-//        onView(withId(R.id.tvConcessionCourse)).check(matches(isDisplayed()));
-//        onView(withId(R.id.tvConcessionStudent)).check(matches(isDisplayed()));
-//        onView(withId(R.id.tvConcessionCourseVal)).check(matches(isDisplayed()));
-//        onView(withId(R.id.tvConcessionStudentVal)).check(matches(isDisplayed()));
-//        onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
-//    }
+    @SmallTest
+    public void testVisibility(){
+        onView(withId(R.id.tvConcessionCourse)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvConcessionStudent)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvConcessionCourseVal)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvConcessionStudentVal)).check(matches(isDisplayed()));
+        onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
+    }
 
 }
