@@ -55,6 +55,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         studentNo = intent.getStringExtra("studentNo");
         course = intent.getStringExtra("course");
         getSupportActionBar().setTitle("View Concession");
+        Log.d("Name", name);
         /* Set up the action bar */
         if(getSupportActionBar() != null){
             //enable back button
@@ -74,7 +75,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.show();
 
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name + ".pdf");
+        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
 
         localPdf = new File(Environment.getExternalStorageDirectory() + "/" + downloadDirectory);
 
