@@ -51,7 +51,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coordinator_upload);
+        setContentView(R.layout.activity_cordinator__upload__pdf);
 
 
         text = findViewById(R.id.pdfNameTextView);
@@ -152,7 +152,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
                                     Toast.makeText(Cordinator_Upload_PDF.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(Cordinator_Upload_PDF.this, StudentMenuActivity.class);
+                                    Intent activity = new Intent(Cordinator_Upload_PDF.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }
                                 else {

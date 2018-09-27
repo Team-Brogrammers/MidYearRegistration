@@ -262,7 +262,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             CharSequence meessage = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
 
-            text.setText(mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+            text.setText(mStdNo + "_" + mCourse + "_" + dateToStr);
 
             Toast toast = Toast.makeText(context, meessage, duration);
             toast.show();
