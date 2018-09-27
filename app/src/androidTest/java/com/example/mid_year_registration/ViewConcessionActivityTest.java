@@ -1,6 +1,5 @@
 package com.example.mid_year_registration;
 
-import android.content.Intent;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 import static android.support.test.espresso.Espresso.onView;
@@ -17,11 +16,11 @@ public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2
     @Override
     protected void setUp() throws Exception{
         super.setUp();
-        Intent intent = new Intent();
+        /*Intent intent = new Intent();
         intent.putExtra("name", "1425376_COMS2001__2018-09-20");
         intent.putExtra("studentNo","1425376");
         intent.putExtra("course","COMS2001");
-        setActivityIntent(intent);
+        setActivityIntent(intent);*/
         activity = getActivity();
     }
 

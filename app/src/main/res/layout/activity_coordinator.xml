@@ -27,6 +27,5 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="61dp"
-        android:text="Siphe"
-        android:textColor="@color/colorAccent" />
+        android:text="Siphe" />
 </RelativeLayout>
