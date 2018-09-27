@@ -37,4 +37,6 @@
     <string name="wits_email">Wits email</string>
     <string name="wits_email_address">Wits email address</string>
     <string name="wits_email_login">Wits email</string>
+    <string name="student_number2">Student number</string>
+    <string name="course_code">Course Code</string>
 </resources>
