@@ -41,6 +41,19 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         onView(withId(R.id.creatAccountTextView)).perform(click());
     }
 
+    @SmallTest
+    public void testEmailValidation(){
+        assertEquals(activity.isValidEmail("1234@g"), false);
+        assertEquals(activity.isValidEmail("1234567@wits.ac.za"), true);
+    }
+
+    @SmallTest
+    public void testPasswordValidation(){
+        assertEquals(activity.isValidPassword(null), false);
+        assertEquals(activity.isValidPassword("abc"), false);
+        assertEquals(activity.isValidPassword("goodPassword1"), true);
+    }
+
 //    @SmallTest
 //    public void testValidInput(){
 //        onView(withId(R.id.emailEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());

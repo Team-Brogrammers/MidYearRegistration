@@ -1,12 +1,18 @@
 package com.example.mid_year_registration;
 
 import android.content.Intent;
+import android.support.test.espresso.ViewAction;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2<ViewConcessionActivity> {
     ViewConcessionActivity activity;
@@ -32,6 +38,12 @@ public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2
         onView(withId(R.id.tvConcessionCourseVal)).check(matches(isDisplayed()));
         onView(withId(R.id.tvConcessionStudentVal)).check(matches(isDisplayed()));
         onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
+    }
+
+    @SmallTest
+    public void testPdfScroll(){
+        onView(withId(R.id.CoordPdfView)).perform(swipeUp());
+        onView(withId(R.id.CoordPdfView)).perform(swipeDown());
     }
 
 }
