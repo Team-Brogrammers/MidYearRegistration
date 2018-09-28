@@ -34,6 +34,11 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         onView(withId(R.id.adminCheckBox)).check(matches(isClickable()));
     }
 
+    @SmallTest
+    public void testButtonsClickable(){
+        onView(withId(R.id.submitButton)).check(matches(isClickable()));
+    }
+
  @SmallTest
    public void testNoEmailNoPassowrd(){
       onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());

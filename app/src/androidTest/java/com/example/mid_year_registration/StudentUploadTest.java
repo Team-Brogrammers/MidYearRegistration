@@ -24,6 +24,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -59,6 +60,13 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.convertImageFab)).check(matches(isDisplayed()));
         onView(withId(R.id.nextFab)).check(matches(isDisplayed()));
 
+    }
+
+    @SmallTest
+    public void testButtonsClickable(){
+        onView(withId(R.id.addImageFab)).check(matches(isClickable()));
+        onView(withId(R.id.convertImageFab)).check(matches(isClickable()));
+        onView(withId(R.id.nextFab)).check(matches(isClickable()));
     }
 
     /*private String getString(int resId){

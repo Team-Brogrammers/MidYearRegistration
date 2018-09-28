@@ -367,7 +367,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             course.setError("Course code is upper case and numbers only");
         }
         else {
-            Intent intent = new Intent(CoordinatorUploadActivity.this, CordinatorUploadPdfActivity.class);
+            Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
             intent.putExtra("filename", text.getText().toString());
             intent.putExtra("studentNumber", stdNo.getText().toString());
             intent.putExtra("courseCode", course.getText().toString());
