@@ -123,7 +123,7 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-        progressDialog.show();
+        //progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -152,7 +152,7 @@ public class UploadActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
-                                    progressDialog.dismiss();
+                                   // progressDialog.dismiss();
                                     Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
                                     startActivity(activity);

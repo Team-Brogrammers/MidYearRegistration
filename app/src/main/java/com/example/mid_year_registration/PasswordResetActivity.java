@@ -76,7 +76,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         progressDialog.setTitle("Resetting Password");
         progressDialog.setMessage("Please wait while we send you an email with reset password link");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        //progressDialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -104,7 +104,7 @@ public class PasswordResetActivity extends AppCompatActivity {
             }
         }
         if(!flag){
-            progressDialog.dismiss();
+           // progressDialog.dismiss();
             Snackbar.make(constraintLayout, "An account with this Email Doesn't Exists!", Snackbar.LENGTH_LONG ).show();
             return;
         }
@@ -113,7 +113,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
+                           // progressDialog.dismiss();
                             Snackbar.make(constraintLayout, "Click on the link sent to your email to reset your password", Snackbar.LENGTH_INDEFINITE)
                                     .setAction("LOGIN", new View.OnClickListener() {
                                         @Override
@@ -125,7 +125,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                     .setActionTextColor(Color.GREEN)
                                     .show();
                         }else{
-                            progressDialog.dismiss();
+                           // progressDialog.dismiss();
                             Snackbar.make(constraintLayout, "Error! Failed to send email, wait while we send it again", Snackbar.LENGTH_LONG)
                                     .setAction("RETRY", new View.OnClickListener() {
                                         @Override

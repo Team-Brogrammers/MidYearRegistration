@@ -21,16 +21,16 @@ public class AddCoursesTest {
     @Rule
     public ActivityTestRule<AddCoursesActivity> mActivityRule = new ActivityTestRule<>(
                 AddCoursesActivity.class);
-//    @Test
-//    @SmallTest
-//    public void testVisibility(){
-//
+    @Test
+    @SmallTest
+    public void testVisibility(){
+
 //        onView(withId(R.id.course1EditText)).check(matches(isDisplayed()));
 //        onView(withId(R.id.course2EditText)).check(matches(isDisplayed()));
 //        onView(withId(R.id.course3EditText)).check(matches(isDisplayed()));
 //        onView(withId(R.id.addEmailTextInputLayout)).check(matches(isDisplayed()));
 //        onView(withId(R.id.textView3)).check(matches(isDisplayed()));
 //        onView(withId(R.id.imageView5)).check(matches(isDisplayed()));
-//
-//    }
+
+    }
 }

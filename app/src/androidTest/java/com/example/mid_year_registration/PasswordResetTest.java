@@ -26,9 +26,9 @@ public class PasswordResetTest {
     @Test
     @SmallTest
     public void validInputTest() throws InterruptedException {
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-        //onView(withId(R.id.resetPasswordButton)).perform(click());
-        //Thread.sleep(10000);
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordButton)).perform(click());
+        Thread.sleep(5000);
     }
 
     @Test
@@ -44,13 +44,21 @@ public class PasswordResetTest {
     @SmallTest
     public void testInvalidEmail(){
         onView(withId(R.id.resetPasswordEditText)).perform(typeText("12345@students"), closeSoftKeyboard());
-        //onView(withId(R.id.resetPasswordButton)).perform(click());
+        onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
     @Test
     @SmallTest
     public void testNoEmail(){
-        //onView(withId(R.id.resetPasswordButton)).perform(click());
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordButton)).perform(click());
+    }
+
+    @Test
+    @SmallTest
+    public void testNoEmail1(){
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("   "), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
 

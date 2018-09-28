@@ -43,49 +43,49 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
    public void testNoEmailNoPassword(){
       onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
       onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
-//      onView(withId(R.id.submitButton)).perform(click());
+      onView(withId(R.id.submitButton)).perform(click());
   }
 
     @SmallTest
     public void testNoEmail(){
         onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
       onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg12345"), closeSoftKeyboard());
-//      onView(withId(R.id.submitButton)).perform(click());
+     onView(withId(R.id.submitButton)).perform(click());
  }
 @SmallTest
  public void testNoPassword(){
     onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
-//       onView(withId(R.id.submitButton)).perform(click());
+      onView(withId(R.id.submitButton)).perform(click());
   }
 
    @SmallTest
    public void testInValidPassword(){
        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
        onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
-//       onView(withId(R.id.submitButton)).perform(click());
+       onView(withId(R.id.submitButton)).perform(click());
     }
 
 
     @SmallTest
     public void testInValidEmail2(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za.eqett"), closeSoftKeyboard());
+        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.acc.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg"), closeSoftKeyboard());
-//        onView(withId(R.id.submitButton)).perform(click());
+       onView(withId(R.id.submitButton)).perform(click());
     }
 
 @SmallTest
    public void testIfCheckBoxIsClickedByStudent(){
       onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-       onView(withId(R.id.passwordEditText)).perform(typeText("adcded4563"), closeSoftKeyboard());
+       onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
 //        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
-//     onView(withId(R.id.submitButton)).perform(click());
+     onView(withId(R.id.submitButton)).perform(click());
  }
  @SmallTest
    public void testIfCheckBoxNotClickedByCoordinator(){
       onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
-//        onView(withId(R.id.submitButton)).perform(click());
+       onView(withId(R.id.submitButton)).perform(click());
     }
 
 
@@ -93,7 +93,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
     public void testValidStudent(){
         onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
-//       onView(withId(R.id.submitButton)).perform(click());
+       onView(withId(R.id.submitButton)).perform(click());
   }
 
    @SmallTest

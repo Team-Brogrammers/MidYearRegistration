@@ -40,10 +40,10 @@ public class ViewConcessionActivityTest extends ActivityInstrumentationTestCase2
         onView(withId(R.id.CoordPdfView)).check(matches(isDisplayed()));
     }
 
-    @SmallTest
-    public void testPdfScroll(){
-        onView(withId(R.id.CoordPdfView)).perform(swipeUp());
-        onView(withId(R.id.CoordPdfView)).perform(swipeDown());
-    }
+//    @SmallTest
+//    public void testPdfScroll(){
+//       // onView(withId(R.id.CoordPdfView)).perform(swipeUp());
+//        //onView(withId(R.id.CoordPdfView)).perform(swipeDown());
+//    }
 
 }

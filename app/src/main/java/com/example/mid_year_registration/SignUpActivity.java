@@ -125,13 +125,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             progressDialog.setMessage("You are being registered...");
-            progressDialog.show();
+            //progressDialog.show();
 
             firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 user = FirebaseAuth.getInstance().getCurrentUser();
                                 if (user != null)

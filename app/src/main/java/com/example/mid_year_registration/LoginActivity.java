@@ -70,14 +70,14 @@ public class LoginActivity extends AppCompatActivity {
             mProgressDialog.setTitle("Logging In");
             mProgressDialog.setMessage("Please wait...");
             mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.show();
+            //mProgressDialog.show();
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                mProgressDialog.dismiss();
+                               // mProgressDialog.dismiss();
                                 if (email.endsWith("@students.wits.ac.za")) {
                                     Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
                                     startActivity(activity);
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
                             } else {
-                                mProgressDialog.dismiss();
+                                //mProgressDialog.dismiss();
                                 Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG).show();
                             }
                         }
