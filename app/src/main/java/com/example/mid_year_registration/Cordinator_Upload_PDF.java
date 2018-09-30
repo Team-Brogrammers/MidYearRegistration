@@ -81,7 +81,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 86);
-        UploadButton.setVisibility(View.VISIBLE);
+
 
         //}
     }
@@ -99,6 +99,7 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
+            UploadButton.setVisibility(View.VISIBLE);
         }
         else{
             Toast.makeText(Cordinator_Upload_PDF.this, "Please select your file", Toast.LENGTH_SHORT).show();
