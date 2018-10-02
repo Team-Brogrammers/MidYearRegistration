@@ -37,16 +37,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     }
 
     @SmallTest
-    public void testSignUp(){
-        onView(withId(R.id.creatAccountTextView)).perform(click());
-    }
-
-    @SmallTest
-    public void testResetPassword(){
-        onView(withId(R.id.resetPasswordTextView)).perform(click());
-    }
-
-    @SmallTest
     public void testEmailValidation(){
         assertEquals(activity.isValidEmail("1234@g"), false);
         assertEquals(activity.isValidEmail("1234567@wits.ac.za"), true);
