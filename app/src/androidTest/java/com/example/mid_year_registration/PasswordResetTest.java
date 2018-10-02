@@ -23,13 +23,13 @@ public class PasswordResetTest {
     public ActivityTestRule<PasswordResetActivity> mActivityRule = new ActivityTestRule<>(
             PasswordResetActivity.class);
 
-    @Test
-    @SmallTest
-    public void validInputTest() throws InterruptedException {
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.resetPasswordButton)).perform(click());
-        Thread.sleep(5000);
-    }
+//    @Test
+//    @SmallTest
+//    public void validInputTest() throws InterruptedException {
+//        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
+//        onView(withId(R.id.resetPasswordButton)).perform(click());
+//        Thread.sleep(5000);
+//    }
 
     @Test
     @SmallTest
@@ -50,7 +50,7 @@ public class PasswordResetTest {
     @Test
     @SmallTest
     public void testNoEmail(){
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
+        onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 

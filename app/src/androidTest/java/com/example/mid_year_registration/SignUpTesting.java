@@ -56,7 +56,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
    @SmallTest
    public void testNoPassword(){
         onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText)).perform(typeText("123456789"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
    }
 
