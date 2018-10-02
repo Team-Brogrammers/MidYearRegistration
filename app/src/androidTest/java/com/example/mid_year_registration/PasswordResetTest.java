@@ -54,12 +54,12 @@ public class PasswordResetTest {
         onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
-    @Test
-    @SmallTest
-    public void testNoEmail1(){
-        onView(withId(R.id.resetPasswordEditText)).perform(typeText("   "), closeSoftKeyboard());
-        onView(withId(R.id.resetPasswordButton)).perform(click());
-    }
+//    @Test
+//    @SmallTest
+//    public void testNoEmail1(){
+//        onView(withId(R.id.resetPasswordEditText)).perform(typeText("   "), closeSoftKeyboard());
+//        onView(withId(R.id.resetPasswordButton)).perform(click());
+//    }
 
 
 }
