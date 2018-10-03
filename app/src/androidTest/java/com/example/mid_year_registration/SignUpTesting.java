@@ -77,21 +77,6 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
    }
 
    @SmallTest
-   public void testIfCheckBoxIsClickedByStudent(){
-      onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-       onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
-//        onView(withId(R.id.adminCheckBox)).perform(click(), closeSoftKeyboard());
-     onView(withId(R.id.submitButton)).perform(click());
-   }
-
-   @SmallTest
-   public void testIfCheckBoxNotClickedByCoordinator(){
-      onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-       onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
-       onView(withId(R.id.submitButton)).perform(click());
-   }
-
-   @SmallTest
    public void testValidStudent(){
         onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
@@ -104,45 +89,5 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());
        onView(withId(R.id.submitButton)).perform(click());
    }
-
-
-//    @SmallTest
-//    public void testNoPassword(){
-//
-//        onView(withId(R.id.usernameEditText)).perform(typeText("invalidsocialate@gmail.com"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("   "), closeSoftKeyboard());
-//        onView(withId(R.id.submitButton)).perform(click());
-//    }
-//
-//    @SmallTest
-//    public void testNoEmail(){
-//        onView(withId(R.id.usernameEditText)).perform(typeText("   "), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
-//        onView(withId(R.id.submitButton)).perform(click());
-//    }
-
-   @SmallTest
-   public void testInvalidEmail(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("furry123"), closeSoftKeyboard());
-        //onView(withId(R.id.submitButton)).perform(click());
-   }
-
-//    @SmallTest
-//    public void loginCoord(){
-//        onView(withId(R.id.usernameEditText)).perform(click(),typeText("ppp123@gmail.com"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("ppp12"), closeSoftKeyboard());
-//        onView(withId(R.id.adminCheckBox)).perform(click());
-//        onView(withId(R.id.submitButton)).perform(click());
-//    }
-
-//    @SmallTest
-//    public void clickTextInputLayout(){
-//        onView(withId(R.id.usernameEditText)).perform(click(),typeText("zzz11@gmail.com"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("zz1122"), closeSoftKeyboard());
-//        onView(withId(R.id.adminCheckBox)).perform(click());
-//        onView(withId(R.id.submitButton)).perform(click());
-//    }
-
 
 }

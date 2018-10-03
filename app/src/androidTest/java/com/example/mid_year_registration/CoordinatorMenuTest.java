@@ -34,6 +34,5 @@ public class CoordinatorMenuTest extends ActivityInstrumentationTestCase2<Coordi
     @SmallTest
     public void testViewConc() {
         onView(withId(R.id.circle_menu2)).perform(click());
-        //onView(withId(R.id.circle_menu2)).perform(click());
     }
 }

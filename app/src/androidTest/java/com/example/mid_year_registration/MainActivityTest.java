@@ -49,10 +49,4 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         onView(withId(R.id.recyclerView)).perform(swipeDown());
     }
 
-//
-//    @SmallTest
-//    public void testClick(){
-//        onView(withId(R.id.recyclerView)).perform(click());
-//    }
-
 }

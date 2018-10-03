@@ -2,6 +2,7 @@ package com.example.mid_year_registration;
 
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -22,19 +23,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
+@MediumTest
 public class PasswordResetTest {
     @Rule
     public ActivityTestRule<PasswordResetActivity> mActivityRule = new ActivityTestRule<>(
             PasswordResetActivity.class);
-
-//    @Test
-//    @SmallTest
-//    public void validInputTest() throws InterruptedException {
-//        onView(withId(R.id.resetPasswordEditText)).perform(typeText("musa950820@gmail.com"), closeSoftKeyboard());
-//        onView(withId(R.id.resetPasswordButton)).perform(click());
-//        Thread.sleep(5000);
-//    }
 
     @Test
     @SmallTest
@@ -58,13 +51,5 @@ public class PasswordResetTest {
         onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.resetPasswordButton)).perform(click());
     }
-
-//    @Test
-//    @SmallTest
-//    public void testNoEmail1(){
-//        onView(withId(R.id.resetPasswordEditText)).perform(typeText("   "), closeSoftKeyboard());
-//        onView(withId(R.id.resetPasswordButton)).perform(click());
-//    }
-
 
 }

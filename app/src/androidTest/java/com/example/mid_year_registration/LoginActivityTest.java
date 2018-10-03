@@ -49,44 +49,4 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         assertEquals(activity.isValidPassword("goodPassword1"), true);
     }
 
-//    @SmallTest
-//    public void testValidInput(){
-//        onView(withId(R.id.emailEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("furry123456"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-
-//    @SmallTest
-//    public void testValidInput2(){
-//        onView(withId(R.id.emailEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("testing2"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-
-//    @SmallTest
-//    public void testValidInput3(){
-//        onView(withId(R.id.emailEditText)).perform(typeText("123456@student.wits.ac.za"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("testing0"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-//
-//    @SmallTest
-//    public void testNoPassword(){
-//        onView(withId(R.id.emailEditText)).perform(typeText("invalidaccount@gmail.com"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-
-//    @SmallTest
-//    public void testNoEmail(){
-//        onView(withId(R.id.passwordEditText)).perform(typeText("password12345"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-//
-//    @SmallTest
-//    public void testInvalidEmail(){
-//        onView(withId(R.id.emailEditText)).perform(typeText("invalidaccount"), closeSoftKeyboard());
-//        onView(withId(R.id.passwordEditText)).perform(typeText("password12345"), closeSoftKeyboard());
-//        //onView(withId(R.id.loginButton)).perform(click());
-//    }
-
 }

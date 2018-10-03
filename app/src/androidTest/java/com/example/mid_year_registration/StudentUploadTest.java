@@ -93,68 +93,12 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
     }*/
 
     @SmallTest
-    public void testValidInput(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText(""), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText(""), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInput1(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("math"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInput2(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("123467"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("Math3008"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-
-    @SmallTest
-    public void testValidInput3(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3005"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInput4(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("Math3005"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInput5(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText(""), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
     public void testValidInput6() throws InterruptedException {
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
         //onView(withId(R.id.convertImageFab)).perform(click());
     }
 
-    @SmallTest
-    public void testValidInput7(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText(""), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3005"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInput8(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText(""), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText(""), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
 
     @MediumTest
     public void activityResult_DisplaysImage() {
@@ -187,20 +131,6 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
     }
 
     @SmallTest
-    public void testValidInputNextButton1(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("math"), closeSoftKeyboard());
-        //onView(withId(R.id.nextFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInputNextButton2(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("123467"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("Math3008"), closeSoftKeyboard());
-        //onView(withId(R.id.nextFab)).perform(click());
-    }
-
-    @SmallTest
     public void testValidInputNextButton3(){
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
@@ -211,13 +141,6 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
     public void testValidInputNextButton4(){
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.etCourse)).perform(typeText("MATH3005"), closeSoftKeyboard());
-        //onView(withId(R.id.nextFab)).perform(click());
-    }
-
-    @SmallTest
-    public void testValidInputNextButton5(){
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("Math3005"), closeSoftKeyboard());
         //onView(withId(R.id.nextFab)).perform(click());
     }
 
