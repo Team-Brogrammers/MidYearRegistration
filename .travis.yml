@@ -32,8 +32,6 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
-install: travis_wait mvn install
-
 script:
   # ping stdout every 9 minutes or Travis kills build
   # https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received
