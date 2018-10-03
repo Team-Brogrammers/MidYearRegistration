@@ -1,24 +1,19 @@
 package com.example.mid_year_registration;
 
-import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static junit.framework.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-
-    public class ConcessionsClassTest{
+@LargeTest
+public class ConcessionsClassTest{
 
           @Test
-          @SmallTest
           public void testConcession() {
               Concessions instance = new Concessions(null, null, null, null, null);
               assertEquals(instance.getUid(), null);
@@ -29,7 +24,6 @@ import static junit.framework.Assert.assertEquals;
           }
 
          @Test
-         @SmallTest
          public void testSetUid() {
               String uid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
               Concessions instance = new Concessions();
@@ -38,7 +32,6 @@ import static junit.framework.Assert.assertEquals;
          }
 
         @Test
-        @SmallTest
         public void testGetUid() {
             String expUid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
             Concessions instance = new Concessions();
@@ -48,7 +41,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testSetPdfName() {
             String pdfName = "11434236_M12__2018-09-07";
             Concessions instance = new Concessions();
@@ -57,7 +49,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testGetPdfName() {
             String expPdfName = "11434236_M12__2018-09-07";
             Concessions instance = new Concessions();
@@ -67,7 +58,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testSetCourseCode() {
             String courseCode = "MATH3001";
             Concessions instance = new Concessions();
@@ -76,7 +66,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testGetCourseCode() {
             String expCourseCode = "MATH3001";
             Concessions instance = new Concessions();
@@ -86,7 +75,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testSetPdfUrl() {
             String pdfUrl = "https://firebasestorage.googleapis.com/v0/b/mid-year-registration-ef4af.appspot.com/o?name=Concessions%2F1153631_MATH3034__2018-09-06.pdf&uploadType=resumable&upload_id=AEnB2UqGfahaQ3m1DE21ov3aADC-IlbiyMZF4l2CuxBe2FWR9Y2e_SXeqJsXQH6vctAwKK4iVJdZgUBuef1VrZs9M2AJcWwqKxS4fRUPjMkgN06R-6_R2qg&upload_protocol=resumable";
             Concessions instance = new Concessions();
@@ -95,7 +83,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testGetPdfUrl() {
             String expPdfUrl = "https://firebasestorage.googleapis.com/v0/b/mid-year-registration-ef4af.appspot.com/o?name=Concessions%2F11434236_M12__2018-09-07.pdf&uploadType=resumable&upload_id=AEnB2Upgf0l364_j740hccLiHo-JApF5dH6E33vzNkKIblxewE3BQQY6tcfYuB0ZVJUy1kFiCD1cLjJSKQOfhMC76EykaUcKX3wZ9GLfLg2NOckRaYep6d0&upload_protocol=resumable";
             Concessions instance = new Concessions();
@@ -107,7 +94,6 @@ import static junit.framework.Assert.assertEquals;
 
 
         @Test
-        @SmallTest
         public void testSetStudentNo() {
             String stdNo = "1153631";
             Concessions instance = new Concessions();
@@ -116,7 +102,6 @@ import static junit.framework.Assert.assertEquals;
         }
 
         @Test
-        @SmallTest
         public void testGetStudentNo() {
             String expStdNo = "1153631";
             Concessions instance = new Concessions();

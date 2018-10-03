@@ -1,5 +1,6 @@
 package com.example.mid_year_registration;
 
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -39,21 +40,21 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         onView(withId(R.id.submitButton)).check(matches(isClickable()));
     }
 
-   @SmallTest
+   @MediumTest
    public void testNoEmailNoPassword(){
       onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
       onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
       onView(withId(R.id.submitButton)).perform(click());
    }
 
-    @SmallTest
+    @MediumTest
    public void testNoEmail(){
         onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg12345"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
    }
 
-   @SmallTest
+   @MediumTest
    public void testNoPassword(){
         onView(withId(R.id.usernameEditText)).perform(typeText("123456@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("123456789"), closeSoftKeyboard());
