@@ -37,9 +37,6 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.password_reset_activity);
 
-        /*babck button*/
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         emailEditText = findViewById(R.id.resetPasswordEditText);
         passwordResetButton = findViewById(R.id.resetPasswordButton);
         constraintLayout = findViewById(R.id.resetPasswordConstraintLayout);
@@ -61,22 +58,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
     private boolean isvalideEmail() {
         String email = emailEditText.getText().toString().trim();
 
@@ -94,7 +76,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         progressDialog.setTitle("Resetting Password");
         progressDialog.setMessage("Please wait while we send you an email with reset password link");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        //progressDialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -122,7 +104,7 @@ public class PasswordResetActivity extends AppCompatActivity {
             }
         }
         if(!flag){
-            progressDialog.dismiss();
+           // progressDialog.dismiss();
             Snackbar.make(constraintLayout, "An account with this Email Doesn't Exists!", Snackbar.LENGTH_LONG ).show();
             return;
         }
@@ -131,7 +113,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
+                           // progressDialog.dismiss();
                             Snackbar.make(constraintLayout, "Click on the link sent to your email to reset your password", Snackbar.LENGTH_INDEFINITE)
                                     .setAction("LOGIN", new View.OnClickListener() {
                                         @Override
@@ -143,7 +125,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                     .setActionTextColor(Color.GREEN)
                                     .show();
                         }else{
-                            progressDialog.dismiss();
+                           // progressDialog.dismiss();
                             Snackbar.make(constraintLayout, "Error! Failed to send email, wait while we send it again", Snackbar.LENGTH_LONG)
                                     .setAction("RETRY", new View.OnClickListener() {
                                         @Override

@@ -2,14 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mid_year_registration">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!--uses-permission android:name="android.permission.CAMERA"/-->
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -18,7 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,18 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".PdfActivity"></activity>
-        <activity android:name=".StudentUpload"></activity>
-        <activity android:name=".UploadActivity"></activity>
-        <activity android:name=".PasswordResetActivity"></activity>
-        <activity android:name=".ViewConcessionActivity"></activity>
-        <activity android:name=".AddCoursesActivity"/>
-        <activity android:name=".CoordinatorUploadActivity"/>
-        <activity android:name=".CoordinatorMenuActivity"></activity>
-        <activity android:name=".StudentMenuActivity"></activity>
-
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".StudentUpload" />
+        <activity android:name=".UploadActivity" />
+        <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".CoordinatorUploadPdfActivity"/>
+        <activity android:name=".ViewConcessionActivity" />
+        <activity android:name=".AddCoursesActivity" />
+        <activity android:name=".CoordinatorMenuActivity" />
+        <activity android:name=".StudentMenuActivity" />
+        <activity android:name=".CoordinatorUploadActivity"></activity>
     </application>
 
 </manifest>

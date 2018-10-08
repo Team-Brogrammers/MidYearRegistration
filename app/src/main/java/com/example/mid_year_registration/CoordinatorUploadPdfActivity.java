@@ -29,7 +29,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class UploadActivity extends AppCompatActivity {
+public class CoordinatorUploadPdfActivity extends AppCompatActivity {
+
     Button addPdf, upload;
     PDFView pdfView;
     TextView text;
@@ -39,7 +40,7 @@ public class UploadActivity extends AppCompatActivity {
 
     String filename;
 
-    FloatingActionButton attachment, send;
+    FloatingActionButton UploadButton;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -50,15 +51,18 @@ public class UploadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload);
+        setContentView(R.layout.activity_cordinator__upload__pdf);
 
-       // addPdf = findViewById(R.id.selectPdfButton);
-        //upload = findViewById(R.id.submitButton1);
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
+        UploadButton=findViewById(R.id.uploadFab);
+        UploadButton.setVisibility(View.INVISIBLE);
 
-        //attachment = findViewById(R.id.)
+        storage = FirebaseStorage.getInstance();
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         getSupportActionBar().setTitle("Upload Concession");
         /* Set up the action bar */
@@ -67,23 +71,17 @@ public class UploadActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        storage = FirebaseStorage.getInstance(); //returns an object of Firebase Storage
-        database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
-
-
     }
-
     public void selectPdf(View view){
-       // if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Intent intent = new Intent();
-            intent.setType("application/pdf");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent, 86);
+        // if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        Intent intent = new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 86);
+        UploadButton.setVisibility(View.VISIBLE);
 
         //}
     }
@@ -103,16 +101,16 @@ public class UploadActivity extends AppCompatActivity {
                     .load();
         }
         else{
-            Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoordinatorUploadPdfActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void uploadPdf(View view){
-        if(text!=null){ //an image has been converted
+       if(text!=null){ //an image has been converted
             upload(pdfUri);
         }
         else{
-            Toast.makeText(UploadActivity.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoordinatorUploadPdfActivity.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -123,7 +121,7 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-        //progressDialog.show();
+       // progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -131,7 +129,7 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                       // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
+                        // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
 
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
@@ -148,17 +146,19 @@ public class UploadActivity extends AppCompatActivity {
 
                         );
 
+                        String email= firebaseAuth.getCurrentUser().getEmail();
+
                         databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                    // progressDialog.dismiss();
-                                    Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
+                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(CoordinatorUploadPdfActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }
                                 else {
-                                    Toast.makeText(UploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -167,7 +167,7 @@ public class UploadActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UploadActivity.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CoordinatorUploadPdfActivity.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -191,12 +191,12 @@ public class UploadActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_logout) {
-            Intent intent = new Intent(UploadActivity.this,LoginActivity.class);
+            Intent intent = new Intent(CoordinatorUploadPdfActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(UploadActivity.this,StudentUpload.class);
+            Intent intent = new Intent(CoordinatorUploadPdfActivity.this,StudentUpload.class);
             startActivity(intent);
             finish();
         }

@@ -67,8 +67,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+//        getActionBar().
 
         button.setOnClickListener(this);
     }
@@ -78,6 +80,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(v == button){
             registerUser();
         }
+    }
+
+    /*Enable the navigation bar back button*/
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /*Take the user back to the login activity*/
@@ -116,13 +125,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             progressDialog.setMessage("You are being registered...");
-            progressDialog.show();
+            //progressDialog.show();
 
             firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 user = FirebaseAuth.getInstance().getCurrentUser();
                                 if (user != null)

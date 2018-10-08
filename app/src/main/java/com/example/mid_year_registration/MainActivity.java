@@ -112,4 +112,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
+    }
 }

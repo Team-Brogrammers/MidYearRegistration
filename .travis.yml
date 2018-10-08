@@ -46,5 +46,3 @@ after_failure:
 
 script:
   - ./gradlew connectedAndroidTest coveralls # run Coveralls task after every build
-
-
