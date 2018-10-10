@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef;
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
+
     private ProgressDialog mProgressDialog;
 
     private ArrayList<String> mNames = new ArrayList<>();
@@ -48,6 +53,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         databaseRef = database.getReference().child("Concessions");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -55,8 +63,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                 // populate the list with concessions
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
-                    Log.d("Concession", concession.getPdfUrl());
-                    initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                    if(concession.uid == firebaseUser.getUid()){
+                        initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                    }
                 }
                 initRecyclerView();
             }
@@ -79,7 +88,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
     private void initRecyclerView(){
 
         RecyclerView recyclerView = findViewById(R.id.studentRecyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls, mStudentNos, mCourses);
+        RecyclerViewAdapter2 adapter = new RecyclerViewAdapter2(this, mNames, mImageUrls, mStudentNos, mCourses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressDialog.dismiss();

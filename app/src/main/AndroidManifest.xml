@@ -34,7 +34,8 @@
         <activity android:name=".CoordinatorMenuActivity" />
         <activity android:name=".StudentMenuActivity" />
         <activity android:name=".CoordinatorUploadActivity" />
-        <activity android:name=".StudentConcessionsActivity"></activity>
+        <activity android:name=".StudentConcessionsActivity" />
+        <activity android:name=".StudentViewConcessionActivity"></activity>
     </application>
 
 </manifest>
