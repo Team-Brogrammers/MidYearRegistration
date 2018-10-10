@@ -63,7 +63,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                 // populate the list with concessions
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
-                    if(concession.uid == firebaseUser.getUid()){
+                    if(concession.uid.equals(firebaseUser.getUid())){
                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                     }
                 }
