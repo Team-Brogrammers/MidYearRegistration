@@ -117,4 +117,8 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
+    }
 }
