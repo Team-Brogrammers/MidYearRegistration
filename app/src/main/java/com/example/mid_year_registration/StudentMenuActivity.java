@@ -42,8 +42,8 @@ public class StudentMenuActivity extends AppCompatActivity {
                         }
                         if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request
                             Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            //Intent activity = new Intent(StudentMenuActivity.this, StudentViewRequest.class);
-                            //startActivity(activity);
+                            Intent intent = new Intent(StudentMenuActivity.this, StudentConcessionsActivity.class);
+                            startActivity(intent);
                         }
                         //allow user to add courses which they're coordinating
                         if(arrayName[index].contains("")){
