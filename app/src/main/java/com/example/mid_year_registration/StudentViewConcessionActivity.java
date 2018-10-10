@@ -32,6 +32,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
     private File localPdf;
 
     private TextView tvCourseCode;
+    private TextView tvComment;
     private ProgressDialog mProgressDialog;
     private PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
@@ -54,14 +55,17 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         }
 
         tvCourseCode = findViewById(R.id.tvStudentConcessionCourseVal);
+        tvComment = findViewById(R.id.tvCommentView);
         pdfView = findViewById(R.id.StudentPdfView);
         tvCourseCode.setText(course);
+        tvComment.setText(R.string.no_comment); // TODO: Show comment text once Comment objects are defined on firebase
 
         mProgressDialog = new ProgressDialog(StudentViewConcessionActivity.this);
         mProgressDialog.setTitle("Loading Concession");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
+
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
