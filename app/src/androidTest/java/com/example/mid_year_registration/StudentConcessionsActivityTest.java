@@ -4,7 +4,10 @@ import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.swipeDown;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
@@ -31,6 +34,17 @@ public class StudentConcessionsActivityTest extends ActivityInstrumentationTestC
 
         onView(withId(R.id.studentRecyclerView)).check(matches(isDisplayed()));
 
+    }
+
+    @SmallTest
+    public void testListScroll(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
+
+        onView(withId(R.id.studentRecyclerView)).perform(swipeUp());
+        onView(withId(R.id.studentRecyclerView)).perform(swipeDown());
     }
 
 }

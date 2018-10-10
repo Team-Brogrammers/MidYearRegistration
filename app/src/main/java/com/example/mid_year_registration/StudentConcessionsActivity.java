@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,6 +68,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                         if(concession.uid.equals(firebaseUser.getUid())){
                             initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                         }
+                    }
+                    else {
+                        Toast.makeText(StudentConcessionsActivity.this, "You are not logged in!", Toast.LENGTH_SHORT);
                     }
                 }
                 initRecyclerView();
