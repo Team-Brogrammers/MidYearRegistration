@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -39,6 +40,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Bundle bundle;
     EditText message;
+    TextInputLayout input;
 
     String filename;
 
@@ -61,6 +63,8 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         UploadButton=findViewById(R.id.uploadFab);
         UploadButton.setVisibility(View.INVISIBLE);
         message = findViewById(R.id.commentEditext);
+        input = findViewById(R.id.commentTextinputLayout);
+        input.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -85,6 +89,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 86);
         UploadButton.setVisibility(View.VISIBLE);
+        input.setVisibility(View.VISIBLE);
 
         //}
     }
