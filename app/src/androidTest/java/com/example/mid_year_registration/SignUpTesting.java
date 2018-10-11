@@ -33,11 +33,12 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.submitButton)).check(matches(isDisplayed()));
         onView(withId(R.id.adminCheckBox)).check(matches(isClickable()));
+        onView(withId(R.id.submitButton)).check(matches(isClickable()));
     }
 
     @SmallTest
-    public void testButtonsClickable(){
-        onView(withId(R.id.submitButton)).check(matches(isClickable()));
+    public void testBackButton(){
+        assertEquals(activity.onSupportNavigateUp(), true);
     }
 
    @MediumTest
@@ -83,7 +84,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
        onView(withId(R.id.submitButton)).perform(click());
    }
 
-   @SmallTest
+   @MediumTest
    public void testValidCoordinator(){
       onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
        onView(withId(R.id.passwordEditText)).perform(typeText("staffwits"), closeSoftKeyboard());

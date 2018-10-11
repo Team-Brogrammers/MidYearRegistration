@@ -33,11 +33,8 @@ public class CoordinatorUploadPdfActivityTest extends ActivityInstrumentationTes
         onView(withId(R.id.PdfView)).check(matches(isDisplayed()));
         onView(withId(R.id.textView2)).check(matches(isDisplayed()));
         onView(withId(R.id.attachmentFab)).check(matches(isDisplayed()));
+        onView(withId(R.id.attachmentFab)).check(matches(isClickable()));
+        onView(withId(R.id.attachmentFab)).check(matches(isClickable()));
     }
 
-    @SmallTest
-    public void testButtonsClickable(){
-        onView(withId(R.id.attachmentFab)).check(matches(isClickable()));
-        onView(withId(R.id.attachmentFab)).check(matches(isClickable()));
-    }
 }

@@ -29,10 +29,6 @@ public class CoordinatorMenuTest extends ActivityInstrumentationTestCase2<Coordi
     public void testVisibility(){
         onView(withId(R.id.textView4)).check(matches(isDisplayed()));
         onView(withId(R.id.circle_menu2)).check(matches(isDisplayed()));
-    }
-
-    @SmallTest
-    public void testViewConc() {
         onView(withId(R.id.circle_menu2)).perform(click());
     }
 }
