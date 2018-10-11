@@ -139,10 +139,10 @@ public class ViewConcessionActivity extends AppCompatActivity {
                        Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
                        break;
                    }
-
-
                 }
-                Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+
+                // send email
+                //Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
             }
             @Override
