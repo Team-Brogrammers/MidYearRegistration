@@ -62,13 +62,6 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         onView(withId(R.id.submitButton)).perform(click());
    }
 
-   @SmallTest
-   public void testInValidPassword(){
-       onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.ac.za"), closeSoftKeyboard());
-       onView(withId(R.id.passwordEditText)).perform(typeText("abc"), closeSoftKeyboard());
-       onView(withId(R.id.submitButton)).perform(click());
-   }
-
 
    @SmallTest
    public void testInValidEmail2(){
@@ -77,7 +70,7 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
        onView(withId(R.id.submitButton)).perform(click());
    }
 
-   @SmallTest
+   @MediumTest
    public void testValidStudent(){
         onView(withId(R.id.usernameEditText)).perform(typeText("1234567@students.wits.ac.za"), closeSoftKeyboard());
         onView(withId(R.id.passwordEditText)).perform(typeText("studentswits"), closeSoftKeyboard());
