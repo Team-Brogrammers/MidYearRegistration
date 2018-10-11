@@ -41,4 +41,18 @@
     <string name="course_code">Course Code</string>
     <string name="student_number3">Student number</string>
     <string name="course_code2">Course Code</string>
+    <string name="no_comment">No response comment has been added to this concession request.</string>
+    <string name="file_name">FILE NAME :</string>
+    <string name="file_name1">File name</string>
+    <string name="todo">TODO</string>
+    <string name="write_a_comment">Write a comment</string>
+    <string name="preview">PREVIEW</string>
+    <string name="student_number1">Student Number</string>
+    <string name="course_code1">Course Code</string>
+    <string name="image3">Image</string>
+    <string name="preview1">PREVIEW</string>
+    <string name="add_view_edit_courses_that_you_coordinate">Add-View-Edit Courses That You Coordinate</string>
+    <string name="courses_logo">courses logo</string>
+    <string name="sign_in">Sign In</string>
+    <string name="wits_logo">Wits Logo</string>
 </resources>

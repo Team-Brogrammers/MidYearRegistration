@@ -2,25 +2,21 @@ package com.example.mid_year_registration;
 
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withSubstring;
 
+public class StudentConcessionsActivityTest extends ActivityInstrumentationTestCase2<StudentConcessionsActivity> {
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
-    MainActivity activity;
-    public MainActivityTest() {
-        super(MainActivity.class);
+    StudentConcessionsActivity activity;
+
+    public StudentConcessionsActivityTest(){
+        super(StudentConcessionsActivity.class);
     }
 
     @Override
@@ -36,8 +32,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             activity.getmProgressDialog().dismiss();
         }
 
-        //check that the recyclerView is visible
-        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
+        onView(withId(R.id.studentRecyclerView)).check(matches(isDisplayed()));
+
     }
 
     @SmallTest
@@ -47,8 +43,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             activity.getmProgressDialog().dismiss();
         }
 
-        onView(withId(R.id.recyclerView)).perform(swipeUp());
-        onView(withId(R.id.recyclerView)).perform(swipeDown());
+        onView(withId(R.id.studentRecyclerView)).perform(swipeUp());
+        onView(withId(R.id.studentRecyclerView)).perform(swipeDown());
     }
 
 }

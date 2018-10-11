@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +39,8 @@ public class UploadActivity extends AppCompatActivity {
     Bundle bundle;
 
     String filename;
+    String studentNum;
+    String course;
 
     FloatingActionButton attachment, send;
 
@@ -51,9 +54,6 @@ public class UploadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
-
-       // addPdf = findViewById(R.id.selectPdfButton);
-        //upload = findViewById(R.id.submitButton1);
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
@@ -74,6 +74,8 @@ public class UploadActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
+        studentNum = bundle.getString("studentNumber");
+        course = bundle.getString("courseCode");
 
 
     }
@@ -137,7 +139,7 @@ public class UploadActivity extends AppCompatActivity {
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
                         String studentNo = bundle.getString("studentNumber");
-                        String courseCode = bundle.getString("courseCode");
+                        final String courseCode = bundle.getString("courseCode");
 
                         Concessions concessions = new Concessions(
                                 firebaseUser.getUid(),
@@ -152,8 +154,37 @@ public class UploadActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
-                                   // progressDialog.dismiss();
-                                    Toast.makeText(UploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+
+                                    // Send email in the background
+                                    //sendEmail("123456@gmail.com","musa950820@gmail.com");
+                                    BackgroundMail.newBuilder(UploadActivity.this)
+                                            .withUsername("witsbrogrammers@gmail.com")
+                                            .withPassword("witsbrogrammers100")
+                                            .withMailto("musa950820@gmail.com") //coordinator's email
+                                            .withType(BackgroundMail.TYPE_PLAIN)
+                                            .withSubject("Concession Request")
+                                            .withBody("Good day, a student with the this student number "+studentNum// student's email
+                                                    +" has submitted a request to registered for "+course+"."
+                                                    +" Please open the MidYearRegistration Application for more details"
+                                                    //+ "https://appurl.io/jn4gscwt"
+                                            )
+                                            .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Toast.makeText(UploadActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                                                @Override
+                                                public void onFail() {
+                                                    Toast.makeText(UploadActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .send();
+
+                                    //progressDialog.dismiss();
+
+                                    Toast.makeText(UploadActivity.this, "The form was successfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
                                     startActivity(activity);
                                 }
@@ -201,6 +232,31 @@ public class UploadActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendEmail(String stdEmail, String CoordEmail){
+        // Send email in the background
+        BackgroundMail.newBuilder(UploadActivity.this)
+                .withUsername("witsbrogrammers@gmail.com")
+                .withPassword("witsbrogrammers100")
+                .withMailto("CoordEmail") //coordinator's email
+                .withType(BackgroundMail.TYPE_PLAIN)
+                .withSubject("Concession Request")
+                .withBody("Good day, "+"stdEmail"// student's email
+                        +" has submitted a request to registered for a course(s) you coordinate")
+                .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(UploadActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                    @Override
+                    public void onFail() {
+                        Toast.makeText(UploadActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .send();
     }
 
 }

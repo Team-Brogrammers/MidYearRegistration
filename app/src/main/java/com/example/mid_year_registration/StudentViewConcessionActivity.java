@@ -2,7 +2,6 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,69 +9,72 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.itextpdf.xmp.impl.Utils;
 
 import java.io.File;
-import java.io.IOException;
 
-public class ViewConcessionActivity extends AppCompatActivity {
+public class StudentViewConcessionActivity extends AppCompatActivity {
 
-    String name;
-    String course;
-    String studentNo;
-    FirebaseStorage storage;
-    StorageReference storageReference;
-    File localPdf;
+    private String course;
+    private String name;
+    private String comment;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private File localPdf;
+
+    private TextView tvCourseCode;
+    private TextView tvComment;
     private ProgressDialog mProgressDialog;
-    TextView tvStudentNo;
-    TextView tvCourseCode;
-    PDFView pdfView;
+    private PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_concession);
+        setContentView(R.layout.activity_student_view_concession);
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
-        studentNo = intent.getStringExtra("studentNo");
+
         course = intent.getStringExtra("course");
-        getSupportActionBar().setTitle("View Concession");
-        Log.d("Name", name);
+        name = intent.getStringExtra("name");
+        comment = intent.getStringExtra("comment");
+
         /* Set up the action bar */
+        getSupportActionBar().setTitle("View Concession");
         if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
-        tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
-        pdfView = findViewById(R.id.CoordPdfView);
 
-        tvStudentNo.setText(studentNo);
+        tvCourseCode = findViewById(R.id.tvStudentConcessionCourseVal);
+        tvComment = findViewById(R.id.tvCommentView);
+        pdfView = findViewById(R.id.StudentPdfView);
         tvCourseCode.setText(course);
 
-        mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
-        mProgressDialog.setTitle("Loading Concession PDF");
+        // Display the comment text if the concession has been commented, else display the default text
+        if (!comment.equals("")){
+            tvComment.setText(comment);
+        }
+        else {
+            tvComment.setText(R.string.no_comment);
+        }
+
+        mProgressDialog = new ProgressDialog(StudentViewConcessionActivity.this);
+        mProgressDialog.setTitle("Loading Concession");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-       // mProgressDialog.show();
+        mProgressDialog.show();
+
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
@@ -86,16 +88,10 @@ public class ViewConcessionActivity extends AppCompatActivity {
                         defaultPage(0).enableSwipe(true)
                         .swipeHorizontal(false)
                         .enableAnnotationRendering(true)
-                        .scrollHandle(new DefaultScrollHandle(ViewConcessionActivity.this))
+                        .scrollHandle(new DefaultScrollHandle(StudentViewConcessionActivity.this))
                         .load();
-//                /* Open PDF in a PDF reader*/
-//                Intent target = new Intent(Intent.ACTION_VIEW);
-//                target.setDataAndType(result,"application/pdf");
-//                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                Intent intent = Intent.createChooser(target, "Open File");
-//                startActivity(intent);
-                //mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+                Toast.makeText(StudentViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -103,11 +99,10 @@ public class ViewConcessionActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d("GetFile", "Fail");
                 Log.e("GetFile", e.getMessage());
-                //mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+                Toast.makeText(StudentViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -120,16 +115,19 @@ public class ViewConcessionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_logout) {
-            Intent intent = new Intent(ViewConcessionActivity.this,LoginActivity.class);
+            Intent intent = new Intent(StudentViewConcessionActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(ViewConcessionActivity.this,MainActivity.class);
+            Intent intent = new Intent(StudentViewConcessionActivity.this, StudentConcessionsActivity.class);
             startActivity(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
+    }
 }
