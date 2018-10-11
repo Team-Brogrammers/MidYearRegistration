@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +17,12 @@ import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +42,12 @@ public class ViewConcessionActivity extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
     DatabaseReference databaseRef;
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
+
+
     String pdfKey;
+    String uid;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     File localPdf;
     private ProgressDialog mProgressDialog;
@@ -46,7 +56,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
     PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
 
-    EditText comment;
+    EditText message;
     Button submit;
 
 
@@ -69,7 +79,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
-        comment = findViewById(R.id.viewConcessionComment);
+        message = findViewById(R.id.viewConcessionComment);
         submit = findViewById(R.id.submitResponseButton);
 
         tvStudentNo.setText(studentNo);
@@ -81,6 +91,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
        // mProgressDialog.show();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
 
@@ -123,6 +135,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                    if(studentNo.equals(childSnap.child("studentNo").getValue())){
                        pdfKey=childSnap.getKey().toString();
+                       uid=childSnap.child("uid").getValue().toString();
                        Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
                        break;
                    }
@@ -135,6 +148,36 @@ public class ViewConcessionActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+            }
+        });
+
+    }
+
+    public void onClick(View view){
+
+        final String responseId = databaseRef.push().getKey();
+        final String coordId = firebaseAuth.getUid();
+        final String comment = message.getText().toString();
+
+        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
+
+        DatabaseReference databaseReference = database.getReference().child("Comments");
+
+        databaseReference.child(responseId).setValue(response).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()) {
+
+                    //progressDialog.dismiss();
+
+                    Toast.makeText(ViewConcessionActivity.this, "The form was successfully uploaded", Toast.LENGTH_SHORT).show();
+                    Intent activity = new Intent(ViewConcessionActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(activity);
+                }
+                else {
+                    Toast.makeText(ViewConcessionActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
