@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -140,8 +141,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
                        break;
                    }
                 }
-
-                // send email
                 //Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
             }
@@ -168,6 +167,30 @@ public class ViewConcessionActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if(task.isSuccessful()) {
+                    // send email to the relevant student
+                    BackgroundMail.newBuilder(ViewConcessionActivity.this)
+                            .withUsername("witsbrogrammers@gmail.com")
+                            .withPassword("witsbrogrammers100")
+                            .withMailto("musa950820@gmail.com") //student's email
+                            .withType(BackgroundMail.TYPE_PLAIN)
+                            .withSubject("Response To Concession")
+                            .withBody("Good day, the coordinator"+" has responded to your concession"
+                                    +" for the "+course+" course which you want to register for."
+                                    +" Message from coordinator: "+message
+                            )
+                            .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(ViewConcessionActivity.this, "Student has been notified of your request", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                                @Override
+                                public void onFail() {
+                                    Toast.makeText(ViewConcessionActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .send();
 
                     //progressDialog.dismiss();
 
