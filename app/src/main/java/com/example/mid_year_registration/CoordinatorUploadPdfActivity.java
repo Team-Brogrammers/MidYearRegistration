@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,8 +40,13 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     Uri pdfUri;
     ProgressDialog progressDialog;
     Bundle bundle;
+    EditText message;
+    TextInputLayout input;
 
     String filename;
+    String course;
+    String studentNumber;
+
 
     FloatingActionButton UploadButton;
 
@@ -58,6 +66,9 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.PdfView);
         UploadButton=findViewById(R.id.uploadFab);
         UploadButton.setVisibility(View.INVISIBLE);
+        message = findViewById(R.id.commentEditext);
+        input = findViewById(R.id.commentTextinputLayout);
+        input.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -74,6 +85,9 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
+        studentNumber = bundle.getString("studentNumber");
+        course = bundle.getString("courseCode");
+
     }
     public void selectPdf(View view){
         // if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -82,6 +96,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 86);
         UploadButton.setVisibility(View.VISIBLE);
+        input.setVisibility(View.VISIBLE);
 
         //}
     }
@@ -121,7 +136,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-       // progressDialog.show();
+        //progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -130,18 +145,19 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
-
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
                         String studentNo = bundle.getString("studentNumber");
                         String courseCode = bundle.getString("courseCode");
+                        String comment = message.getText().toString();
 
-                        Concessions concessions = new Concessions(
+                        CoordinatorConcession concessions = new CoordinatorConcession(
                                 firebaseUser.getUid(),
                                 studentNo,
                                 filename,
                                 courseCode,
+                                comment,
                                 url
 
                         );
@@ -152,7 +168,33 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
-                                   // progressDialog.dismiss();
+
+                                    // send email to the relevant student
+                                    BackgroundMail.newBuilder(CoordinatorUploadPdfActivity.this)
+                                            .withUsername("witsbrogrammers@gmail.com")
+                                            .withPassword("witsbrogrammers100")
+                                            .withMailto("musa950820@gmail.com") //student's email
+                                            .withType(BackgroundMail.TYPE_PLAIN)
+                                            .withSubject("Response To Concession")
+                                            .withBody("Good day, the coordinator"+" has responded to your concession"
+                                                    +" for the "+course+" course which you want to register for."
+                                                    +" Please open the MidYearRegistration Application for more details."
+                                            )
+                                            .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                                                @Override
+                                                public void onFail() {
+                                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .send();
+
+                                    //progressDialog.dismiss();
                                     Toast.makeText(CoordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(CoordinatorUploadPdfActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);

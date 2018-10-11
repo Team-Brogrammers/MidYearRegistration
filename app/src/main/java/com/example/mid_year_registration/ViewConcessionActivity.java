@@ -108,8 +108,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     @Override

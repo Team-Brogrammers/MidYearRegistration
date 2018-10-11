@@ -21,10 +21,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @MediumTest
 public class PasswordResetTest {
+
     @Rule
     public ActivityTestRule<PasswordResetActivity> mActivityRule = new ActivityTestRule<>(
             PasswordResetActivity.class);
