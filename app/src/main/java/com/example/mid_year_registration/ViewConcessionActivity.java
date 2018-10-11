@@ -2,33 +2,30 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.itextpdf.xmp.impl.Utils;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ViewConcessionActivity extends AppCompatActivity {
 
@@ -37,6 +34,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
     String studentNo;
     FirebaseStorage storage;
     StorageReference storageReference;
+    DatabaseReference databaseRef;
+    String pdfKey;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     File localPdf;
     private ProgressDialog mProgressDialog;
     TextView tvStudentNo;
@@ -105,6 +105,29 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Log.e("GetFile", e.getMessage());
                 //mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        databaseRef = database.getReference().child("Concessions");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                   if(studentNo.equals(childSnap.child("studentNo").getValue())){
+                       pdfKey=childSnap.getKey().toString();
+                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
+                       break;
+                   }
+
+
+                }
+                Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
 
