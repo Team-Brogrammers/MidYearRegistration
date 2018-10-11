@@ -12,16 +12,30 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class CoordinatorConcessionTest{
+
+    // Test the empty constructor
     @Test
-    public void testConcession() {
-        CoordinatorConcession instance = new CoordinatorConcession(null, null, null, null, null,null);
-        assertEquals(instance.getUid(), null);
-        assertEquals(instance.getStudentNo(), null);
-        assertEquals(instance.getPdfName(), null);
-        assertEquals(instance.getCourseCode(), null);
-        assertEquals(instance.getPdfUrl(), null);
-        assertEquals(instance.getPdfUrl(), null);
-        assertEquals(instance.getComment(), null);
+    public void testVoidConcession() {
+        CoordinatorConcession instance = new CoordinatorConcession();
+        assertEquals(instance.getUid(), "");
+        assertEquals(instance.getStudentNo(), "");
+        assertEquals(instance.getPdfName(), "");
+        assertEquals(instance.getCourseCode(), "");
+        assertEquals(instance.getPdfUrl(), "");
+        assertEquals(instance.getPdfUrl(), "");
+        assertEquals(instance.getComment(), "");
+    }
+
+    // Test the full constructor
+    @Test
+    public void testFullConcession(){
+        CoordinatorConcession instance = new CoordinatorConcession("TestUid", "test567", "TestPdfName", "TEST1001", "Test Comment", "Test_URL.test.com");
+        assertEquals(instance.getUid(), "TestUid");
+        assertEquals(instance.getStudentNo(), "test567");
+        assertEquals(instance.getPdfName(), "TestPdfName");
+        assertEquals(instance.getCourseCode(),"TEST1001");
+        assertEquals(instance.getComment(), "Test Comment");
+        assertEquals(instance.getPdfUrl(), "Test_URL.test.com");
     }
 
     @Test
@@ -36,7 +50,7 @@ public class CoordinatorConcessionTest{
     public void testGetComment() {
         String expComment = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
-        instance.setUid("Please come see me");
+        instance.setComment("Please come see me");
         String comment = instance.getComment();
         assertEquals(expComment, comment);
     }

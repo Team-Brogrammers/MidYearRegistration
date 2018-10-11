@@ -40,15 +40,15 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
     }
 
-    @SmallTest
-    public void testListScroll(){
-        // dismiss the progress dialog
-        if(activity.getmProgressDialog().isShowing()){
-            activity.getmProgressDialog().dismiss();
-        }
-
-        onView(withId(R.id.recyclerView)).perform(swipeUp());
-        onView(withId(R.id.recyclerView)).perform(swipeDown());
-    }
+//    @SmallTest
+//    public void testListScroll(){
+//        // dismiss the progress dialog
+//        if(activity.getmProgressDialog().isShowing()){
+//            activity.getmProgressDialog().dismiss();
+//        }
+//
+//        onView(withId(R.id.recyclerView)).perform(swipeUp());
+//        onView(withId(R.id.recyclerView)).perform(swipeDown());
+//    }
 
 }

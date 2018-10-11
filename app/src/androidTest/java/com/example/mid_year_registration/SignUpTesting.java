@@ -63,12 +63,12 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
    }
 
 
-   @SmallTest
-   public void testInValidEmail2(){
-        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.acc.za"), closeSoftKeyboard());
-        onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg"), closeSoftKeyboard());
-       onView(withId(R.id.submitButton)).perform(click());
-   }
+//   @SmallTest
+//   public void testInValidEmail2(){
+//        onView(withId(R.id.usernameEditText)).perform(typeText("123456@wits.acc.za"), closeSoftKeyboard());
+//        onView(withId(R.id.passwordEditText)).perform(typeText("abcdefg"), closeSoftKeyboard());
+//       onView(withId(R.id.submitButton)).perform(click());
+//   }
 
    @MediumTest
    public void testValidStudent(){
