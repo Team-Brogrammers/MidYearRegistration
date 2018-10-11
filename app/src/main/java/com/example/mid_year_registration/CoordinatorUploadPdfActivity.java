@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +38,11 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     Uri pdfUri;
     ProgressDialog progressDialog;
     Bundle bundle;
+<<<<<<< HEAD
     EditText message;
     TextInputLayout input;
+=======
+>>>>>>> parent of 40b65d6... Done with UX and backend
 
     String filename;
 
@@ -62,9 +64,12 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.PdfView);
         UploadButton=findViewById(R.id.uploadFab);
         UploadButton.setVisibility(View.INVISIBLE);
+<<<<<<< HEAD
         message = findViewById(R.id.commentEditext);
         input = findViewById(R.id.commentTextinputLayout);
         input.setVisibility(View.INVISIBLE);
+=======
+>>>>>>> parent of 40b65d6... Done with UX and backend
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -144,14 +149,12 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                         final String pdfId = databaseReference.push().getKey();
                         String studentNo = bundle.getString("studentNumber");
                         String courseCode = bundle.getString("courseCode");
-                        String comment = message.getText().toString();
 
-                        CoordinatorConcession concessions = new CoordinatorConcession(
+                        Concessions concessions = new Concessions(
                                 firebaseUser.getUid(),
                                 studentNo,
                                 filename,
                                 courseCode,
-                                comment,
                                 url
 
                         );
