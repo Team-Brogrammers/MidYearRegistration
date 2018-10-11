@@ -37,23 +37,23 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
     }
 
-//    @SmallTest
-//    public void testEmailValidation(){
-//        assertEquals(activity.isValidEmail(null), false);
+    @SmallTest
+    public void testEmailValidation(){
+        assertEquals(activity.isValidEmail(null), false);
 //        assertEquals(activity.isValidEmail("1234@gmail.com"), false);
-//        assertEquals(activity.isValidEmail("123456@wits.ac.za"), true);
-//    }
-//
-//    @SmallTest
-//    public void testPasswordValidation(){
-//        assertEquals(activity.isValidPassword(null), false);
-//        assertEquals(activity.isValidPassword("abcd"), false);
-//        assertEquals(activity.isValidPassword("goodPassword1"), true);
-//    }
+        assertEquals(activity.isValidEmail("123456@wits.ac.za"), true);
+    }
 
     @SmallTest
-    public void testInput(){
-        onView(withId(R.id.creatAccountTextView)).perform(closeSoftKeyboard(), click());
+    public void testPasswordValidation(){
+        assertEquals(activity.isValidPassword(null), false);
+        assertEquals(activity.isValidPassword("abc"), false);
+        assertEquals(activity.isValidPassword("goodPassword1"), true);
     }
+
+//    @SmallTest
+//    public void testInput(){
+//        onView(withId(R.id.creatAccountTextView)).perform(closeSoftKeyboard(), click());
+//    }
 
 }

@@ -28,10 +28,10 @@ public class StudentMenuActivityTest extends ActivityInstrumentationTestCase2<St
         onView(withId(R.id.textView5)).check(matches(isDisplayed()));
     }
 
-    @SmallTest
-    public void test(){
-        onView(withId(R.id.circle_menu)).perform(click());
-        onView(withId(R.id.circle_menu)).perform(click());
-    }
+//    @SmallTest
+//    public void test(){
+//        onView(withId(R.id.circle_menu)).perform(click());
+//        onView(withId(R.id.circle_menu)).perform(click());
+//    }
 
 }
