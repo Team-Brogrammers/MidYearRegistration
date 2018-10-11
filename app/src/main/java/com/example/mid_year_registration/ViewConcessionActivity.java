@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
     PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
 
+    EditText comment;
+    Button submit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
+        comment = findViewById(R.id.viewConcessionComment);
+        submit = findViewById(R.id.submitResponseButton);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
