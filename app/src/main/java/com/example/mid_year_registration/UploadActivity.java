@@ -125,7 +125,7 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-        progressDialog.show();
+        //progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -164,7 +164,10 @@ public class UploadActivity extends AppCompatActivity {
                                             .withType(BackgroundMail.TYPE_PLAIN)
                                             .withSubject("Concession Request")
                                             .withBody("Good day, a student with the this student number "+studentNum// student's email
-                                                    +" has submitted a request to registered for "+course)
+                                                    +" has submitted a request to registered for "+course
+                                                    +" Please click the link below to open the MidYearRegistration Application "
+                                                    + "https://appurl.io/jn4gscwt"
+                                            )
                                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                                 @Override
                                                 public void onSuccess() {
@@ -179,7 +182,7 @@ public class UploadActivity extends AppCompatActivity {
                                             })
                                             .send();
 
-                                    progressDialog.dismiss();
+                                    //progressDialog.dismiss();
 
                                     Toast.makeText(UploadActivity.this, "The form was successfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(UploadActivity.this, StudentMenuActivity.class);
