@@ -22,6 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,6 +45,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
     TextView tvStudentNo;
     TextView tvCourseCode;
     PDFView pdfView;
+    private FirebaseAnalytics firebaseAnalytics;
     public static final String downloadDirectory = "Downloads";
 
 
@@ -66,6 +70,50 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
+
+
+
+
+
+ /*** DYNAMIC LINKS*******/
+
+
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            firebaseAnalytics = FirebaseAnalytics.getInstance(ViewConcessionActivity.this);
+                            deepLink = pendingDynamicLinkData.getLink();
+
+                        }
+
+
+                        // Handle the deep link. For example, open the linked
+                        // content, or apply promotional credit to the user's
+                        // account.
+                        // ...
+
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
+
+
+        /***** END********/
+
+
+
+
 
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
         mProgressDialog.setTitle("Loading Concession PDF");
@@ -106,7 +154,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }

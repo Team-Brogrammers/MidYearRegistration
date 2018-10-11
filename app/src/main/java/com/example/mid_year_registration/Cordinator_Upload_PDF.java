@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -31,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 
 public class Cordinator_Upload_PDF extends AppCompatActivity {
 
+    private  final String TAG = getClass().getName();
     Button addPdf, upload;
     PDFView pdfView;
     TextView text;
@@ -106,9 +110,50 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
         }
     }
 
+
+    public String buildDynamicLink(){
+
+        return "https://midregistration.page.link/?"+
+                "link=https://midyearregistration.com/welcom"+
+                "&apn=com.example.mid_year_registration"+
+                "&st=Reply+to+your+Concession"+
+                "&sd=Wits+University++Mid-Year-Registration+App"+
+                "&utm_source=AndroidApp";
+    }
+
     public void uploadPdf(View view){
        if(text!=null){ //an image has been converted
             upload(pdfUri);
+            /*********SEND A DYNAMIC LINK********/
+           Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                   .setLongLink(Uri.parse(buildDynamicLink()))
+                   // Set parameters
+                   // ...
+                   .buildShortDynamicLink()
+                   .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                       @Override
+                       public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                           if (task.isSuccessful()) {
+                               // Short link created
+                               Uri shortLink = task.getResult().getShortLink();
+                               Uri flowchartLink = task.getResult().getPreviewLink();
+
+                               Log.d(TAG, shortLink.toString());
+                               Log.d(TAG,flowchartLink.toString());
+
+                               Intent intent = new Intent();
+                               String msg = "WITS UNIVERSITY MID YEAR REGISTRATION APPLICATION  "+
+                                     " Click this link to view the reply :  "  + shortLink.toString();
+                               intent.setAction(Intent.ACTION_SEND);
+                               intent.putExtra(intent.EXTRA_TEXT,msg);
+                               intent.setType("text/plain");
+                               startActivity(intent);
+                           } else {
+                               // Error
+                               // ...
+                           }
+                       }
+                   });
         }
         else{
             Toast.makeText(Cordinator_Upload_PDF.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
@@ -153,8 +198,8 @@ public class Cordinator_Upload_PDF extends AppCompatActivity {
                                 if(task.isSuccessful()) {
                                     progressDialog.dismiss();
                                     Toast.makeText(Cordinator_Upload_PDF.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(Cordinator_Upload_PDF.this, CoordinatorMenuActivity.class);
-                                    startActivity(activity);
+                                    /*Intent activity = new Intent(Cordinator_Upload_PDF.this, CoordinatorMenuActivity.class);
+                                    startActivity(activity);*/
                                 }
                                 else {
                                     Toast.makeText(Cordinator_Upload_PDF.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();

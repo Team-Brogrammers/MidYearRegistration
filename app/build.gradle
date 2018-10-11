@@ -86,11 +86,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:17.1.0'
 
+    implementation 'com.google.firebase:firebase-dynamic-links:16.1.2'
+
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 
     implementation 'com.github.Hitomis:CircleMenu:v1.1.0'
 
 
     implementation project(path: ':lib')
+
 }
 apply plugin: 'com.google.gms.google-services'
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
