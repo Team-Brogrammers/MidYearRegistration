@@ -36,7 +36,7 @@ public class CoordinatorConcessionTest{
     public void testGetComment() {
         String expComment = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
-        instance.setUid("Please come see me");
+        instance.setComment("Please come see me");
         String comment = instance.getComment();
         assertEquals(expComment, comment);
     }
