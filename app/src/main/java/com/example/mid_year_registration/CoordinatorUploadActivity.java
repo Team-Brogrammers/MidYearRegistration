@@ -136,7 +136,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(CoordinatorUploadActivity.this,StudentMenuActivity.class);
+            Intent intent = new Intent(CoordinatorUploadActivity.this,CoordinatorMenuActivity.class);
             startActivity(intent);
             finish();
         }
