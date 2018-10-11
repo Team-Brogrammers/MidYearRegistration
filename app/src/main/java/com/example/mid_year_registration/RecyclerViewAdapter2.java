@@ -25,13 +25,15 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
     private ArrayList<String> mDocuments;
     private ArrayList<String> mStudentNos;
     private ArrayList<String> mCourses;
+    private ArrayList<String> mComments;
 
-    public RecyclerViewAdapter2(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments, ArrayList<String> mStudentNos, ArrayList<String> mCourses){
+    public RecyclerViewAdapter2(Context mContext, ArrayList<String> mDocNames, ArrayList<String> mDocuments, ArrayList<String> mStudentNos, ArrayList<String> mCourses, ArrayList<String> mComments){
         this.mContext = mContext;
         this.mDocNames = mDocNames;
         this.mDocuments = mDocuments;
         this.mStudentNos = mStudentNos;
         this.mCourses = mCourses;
+        this.mComments = mComments;
     }
 
     @Override
@@ -44,18 +46,7 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter2.ViewHolder2 holder, final int position) {
-//        File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-//        holder.pdf.fromFile(root)
-//                .defaultPage(0).enableSwipe(true)
-//                .swipeHorizontal(false)
-//                .enableAnnotationRendering(true)
-//                .load();
-//
-//        holder.pdf.useBestQuality(false);
-//        holder.pdf.fromAsset(mDocuments.get(holder.getAdapterPosition()))
-//                .enableDoubletap(true)
-//                .pages(0)
-//                .load();
+
         String displayText = mStudentNos.get(position) + "\n" + mCourses.get(position);
         holder.docName.setText(displayText);
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +57,7 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
                 intent.putExtra("name", mDocNames.get(position));
                 intent.putExtra("studentNo", mStudentNos.get(position));
                 intent.putExtra("course", mCourses.get(position));
+                intent.putExtra("comment", mComments.get(position));
                 mContext.startActivity(intent);
             }
         });

@@ -26,6 +26,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
 
     private String course;
     private String name;
+    private String comment;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -46,6 +47,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
 
         course = intent.getStringExtra("course");
         name = intent.getStringExtra("name");
+        comment = intent.getStringExtra("comment");
 
         /* Set up the action bar */
         getSupportActionBar().setTitle("View Concession");
@@ -58,7 +60,14 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         tvComment = findViewById(R.id.tvCommentView);
         pdfView = findViewById(R.id.StudentPdfView);
         tvCourseCode.setText(course);
-        tvComment.setText(R.string.no_comment); // TODO: Show comment text once Comment objects are defined on firebase
+
+        // Display the comment text if the concession has been commented, else display the default text
+        if (!comment.equals("")){
+            tvComment.setText(comment);
+        }
+        else {
+            tvComment.setText(R.string.no_comment);
+        }
 
         mProgressDialog = new ProgressDialog(StudentViewConcessionActivity.this);
         mProgressDialog.setTitle("Loading Concession");

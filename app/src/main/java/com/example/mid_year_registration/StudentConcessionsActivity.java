@@ -35,6 +35,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mStudentNos = new ArrayList<>();
     private ArrayList<String> mCourses = new ArrayList<>();
+    private ArrayList<String> mComments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,10 @@ public class StudentConcessionsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // populate the list with concessions
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
-                    Concessions concession = childSnap.getValue(Concessions.class);
+                    CoordinatorConcession concession = childSnap.getValue(CoordinatorConcession.class);
                     if(firebaseUser != null){
                         if(concession.uid.equals(firebaseUser.getUid())){
-                            initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                            initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode, concession.comment);
                         }
                     }
                     else {
@@ -83,18 +84,19 @@ public class StudentConcessionsActivity extends AppCompatActivity {
         });
     }
 
-    private void initImageBitmap(String url, String name, String studentNo, String course){
+    private void initImageBitmap(String url, String name, String studentNo, String course, String comment){
 
         mImageUrls.add(url);
         mNames.add(name);
         mStudentNos.add(studentNo);
         mCourses.add(course);
+        mComments.add(comment);
     }
 
     private void initRecyclerView(){
 
         RecyclerView recyclerView = findViewById(R.id.studentRecyclerView);
-        RecyclerViewAdapter2 adapter = new RecyclerViewAdapter2(this, mNames, mImageUrls, mStudentNos, mCourses);
+        RecyclerViewAdapter2 adapter = new RecyclerViewAdapter2(this, mNames, mImageUrls, mStudentNos, mCourses, mComments);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressDialog.dismiss();

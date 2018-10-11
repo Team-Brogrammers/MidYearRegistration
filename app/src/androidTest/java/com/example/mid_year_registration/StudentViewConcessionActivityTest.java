@@ -23,6 +23,7 @@ public class StudentViewConcessionActivityTest extends ActivityInstrumentationTe
         intent.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
         intent.putExtra("studentNo","9876543");
         intent.putExtra("course","COMS1099");
+        intent.putExtra("comment", "No Comment");
         setActivityIntent(intent);
         activity = getActivity();
     }
