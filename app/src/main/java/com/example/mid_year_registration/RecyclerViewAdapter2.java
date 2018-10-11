@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,18 +44,18 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter2.ViewHolder2 holder, final int position) {
-        File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-        holder.pdf.fromFile(root)
-                .defaultPage(0).enableSwipe(true)
-                .swipeHorizontal(false)
-                .enableAnnotationRendering(true)
-                .load();
-
-        holder.pdf.useBestQuality(false);
-        holder.pdf.fromAsset(mDocuments.get(holder.getAdapterPosition()))
-                .enableDoubletap(true)
-                .pages(0)
-                .load();
+//        File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+//        holder.pdf.fromFile(root)
+//                .defaultPage(0).enableSwipe(true)
+//                .swipeHorizontal(false)
+//                .enableAnnotationRendering(true)
+//                .load();
+//
+//        holder.pdf.useBestQuality(false);
+//        holder.pdf.fromAsset(mDocuments.get(holder.getAdapterPosition()))
+//                .enableDoubletap(true)
+//                .pages(0)
+//                .load();
         String displayText = mStudentNos.get(position) + "\n" + mCourses.get(position);
         holder.docName.setText(displayText);
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -78,12 +79,12 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
 
 
     public class ViewHolder2 extends RecyclerView.ViewHolder{
-        public PDFView pdf;
+        public ImageView pdfIcon;
         public TextView docName;
         public RelativeLayout parentLayout;
         public ViewHolder2(View itemView) {
             super(itemView);
-            pdf = itemView.findViewById(R.id.PdfView);
+            pdfIcon = itemView.findViewById(R.id.imageView);
             docName = itemView.findViewById(R.id.formLinkTextview);
             parentLayout = itemView.findViewById(R.id.parentLayout);
         }
