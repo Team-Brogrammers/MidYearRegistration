@@ -16,6 +16,7 @@
 //import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 //import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 //import static android.support.test.espresso.matcher.ViewMatchers.withId;
+//import static junit.framework.Assert.assertEquals;
 //
 //public class AddCoursesTest {
 //    @Rule
@@ -24,7 +25,6 @@
 //    @Test
 //    @SmallTest
 //    public void testVisibility(){
-//
 ////        onView(withId(R.id.course1EditText)).check(matches(isDisplayed()));
 ////        onView(withId(R.id.course2EditText)).check(matches(isDisplayed()));
 ////        onView(withId(R.id.course3EditText)).check(matches(isDisplayed()));
@@ -33,4 +33,13 @@
 ////        onView(withId(R.id.imageView5)).check(matches(isDisplayed()));
 //
 //    }
+//
+//    @SmallTest
+//    public void testSetUid() {
+//        String uid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
+//        AddCoursesActivity instance = new AddCoursesActivity();
+//        instance.setUid(uid);
+//        assertEquals(instance.getUid(), uid);
+//    }
+//
 //}
