@@ -2,17 +2,16 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +21,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.itextpdf.xmp.impl.Utils;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ViewConcessionActivity extends AppCompatActivity {
 
@@ -37,12 +41,23 @@ public class ViewConcessionActivity extends AppCompatActivity {
     String studentNo;
     FirebaseStorage storage;
     StorageReference storageReference;
+    DatabaseReference databaseRef;
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
+
+
+    String pdfKey;
+    String uid;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     File localPdf;
     private ProgressDialog mProgressDialog;
     TextView tvStudentNo;
     TextView tvCourseCode;
     PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
+
+    EditText message;
+    Button submit;
 
 
     @Override
@@ -64,6 +79,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
+        message = findViewById(R.id.viewConcessionComment);
+        submit = findViewById(R.id.submitResponseButton);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
@@ -74,6 +91,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
        // mProgressDialog.show();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
 
@@ -108,6 +127,60 @@ public class ViewConcessionActivity extends AppCompatActivity {
             }
         });
 
+        databaseRef = database.getReference().child("Concessions");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                   if(studentNo.equals(childSnap.child("studentNo").getValue())){
+                       pdfKey=childSnap.getKey().toString();
+                       uid=childSnap.child("uid").getValue().toString();
+                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
+                       break;
+                   }
+
+
+                }
+                Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+            }
+        });
+
+    }
+
+    public void onClick(View view){
+
+        final String responseId = databaseRef.push().getKey();
+        final String coordId = firebaseAuth.getUid();
+        final String comment = message.getText().toString();
+
+        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
+
+        DatabaseReference databaseReference = database.getReference().child("Comments");
+
+        databaseReference.child(responseId).setValue(response).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()) {
+
+                    //progressDialog.dismiss();
+
+                    Toast.makeText(ViewConcessionActivity.this, "The form was successfully uploaded", Toast.LENGTH_SHORT).show();
+                    Intent activity = new Intent(ViewConcessionActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(activity);
+                }
+                else {
+                    Toast.makeText(ViewConcessionActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -130,6 +203,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+
     }
 
 }
