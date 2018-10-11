@@ -31,7 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mid_year_registration.Cordinator_Upload_PDF;
+import com.example.mid_year_registration.CoordinatorUploadPdfActivity;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -368,7 +368,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             course.setError("Course code is upper case and numbers only");
         }
         else {
-            Intent intent = new Intent(CoordinatorUploadActivity.this, Cordinator_Upload_PDF.class);
+            Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
             intent.putExtra("filename", text.getText().toString());
             intent.putExtra("studentNumber", stdNo.getText().toString());
             intent.putExtra("courseCode", course.getText().toString());

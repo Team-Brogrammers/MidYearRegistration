@@ -44,7 +44,7 @@
         <activity android:name=".AddCoursesActivity" />
         <activity android:name=".CoordinatorMenuActivity" />
         <activity android:name=".StudentMenuActivity" />
-        <activity android:name=".Cordinator_Upload_PDF"/>
+        <activity android:name=".CoordinatorUploadPdfActivity"/>
         <activity android:name=".CoordinatorUploadActivity"></activity>
     </application>
 
