@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 // populate the list with concessions
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
-                    Log.d("Concession", concession.getPdfUrl());
                     initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                 }
                 initRecyclerView();
