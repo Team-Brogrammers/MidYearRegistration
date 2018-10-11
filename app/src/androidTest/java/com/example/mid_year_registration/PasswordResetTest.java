@@ -44,14 +44,14 @@ public class PasswordResetTest {
     @SmallTest
     public void testInvalidEmail(){
         onView(withId(R.id.resetPasswordEditText)).perform(typeText("12345@students"), closeSoftKeyboard());
-        onView(withId(R.id.resetPasswordButton)).perform(click());
+//        onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
     @Test
     @SmallTest
     public void testNoEmail(){
         onView(withId(R.id.resetPasswordEditText)).perform(typeText("123456"), closeSoftKeyboard());
-        onView(withId(R.id.resetPasswordButton)).perform(click());
+//        onView(withId(R.id.resetPasswordButton)).perform(click());
     }
 
 }

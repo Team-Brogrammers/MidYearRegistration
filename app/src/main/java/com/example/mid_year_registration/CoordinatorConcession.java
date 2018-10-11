@@ -12,6 +12,14 @@ public class CoordinatorConcession {
     // Overload empty constructor to keep firebase happy when downloading concessions created under the Concessions.class scheme.
     // The attributes will be set by the firebase fetch methods using the get() and set() methods in this class.
     // If the concession has not been commented, the comment will default to an empty string.
+    public CoordinatorConcession(){
+        this.uid = "";
+        this.studentNo = "";
+        this.pdfName = "";
+        this.courseCode = "";
+        this.comment = "";
+        this.pdfUrl = "";
+    }
 
     public CoordinatorConcession(String uid, String studentNo, String pdfName, String courseCode, String comment, String pdfUrl) {
         this.uid = uid;
@@ -22,9 +30,6 @@ public class CoordinatorConcession {
         this.pdfUrl = pdfUrl;
     }
 
-    public CoordinatorConcession() {
-
-    }
 
     public String getUid() {
         return uid;

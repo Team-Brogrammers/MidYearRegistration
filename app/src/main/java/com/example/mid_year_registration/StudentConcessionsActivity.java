@@ -66,7 +66,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     CoordinatorConcession concession = childSnap.getValue(CoordinatorConcession.class);
                     if(firebaseUser != null){
-                        if(concession.uid.equals(firebaseUser.getUid())){
+                        String mail = firebaseUser.getEmail();
+                        String studentNumber = mail.substring(0, mail.indexOf('@'));
+                        if(concession.studentNo.equals(studentNumber)){
                             initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode, concession.comment);
                         }
                     }
