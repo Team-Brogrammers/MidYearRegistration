@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,6 +44,9 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     TextInputLayout input;
 
     String filename;
+    String course;
+    String studentNumber;
+
 
     FloatingActionButton UploadButton;
 
@@ -82,6 +85,9 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         filename = bundle.getString("filename");
+        studentNumber = bundle.getString("studentNumber");
+        course = bundle.getString("courseCode");
+
     }
     public void selectPdf(View view){
         // if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -93,19 +99,6 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         input.setVisibility(View.VISIBLE);
 
         //}
-    }
-
-    protected void sendEmail() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"siphe.rvp4@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(CoordinatorUploadPdfActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -143,7 +136,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-       // progressDialog.show();
+        //progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -152,7 +145,6 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
-
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
@@ -176,10 +168,34 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
-                                   // progressDialog.dismiss();
-                                    sendEmail();
-                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
 
+                                    // send email to the relevant student
+                                    BackgroundMail.newBuilder(CoordinatorUploadPdfActivity.this)
+                                            .withUsername("witsbrogrammers@gmail.com")
+                                            .withPassword("witsbrogrammers100")
+                                            .withMailto("musa950820@gmail.com") //student's email
+                                            .withType(BackgroundMail.TYPE_PLAIN)
+                                            .withSubject("Response To Concession")
+                                            .withBody("Good day, the coordinator"+" has responded to your concession"
+                                                    +" for the "+course+" course which you want to register for."
+                                                    +" Please open the MidYearRegistration Application for more details."
+                                            )
+                                            .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                                                @Override
+                                                public void onFail() {
+                                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .send();
+
+                                    //progressDialog.dismiss();
+                                    Toast.makeText(CoordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(CoordinatorUploadPdfActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }

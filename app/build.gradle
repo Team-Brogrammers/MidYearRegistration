@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:17.1.0'
 
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
-
+    implementation 'com.github.yesidlazaro:GmailBackground:1.2.0'
     implementation 'com.github.Hitomis:CircleMenu:v1.1.0'
 
 

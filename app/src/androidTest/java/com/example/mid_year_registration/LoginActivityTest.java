@@ -2,6 +2,7 @@ package com.example.mid_year_registration;
 
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -38,15 +39,21 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
     @SmallTest
     public void testEmailValidation(){
-        assertEquals(activity.isValidEmail("1234@g"), false);
-        assertEquals(activity.isValidEmail("1234567@wits.ac.za"), true);
+        //assertEquals(activity.isValidEmail(null), false);
+        assertEquals(activity.isValidEmail("1234567@"), false);
+        assertEquals(activity.isValidEmail("123456@wits.ac.za"), true);
     }
 
     @SmallTest
     public void testPasswordValidation(){
-        assertEquals(activity.isValidPassword(null), false);
-        assertEquals(activity.isValidPassword("abc"), false);
+        //assertEquals(activity.isValidPassword(null), false);
+        assertEquals(activity.isValidPassword("abd"), false);
         assertEquals(activity.isValidPassword("goodPassword1"), true);
+    }
+
+    @SmallTest
+    public void testInput(){
+        onView(withId(R.id.creatAccountTextView)).perform(closeSoftKeyboard(), click());
     }
 
 }

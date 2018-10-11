@@ -136,7 +136,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
     private boolean isValidStudentNo(String pass) {
-        if (pass != null && pass.length() >= 7) {
+        if (pass != null && pass.length() >= 6) {
             return true;
         }
         return false;
