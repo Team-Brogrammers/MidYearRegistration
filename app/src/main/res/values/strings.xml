@@ -41,6 +41,7 @@
     <string name="course_code">Course Code</string>
     <string name="student_number3">Student number</string>
     <string name="course_code2">Course Code</string>
+    <string name="no_comment">No response comment has been added to this concession request.</string>
     <string name="file_name">FILE NAME :</string>
     <string name="file_name1">File name</string>
     <string name="todo">TODO</string>
