@@ -175,6 +175,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         databaseReference.child(user.getUid()).child("Response:").setValue(coordinatorResponse);
         mProgressDialog.dismiss();
         Toast.makeText(getApplicationContext(),"Message sent!",Toast.LENGTH_SHORT).show();
+        etMessage.setText("");
 
     }
 
