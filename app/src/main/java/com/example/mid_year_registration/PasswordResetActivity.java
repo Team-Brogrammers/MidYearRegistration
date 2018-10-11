@@ -59,7 +59,7 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
 
-    private boolean isvalideEmail() {
+    protected boolean isvalideEmail() {
         String email = emailEditText.getText().toString().trim();
 
         if (email.isEmpty() || !isValidEmail(email)) {
@@ -70,7 +70,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         return true;
     }
 
-    private void checkEmailExistsInFirebase(final String email) {
+    protected void checkEmailExistsInFirebase(final String email) {
         if(!isvalideEmail()) return;
 
         progressDialog.setTitle("Resetting Password");

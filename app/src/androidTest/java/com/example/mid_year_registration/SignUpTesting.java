@@ -33,11 +33,12 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.submitButton)).check(matches(isDisplayed()));
         onView(withId(R.id.adminCheckBox)).check(matches(isClickable()));
+        onView(withId(R.id.submitButton)).check(matches(isClickable()));
     }
 
     @SmallTest
-    public void testButtonsClickable(){
-        onView(withId(R.id.submitButton)).check(matches(isClickable()));
+    public void testBackButton(){
+        assertEquals(activity.onSupportNavigateUp(), true);
     }
 
    @MediumTest

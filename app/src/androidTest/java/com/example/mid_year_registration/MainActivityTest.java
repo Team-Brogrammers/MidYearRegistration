@@ -2,6 +2,8 @@ package com.example.mid_year_registration;
 
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import static android.support.test.espresso.Espresso.onView;
