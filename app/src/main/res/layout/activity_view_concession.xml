@@ -94,6 +94,18 @@
                 tools:layout_editor_absoluteX="163dp"
                 tools:layout_editor_absoluteY="222dp" />
         </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type your reply here"
+            android:id="@+id/et_coordinator_resp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSendMessage"
+            android:text="send to student"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryLight"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

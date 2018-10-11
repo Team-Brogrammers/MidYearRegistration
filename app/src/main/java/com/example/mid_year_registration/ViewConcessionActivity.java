@@ -7,12 +7,14 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +49,10 @@ public class ViewConcessionActivity extends AppCompatActivity {
     TextView tvCourseCode;
     PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
+    Button btnSendMsq;
+    EditText etMessage;
+    DatabaseReference databaseReference;
+    FirebaseUser user;
 
 
     @Override
@@ -61,6 +71,12 @@ public class ViewConcessionActivity extends AppCompatActivity {
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        btnSendMsq = findViewById(R.id.btnSendMessage);
+        etMessage = findViewById(R.id.et_coordinator_resp);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Messages");
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         tvStudentNo = findViewById(R.id.tvConcessionStudentVal);
         tvCourseCode = findViewById(R.id.tvConcessionCourseVal);
         pdfView = findViewById(R.id.CoordPdfView);
@@ -72,7 +88,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-       // mProgressDialog.show();
+        // mProgressDialog.show();
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
@@ -108,7 +124,19 @@ public class ViewConcessionActivity extends AppCompatActivity {
             }
         });
 
+        /*This button when clicked, it will allow the coordinator to send the response to the student*/
+        btnSendMsq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendResponse();
+            }
+        });
+
+
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,6 +158,24 @@ public class ViewConcessionActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendResponse() {
+        String coordinatorResponse;
+        coordinatorResponse = etMessage.getText().toString().trim();
+
+        if(TextUtils.isEmpty(coordinatorResponse)){
+            etMessage.setError("Response cannot be empty");
+            etMessage.requestFocus();
+            return;
+        }
+
+        mProgressDialog.setMessage("Sending response");
+        mProgressDialog.show();
+        databaseReference.child(user.getUid()).child("Response:").setValue(coordinatorResponse);
+        mProgressDialog.dismiss();
+        Toast.makeText(getApplicationContext(),"Message sent!",Toast.LENGTH_SHORT).show();
+
     }
 
 }
