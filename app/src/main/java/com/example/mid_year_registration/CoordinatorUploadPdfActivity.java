@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,6 +95,19 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         //}
     }
 
+    protected void sendEmail() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"siphe.rvp4@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(CoordinatorUploadPdfActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode,data);
@@ -163,7 +177,9 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
                                    // progressDialog.dismiss();
+                                    sendEmail();
                                     Toast.makeText(CoordinatorUploadPdfActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+
                                     Intent activity = new Intent(CoordinatorUploadPdfActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }

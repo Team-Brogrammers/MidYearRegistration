@@ -17,6 +17,10 @@ public class CoordinatorConcession {
         this.pdfUrl = pdfUrl;
     }
 
+    public CoordinatorConcession(){
+
+    }
+
     public String getUid() {
         return uid;
     }
