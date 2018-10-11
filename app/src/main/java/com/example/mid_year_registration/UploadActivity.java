@@ -164,9 +164,9 @@ public class UploadActivity extends AppCompatActivity {
                                             .withType(BackgroundMail.TYPE_PLAIN)
                                             .withSubject("Concession Request")
                                             .withBody("Good day, a student with the this student number "+studentNum// student's email
-                                                    +" has submitted a request to registered for "+course
-                                                    +" Please click the link below to open the MidYearRegistration Application "
-                                                    + "https://appurl.io/jn4gscwt"
+                                                    +" has submitted a request to registered for "+course+"."
+                                                    +" Please open the MidYearRegistration Application for more details"
+                                                    //+ "https://appurl.io/jn4gscwt"
                                             )
                                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                                 @Override
