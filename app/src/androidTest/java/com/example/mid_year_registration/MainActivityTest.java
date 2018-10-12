@@ -64,6 +64,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Test
     @SmallTest
     public void testBackButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
 
         Intents.init();
         Intent resultData = new Intent();
@@ -77,6 +81,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Test
     @SmallTest
     public void testLogoutButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
 
         Intents.init();
         Intent resultData = new Intent();
