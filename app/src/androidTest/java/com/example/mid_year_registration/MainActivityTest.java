@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
@@ -31,6 +33,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     @SmallTest
     public void testVisibility(){
+        FirebaseDatabase.getInstance().goOffline();
         // dismiss the progress dialog
         if(activity.getmProgressDialog().isShowing()){
             activity.getmProgressDialog().dismiss();
@@ -38,6 +41,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //check that the recyclerView is visible
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
+
+        FirebaseDatabase.getInstance().goOnline();
     }
 
 //    @SmallTest
