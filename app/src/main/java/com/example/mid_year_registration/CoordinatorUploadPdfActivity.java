@@ -238,7 +238,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(CoordinatorUploadPdfActivity.this,StudentUpload.class);
+            Intent intent = new Intent(CoordinatorUploadPdfActivity.this,CoordinatorUploadActivity.class);
             startActivity(intent);
             finish();
         }
