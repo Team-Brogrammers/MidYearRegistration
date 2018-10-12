@@ -142,7 +142,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                                Log.d(TAG,flowchartLink.toString());
 
                                Intent intent = new Intent();
-                               String msg = "WITS UNIVERSITY MID-YEAR-REGISTRATION Mobile Application." +
+                               String msg = "WITS UNIVERSITY MID-YEAR-REGISTRATION MOBILE APPLICATION." +
                                        "                                                   "+
                                      " Click this link to view the reply :  "  + shortLink.toString();
                                intent.setAction(Intent.ACTION_SEND);
