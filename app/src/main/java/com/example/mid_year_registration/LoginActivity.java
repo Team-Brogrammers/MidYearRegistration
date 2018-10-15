@@ -1,7 +1,10 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -53,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
      * if they aren't signed in then we try to sign them in, provided they gave
      * correct credentials.
      * */
+
+
+
     public void checkLogin(View arg0) {
         final String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
@@ -69,8 +75,12 @@ public class LoginActivity extends AppCompatActivity {
         if((email.contains("@wits.ac.za")) || (email.contains("@students.wits.ac.za"))) {
             mProgressDialog.setTitle("Logging In");
             mProgressDialog.setMessage("Please wait...");
-            mProgressDialog.setCanceledOnTouchOutside(false);
+
+
+
+                mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.show();
+            if( isNetworkAvailable() == true){
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -94,6 +104,11 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+        }
+          else{
+                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                mProgressDialog.dismiss();
+            }
         }else {
             etEmail.setError("Wits email required");
             return;
@@ -101,6 +116,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /***Checking Internert Connection***/
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+            return true;
+        }
+
+        return false;
+    }
     // validating email address
     static boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"

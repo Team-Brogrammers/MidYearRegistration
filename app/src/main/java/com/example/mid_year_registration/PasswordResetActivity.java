@@ -1,8 +1,11 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -72,22 +75,40 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         progressDialog.setTitle("Resetting Password");
         progressDialog.setMessage("Please wait while we send you an email with reset password link");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
 
-        mAuth = FirebaseAuth.getInstance();
+       if(isNetworkAvailable()) {
+           progressDialog.setCanceledOnTouchOutside(false);
+           progressDialog.show();
 
-        mAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+           mAuth = FirebaseAuth.getInstance();
 
-            @Override
-            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                if(task.getResult().getProviders() != null){
-                    resetPassword(task.getResult().getProviders(), email);
+           mAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
 
-                }
-            }
-        });
+               @Override
+               public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                   if (task.getResult().getProviders() != null) {
+                       resetPassword(task.getResult().getProviders(), email);
 
+                   }
+               }
+           });
+       }
+
+       else {
+           Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+           progressDialog.dismiss();
+       }
+
+    }
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+            return true;
+        }
+
+        return false;
     }
 
     // this function send the user an account reset email so that they can change their password.

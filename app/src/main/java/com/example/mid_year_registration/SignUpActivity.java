@@ -1,7 +1,10 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -41,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     static String checkAdminPrev;
     static String studentNumber;
     static FirebaseUser user = null;
+
 
 
     /*Firebase Libraies*/
@@ -97,6 +101,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
+    /***Check Network**/
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+            return true;
+        }
+
+        return false;
+    }
     private void registerUser() {
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
@@ -115,50 +130,55 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
             /***Check Box should be clicked by a Coordinator Only*/
-          if(userName.endsWith("@students.wits.ac.za") && checkBox.isChecked()){
+            if (userName.endsWith("@students.wits.ac.za") && checkBox.isChecked()) {
                 Snackbar.make(mConstraintLayout, "CheckBox must be checked by a coordinator only!", Snackbar.LENGTH_SHORT).show();
                 return;
-            }
-            else if(!userName.endsWith("@students.wits.ac.za") && !checkBox.isChecked()){
+            } else if (!userName.endsWith("@students.wits.ac.za") && !checkBox.isChecked()) {
                 Snackbar.make(mConstraintLayout, "CheckBox must be checked!", Snackbar.LENGTH_SHORT).show();
                 return;
             }
 
             progressDialog.setMessage("You are being registered...");
             progressDialog.show();
+            if (isNetworkAvailable() == true){
+                firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressDialog.dismiss();
+                                if (task.isSuccessful()) {
+                                    user = FirebaseAuth.getInstance().getCurrentUser();
+                                    if (user != null)
 
-            firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-                            if (task.isSuccessful()) {
-                                user = FirebaseAuth.getInstance().getCurrentUser();
-                                if (user != null)
+                                        /*Successfully Registered*/
 
-                                    /*Successfully Registered*/
+                                        Toast.makeText(getApplicationContext(),
+                                                "Registered",
+                                                Toast.LENGTH_SHORT).show();
 
+                                    if (!user.isEmailVerified()) {
+                                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
+                                    }
+
+                                } else {
                                     Toast.makeText(getApplicationContext(),
-                                            "Registered",
+                                            "Ooops! Email Account already in use!.",
                                             Toast.LENGTH_SHORT).show();
-
-                                if (!user.isEmailVerified()) {
-                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(SignUpActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-
                                 }
-
-                            } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "Ooops! Email Account already in use!.",
-                                        Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    });
+                        });
+        }
+
+        else{
+                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                progressDialog.dismiss();
+            }
         }else {
             e1.setError("Wits email required");
             return;

@@ -1,10 +1,15 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +46,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     Uri pdfUri;
     ProgressDialog progressDialog;
     Bundle bundle;
+    private ConstraintLayout mConstraintLayout;
 
     String filename;
 
@@ -62,6 +68,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.PdfView);
         UploadButton=findViewById(R.id.uploadFab);
         UploadButton.setVisibility(View.INVISIBLE);
+        mConstraintLayout = findViewById(R.id.relativeLayout);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -123,7 +130,11 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
 
     public void uploadPdf(View view){
        if(text!=null){ //an image has been converted
-            upload(pdfUri);
+
+
+         if( isNetworkAvailable() == true)  {
+
+             upload(pdfUri);
             /*********SEND A DYNAMIC LINK********/
            Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                    .setLongLink(Uri.parse(buildDynamicLink()))
@@ -146,7 +157,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
 
 
                                intent.setAction(Intent.ACTION_SEND);
-                               
+
                               /*this is an email a co-orinator is sending to i.e Student's email address*/
                               // intent.putExtra(intent.EXTRA_EMAIL,"studentnumber@students.wits.ac.za");
                                intent.putExtra(intent.EXTRA_SUBJECT,"CONCESSION REPLY");
@@ -161,6 +172,10 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                    });
 
         }
+               else{
+             Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+         }
+       }
         else{
             Toast.makeText(CoordinatorUploadPdfActivity.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
         }
@@ -251,6 +266,17 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+            return true;
+        }
+
+        return false;
     }
 
 }
