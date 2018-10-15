@@ -90,7 +90,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-       // mProgressDialog.show();
+        mProgressDialog.show();
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -114,7 +114,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 //                Intent intent = Intent.createChooser(target, "Open File");
 //                startActivity(intent);
-                //mProgressDialog.dismiss();
+                mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
 
             }
@@ -123,7 +123,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d("GetFile", "Fail");
                 Log.e("GetFile", e.getMessage());
-                //mProgressDialog.dismiss();
+                mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -176,7 +176,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                             .withSubject("Response To Concession")
                             .withBody("Good day, the coordinator"+" has responded to your concession"
                                     +" for the "+course+" course which you want to register for."
-                                    +" Message from coordinator: "+message
+                                    +" Message from coordinator: "+comment
                             )
                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                 @Override

@@ -134,7 +134,6 @@ public class PasswordResetActivity extends AppCompatActivity {
                                         }})
                                     .setActionTextColor(Color.RED)
                                     .show();
-
                         }
                     }
                 });
