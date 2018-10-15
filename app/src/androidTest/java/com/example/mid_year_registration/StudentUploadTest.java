@@ -91,15 +91,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withText("Logout")).perform(click());
         intended(hasComponent(LoginActivity.class.getName()));
     }*/
-
-    @SmallTest
-    public void testValidInput6() throws InterruptedException {
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
-        //onView(withId(R.id.convertImageFab)).perform(click());
-    }
-
-
+    
     @MediumTest
     public void activityResult_DisplaysImage() {
         // Build the result to return when the activity is launched.
