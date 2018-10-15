@@ -41,12 +41,12 @@ public class SignUpTesting extends ActivityInstrumentationTestCase2<SignUpActivi
         assertEquals(activity.onSupportNavigateUp(), true);
     }
 
-   @MediumTest
-   public void testNoEmailNoPassword(){
-      onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
-      onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
-      onView(withId(R.id.submitButton)).perform(click());
-   }
+//   @MediumTest
+//   public void testNoEmailNoPassword(){
+//      onView(withId(R.id.usernameEditText)).perform(typeText("  "), closeSoftKeyboard());
+//      onView(withId(R.id.passwordEditText)).perform(typeText("  "), closeSoftKeyboard());
+//      onView(withId(R.id.submitButton)).perform(click());
+//   }
 
     @MediumTest
    public void testNoEmail(){

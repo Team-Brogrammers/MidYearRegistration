@@ -91,7 +91,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withText("Logout")).perform(click());
         intended(hasComponent(LoginActivity.class.getName()));
     }*/
-    
+
     @MediumTest
     public void activityResult_DisplaysImage() {
         // Build the result to return when the activity is launched.
