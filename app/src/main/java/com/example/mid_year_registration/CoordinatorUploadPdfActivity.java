@@ -142,19 +142,24 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                                Log.d(TAG,flowchartLink.toString());
 
                                Intent intent = new Intent();
-                               String msg = "WITS UNIVERSITY MID-YEAR-REGISTRATION MOBILE APPLICATION." +
-                                       "                                                   "+
-                                     " Click this link to view the reply :  "  + shortLink.toString();
+                               String msg = "LogIn quickly to the Wits University Mid-Year Registartion App by Clicking on this Link : "+ shortLink.toString();
+
+
                                intent.setAction(Intent.ACTION_SEND);
+                               
+                              /*this is an email a co-orinator is sending to i.e Student's email address*/
+                              // intent.putExtra(intent.EXTRA_EMAIL,"studentnumber@students.wits.ac.za");
+                               intent.putExtra(intent.EXTRA_SUBJECT,"CONCESSION REPLY");
                                intent.putExtra(intent.EXTRA_TEXT,msg);
                                intent.setType("text/plain");
-                               startActivity(intent);
+                               startActivity(Intent.createChooser(intent, "Respond by "));
                            } else {
                                // Error
                                // ...
                            }
                        }
                    });
+
         }
         else{
             Toast.makeText(CoordinatorUploadPdfActivity.this, "No pdf file provided", Toast.LENGTH_SHORT).show();
@@ -241,7 +246,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
             finish();
         }
         if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(CoordinatorUploadPdfActivity.this,CoordinatorUploadActivity.class);
+           Intent intent = new Intent(CoordinatorUploadPdfActivity.this,CoordinatorUploadActivity.class);
             startActivity(intent);
             finish();
         }
