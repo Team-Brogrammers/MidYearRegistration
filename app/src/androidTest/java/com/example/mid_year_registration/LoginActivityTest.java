@@ -1,14 +1,24 @@
 package com.example.mid_year_registration;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.filters.SmallTest;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -51,9 +61,26 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         assertEquals(activity.isValidPassword("goodPassword1"), true);
     }
 
-//    @SmallTest
-//    public void testInput(){
-//        onView(withId(R.id.creatAccountTextView)).perform(closeSoftKeyboard(), click());
-//    }
+    @SmallTest
+    public void testNeedAccountButton(){
 
+        Intents.init();
+        Intent resultData = new Intent();
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+        onView(withId(R.id.creatAccountTextView)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), SignUpActivity.class)));
+        Intents.release();
+    }
+
+    @SmallTest
+    public void testForgotPasswordButton(){
+        Intents.init();
+        Intent resultData = new Intent();
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+        onView(withId(R.id.resetPasswordTextView)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), PasswordResetActivity.class)));
+        Intents.release();
+    }
 }
