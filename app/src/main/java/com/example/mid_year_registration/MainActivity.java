@@ -179,18 +179,20 @@ public class MainActivity extends AppCompatActivity {
                     //final String pdfKey = childSnap.getKey();
                     //final String comment = childSnap.getKey();
                         if (test.equals(childSnap.child("status").getValue())) {
-                            final String pdfKey = childSnap.getKey();
-                            //Toast.makeText(MainActivity.this, "Concession id: "+comment, Toast.LENGTH_LONG).show();
+                            final String pdfKey = childSnap.child("pdfId").getValue().toString();
+                            Toast.makeText(MainActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
                             databaseRef2.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                                        //Toast.makeText(MainActivity.this, "Concession id: "+childSnap.getKey(), Toast.LENGTH_LONG).show();
                                         if (pdfKey.equals(childSnap.getKey())) {
                                             Concessions concession = childSnap.getValue(Concessions.class);
                                             Log.d("Concession", concession.getPdfUrl());
 
                                             initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                                         }
+                                        initRecyclerView();
                                     }
                                 }
 
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
-                    initRecyclerView();
+
                 }
             }
 
