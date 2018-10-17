@@ -140,13 +140,15 @@ public class UploadActivity extends AppCompatActivity {
                         final String pdfId = databaseReference.push().getKey();
                         String studentNo = bundle.getString("studentNumber");
                         final String courseCode = bundle.getString("courseCode");
+                        final String status = "pending";
 
                         Concessions concessions = new Concessions(
                                 firebaseUser.getUid(),
                                 studentNo,
                                 filename,
                                 courseCode,
-                                url
+                                url,
+                                status
 
                         );
 

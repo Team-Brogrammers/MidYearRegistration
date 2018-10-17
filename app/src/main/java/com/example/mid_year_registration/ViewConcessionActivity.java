@@ -157,8 +157,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
         final String responseId = databaseRef.push().getKey();
         final String coordId = firebaseAuth.getUid();
         final String comment = message.getText().toString();
+        final String status = "rejected";
 
-        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
+        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment, status);
 
         DatabaseReference databaseReference = database.getReference().child("Comments");
 
