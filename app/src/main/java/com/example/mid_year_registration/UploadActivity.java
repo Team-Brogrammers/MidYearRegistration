@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,6 +32,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class UploadActivity extends AppCompatActivity {
     Button addPdf, upload;
     PDFView pdfView;
@@ -49,6 +53,7 @@ public class UploadActivity extends AppCompatActivity {
     FirebaseDatabase database; //Used to store URLs of uploaded files
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
+    private ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class UploadActivity extends AppCompatActivity {
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
+        mConstraintLayout = findViewById(R.id.relativeLayout);
 
         //attachment = findViewById(R.id.)
 
@@ -111,6 +117,7 @@ public class UploadActivity extends AppCompatActivity {
 
     public void uploadPdf(View view){
         if(text!=null){ //an image has been converted
+
             upload(pdfUri);
         }
         else{
@@ -126,7 +133,12 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
         //progressDialog.show();
+        if( isConnectingToInternet(UploadActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+            //ProgressDialog.dismiss();
+            return;
 
+        }
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -153,6 +165,12 @@ public class UploadActivity extends AppCompatActivity {
                         databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                if( isConnectingToInternet(UploadActivity.this) == false) {
+                                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                    //ProgressDialog.dismiss();
+                                    return;
+
+                                }
                                 if(task.isSuccessful()) {
 
                                     // Send email in the background

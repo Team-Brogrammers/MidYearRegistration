@@ -7,26 +7,22 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.example.lib.ValidateEmail;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
 import static com.example.mid_year_registration.LoginActivity.isValidEmail;
 import static com.example.mid_year_registration.LoginActivity.isValidPassword;
+//import com.example.lib.ValidateEmail;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -97,6 +93,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
+
     private void registerUser() {
         userName = e1.getText().toString().trim();
         userPass = e2.getText().toString().trim();
@@ -125,13 +122,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             progressDialog.setMessage("You are being registered...");
-            //progressDialog.show();
+            progressDialog.show();
+            if( isConnectingToInternet(SignUpActivity.this) == false) {
+                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                progressDialog.dismiss();
+                return;
 
+            }
             firebaseAuth.createUserWithEmailAndPassword(userName, userPass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            //progressDialog.dismiss();
+                            progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 user = FirebaseAuth.getInstance().getCurrentUser();
                                 if (user != null)
@@ -165,6 +167,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+
     public void SignIn(View view){
 
         if(user!=null){
@@ -172,10 +175,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (user.isEmailVerified()) {
                 if (userName.endsWith("@students.wits.ac.za")) {
                     Intent activity = new Intent(SignUpActivity.this, StudentMenuActivity.class);
+                    if( isConnectingToInternet(SignUpActivity.this) == false) {
+                        Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                        //ProgressDialog.dismiss();
+                        return;
+
+                    }
                     startActivity(activity);
 
                 } else if (userName.endsWith("@wits.ac.za")) {
                     Intent activity = new Intent(SignUpActivity.this, CoordinatorMenuActivity.class);
+                    if( isConnectingToInternet(SignUpActivity.this) == false) {
+                        Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                        //ProgressDialog.dismiss();
+                        return;
+
+                    }
                     startActivity(activity);
 
                 }

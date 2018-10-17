@@ -3,11 +3,13 @@ package com.example.mid_year_registration;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class CoordinatorUploadPdfActivity extends AppCompatActivity {
 
     Button addPdf, upload;
@@ -46,6 +50,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
     String filename;
     String course;
     String studentNumber;
+    ConstraintLayout mConstraintLayout;
 
 
     FloatingActionButton UploadButton;
@@ -68,6 +73,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         UploadButton.setVisibility(View.INVISIBLE);
         message = findViewById(R.id.commentEditext);
         input = findViewById(R.id.commentTextinputLayout);
+        mConstraintLayout = findViewById(R.id.relativeLayout);
         input.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
@@ -136,7 +142,15 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
+        if( isConnectingToInternet(CoordinatorUploadPdfActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+            //ProgressDialog.dismiss();
+            return;
+
+        }
+
         //progressDialog.show();
+
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
@@ -165,9 +179,19 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                         String email= firebaseAuth.getCurrentUser().getEmail();
 
                         databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+
+                                if( isConnectingToInternet(CoordinatorUploadPdfActivity.this) == false) {
+                                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                    //ProgressDialog.dismiss();
+                                    return;
+
+                                }
                                 if(task.isSuccessful()) {
+
 
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(CoordinatorUploadPdfActivity.this)

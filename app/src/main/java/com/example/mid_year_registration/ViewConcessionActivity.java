@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class ViewConcessionActivity extends AppCompatActivity {
 
     String name;
@@ -59,6 +63,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
     EditText message;
     Button submit;
+    ConstraintLayout mConstraintLayout;
+
 
 
     @Override
@@ -73,7 +79,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("View Concession");
         Log.d("Name", name);
         /* Set up the action bar */
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -82,26 +88,44 @@ public class ViewConcessionActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.CoordPdfView);
         message = findViewById(R.id.viewConcessionComment);
         submit = findViewById(R.id.submitResponseButton);
+        mConstraintLayout = findViewById(R.id.viewconcessionConstraintLayout);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
 
+
+
+
+
+
+
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
+
         mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
+        if( isConnectingToInternet(ViewConcessionActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+            mProgressDialog.dismiss();
 
+            return;
+
+        }
+
+
+
+             firebaseAuth = FirebaseAuth.getInstance();
+             firebaseUser = firebaseAuth.getCurrentUser();
+             storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
         localPdf = new File(Environment.getExternalStorageDirectory() + "/" + downloadDirectory);
 
         storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
                 pdfView.fromFile(localPdf).
                         defaultPage(0).enableSwipe(true)
                         .swipeHorizontal(false)
@@ -115,7 +139,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                Intent intent = Intent.createChooser(target, "Open File");
 //                startActivity(intent);
                 mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewConcessionActivity.this, "Download Success!", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -124,40 +148,66 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Log.d("GetFile", "Fail");
                 Log.e("GetFile", e.getMessage());
                 mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewConcessionActivity.this, "File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         databaseRef = database.getReference().child("Concessions");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // populate the list with concessions
-                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
-                   if(studentNo.equals(childSnap.child("studentNo").getValue())){
-                       pdfKey=childSnap.getKey().toString();
-                       uid=childSnap.child("uid").getValue().toString();
-                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
-                       break;
-                   }
+
+                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    if (studentNo.equals(childSnap.child("studentNo").getValue())) {
+                        pdfKey = childSnap.getKey().toString();
+                        uid = childSnap.child("uid").getValue().toString();
+                        Toast.makeText(ViewConcessionActivity.this, "PDFId: " + pdfKey, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                 }
                 //Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
-
     }
 
     public void onClick(View view){
+
+
+
+
+        if( isConnectingToInternet(ViewConcessionActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+            mProgressDialog.dismiss();
+            return;
+
+        }
 
         final String responseId = databaseRef.push().getKey();
         final String coordId = firebaseAuth.getUid();
         final String comment = message.getText().toString();
 
+        /************************************************************************************************************************************/
+        // HOW CAN I DISABLE THE RECYLCE VIEW IF THERE IS NO NETWORK
+
+        /***Does not work **/
+        if(comment.length() < 4  && isConnectingToInternet(ViewConcessionActivity.this) == true){
+            Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(comment.length() < 4){
+            Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
+            return;
+        }
         CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
 
         DatabaseReference databaseReference = database.getReference().child("Comments");
@@ -165,6 +215,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         databaseReference.child(responseId).setValue(response).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
 
                 if(task.isSuccessful()) {
                     // send email to the relevant student

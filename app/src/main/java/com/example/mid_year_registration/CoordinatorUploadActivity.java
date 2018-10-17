@@ -64,15 +64,18 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coordinator_upload);
 
 
-        course=findViewById(R.id.etCourse);
-        stdNo=findViewById(R.id.stdNoEditText);
-        pdfView=findViewById(R.id.PdfView);
+        course = findViewById(R.id.etCourse);
+        stdNo = findViewById(R.id.stdNoEditText);
+        pdfView = findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
         text = findViewById(R.id.fileName);
@@ -89,15 +92,14 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         database = FirebaseDatabase.getInstance();
 
 
-
-        addImageFab.setOnClickListener(new View.OnClickListener(){
+        addImageFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SelectImage();
             }
         });
         getSupportActionBar().setTitle("Upload Form");
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -129,13 +131,13 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==R.id.action_logout){
-            Intent intent = new Intent(CoordinatorUploadActivity.this,LoginActivity.class);
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(CoordinatorUploadActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
-        if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(CoordinatorUploadActivity.this,CoordinatorMenuActivity.class);
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
             startActivity(intent);
             finish();
         }
@@ -143,8 +145,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
     }
 
-    public boolean isValidStudentNo(String pass) {
-        if (pass != null && pass.length() >= 6) {
+    private boolean isValidStudentNo(String pass) {
+        if (pass != null && pass.length() >= 7) {
             return true;
         }
         return false;
@@ -163,42 +165,38 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         return hasImage;
     }*/
 
-    public void openPdf(View view){
+    public void openPdf(View view) {
 
-        String mCourse=course.getText().toString();
-        String mStdNo=stdNo.getText().toString();
+        String mCourse = course.getText().toString();
+        String mStdNo = stdNo.getText().toString();
+        /*******Find if the ImageView has something********/
 
-        if(mCourse.isEmpty() || mStdNo.isEmpty() ){
-            if(mCourse.isEmpty()) {
-                course.setError("input is empty!");
 
+            if (mCourse.isEmpty() || mStdNo.isEmpty()) {
+                if (mCourse.isEmpty()) {
+                    course.setError("input is empty!");
+
+                } else if (mStdNo.isEmpty()) {
+                    stdNo.setError("input is empty!");
+                } else if (mCourse.isEmpty() && mCourse.isEmpty()) {
+                    stdNo.setError("input is empty!");
+                    course.setError("input is empty!");
+                }
+            } else if (!isValidStudentNo(mStdNo) || !checkString(mCourse)) {
+                if (!isValidStudentNo(mStdNo)) {
+                    stdNo.setError("invalid student number!");
+                } else if (!checkString(mCourse)) {
+                    course.setError("Course code is upper case and numbers only");
+                } else if (!isValidStudentNo(mStdNo) && !checkString(mCourse)) {
+                    stdNo.setError("invalid student number!");
+                    course.setError("Course code is upper case and numbers only");
+                }
+            } else if (bmp == null) {
+                Context context = getApplicationContext();
+                CharSequence meessage = "Please select an image!";
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(context, meessage, duration).show();
             }
-            else if(mStdNo.isEmpty()) {
-                stdNo.setError("input is empty!");
-            }
-            else if(mCourse.isEmpty() && mCourse.isEmpty()){
-                stdNo.setError("input is empty!");
-                course.setError("input is empty!");
-            }
-        }
-        else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
-            if(!isValidStudentNo(mStdNo)) {
-                stdNo.setError("invalid student number!");
-            }
-            else if(!checkString(mCourse)) {
-                course.setError("Course code is upper case and numbers only");
-            }
-            else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
-                stdNo.setError("invalid student number!");
-                course.setError("Course code is upper case and numbers only");
-            }
-        }
-        else if(bmp == null){
-            Context context = getApplicationContext();
-            CharSequence meessage = "Please select an image!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, meessage, duration).show();
-        }
 
 
         /*else if(!imageSelected){
@@ -211,65 +209,67 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }*/
 
 
+            else {
+                PdfDocument pdf = new PdfDocument();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
+                PdfDocument.Page page = pdf.startPage(pageInfo);
 
-        else {
-            PdfDocument pdf = new PdfDocument();
-            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
-            PdfDocument.Page page = pdf.startPage(pageInfo);
+                Canvas canvas = page.getCanvas();
 
-            Canvas canvas = page.getCanvas();
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor("#ffffff"));
+                canvas.drawPaint(paint);
+                bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+                paint.setColor(Color.BLUE);
+                canvas.drawBitmap(bmp, 0, 0, null);
+                pdf.finishPage(page);
 
-            Paint paint = new Paint();
-            paint.setColor(Color.parseColor("#ffffff"));
-            canvas.drawPaint(paint);
-            bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
-            paint.setColor(Color.BLUE);
-            canvas.drawBitmap(bmp, 0, 0, null);
-            pdf.finishPage(page);
+                //String targetPdf = "/test.pdf";
+                File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                if (!root.exists()) {
+                    root.mkdir();
+                }
 
-            //String targetPdf = "/test.pdf";
-            File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-            if (!root.exists()) {
-                root.mkdir();
+                Date today = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String dateToStr = format.format(today);
+
+                File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    pdf.writeTo(fileOutputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                pdf.close();
+
+                pdfView.fromFile(file)
+                        .defaultPage(0).enableSwipe(true)
+                        .swipeHorizontal(false)
+                        .onPageChange(this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(this)
+                        .scrollHandle(new DefaultScrollHandle(this))
+                        .load();
+                Context context = getApplicationContext();
+                CharSequence meessage = "Image Successfully converted!";
+                int duration = Toast.LENGTH_SHORT;
+
+                text.setText(mStdNo + "_" + mCourse + "_" + dateToStr);
+
+                Toast toast = Toast.makeText(context, meessage, duration);
+                toast.show();
+                nextFab.setVisibility(View.VISIBLE);
             }
-
-            Date today = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String dateToStr = format.format(today);
-
-            File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                pdf.writeTo(fileOutputStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            pdf.close();
-
-            pdfView.fromFile(file)
-                    .defaultPage(0).enableSwipe(true)
-                    .swipeHorizontal(false)
-                    .onPageChange(this)
-                    .enableAnnotationRendering(true)
-                    .onLoad(this)
-                    .scrollHandle(new DefaultScrollHandle(this))
-                    .load();
-            Context context = getApplicationContext();
-            CharSequence meessage = "Image Successfully converted!";
-            int duration = Toast.LENGTH_SHORT;
-
-            text.setText(mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
-
-            Toast toast = Toast.makeText(context, meessage, duration);
-            toast.show();
-            nextFab.setVisibility(View.VISIBLE);
-        }
+        
     }
 
-    public static boolean checkString(String mCourse) {
+
+
+    private static boolean checkString(String mCourse) {
         char ch;
         boolean capitalFlag = false;
         boolean lowerCaseFlag = false;
@@ -477,5 +477,4 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
 
 }
-
 

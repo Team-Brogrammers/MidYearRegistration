@@ -1,7 +1,10 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -16,9 +19,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity {
 
     // Firebase instance variables
@@ -53,6 +56,15 @@ public class LoginActivity extends AppCompatActivity {
      * if they aren't signed in then we try to sign them in, provided they gave
      * correct credentials.
      * */
+
+
+
+        static ArrayList<String> arrayList = new ArrayList<>();
+        static boolean RegisteredEmail(String email){
+            arrayList.add(email);
+            return true;
+        }
+
     public void checkLogin(View arg0) {
         final String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
@@ -70,14 +82,24 @@ public class LoginActivity extends AppCompatActivity {
             mProgressDialog.setTitle("Logging In");
             mProgressDialog.setMessage("Please wait...");
             mProgressDialog.setCanceledOnTouchOutside(false);
-            //mProgressDialog.show();
+            mProgressDialog.show();
 
+            if( isConnectingToInternet(LoginActivity.this) == false) {
+                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                mProgressDialog.dismiss();
+                return;
+
+            }
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            
                             if (task.isSuccessful()) {
-                               // mProgressDialog.dismiss();
+
+
+                               mProgressDialog.dismiss();
                                 if (email.endsWith("@students.wits.ac.za")) {
                                     Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
                                     startActivity(activity);
@@ -91,6 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 //mProgressDialog.dismiss();
                                 Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG).show();
+                                mProgressDialog.dismiss();
+
                             }
                         }
                     });
@@ -99,6 +123,56 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+    }
+
+
+    /************Checking if Mobile data is Avalaible*****/
+    public static Boolean isOnline() {
+        try {
+            Process p1 = Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            int returnVal = p1.waitFor();
+            boolean reachable = (returnVal==0);
+            if(reachable){
+                //System.out.println("Internet access");
+                return true;
+            }
+            else{
+                //System.out.println("No Internet access");
+                return  false;
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /***Checking Internert Connection***/
+    public static boolean isConnectingToInternet(Context context) {
+        ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+//mobile
+        NetworkInfo.State mobile = conMan.getNetworkInfo(0).getState();
+
+//wifi
+        NetworkInfo.State wifi = conMan.getNetworkInfo(1).getState();
+
+
+        if (mobile == NetworkInfo.State.CONNECTED || mobile == NetworkInfo.State.CONNECTING )
+        {
+            if(isOnline() == true) {
+                return true;
+            }
+
+            return  false;
+        }
+        else if (wifi == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTING  ){
+
+            return true;
+        }
+
+        return false;
     }
 
     // validating email address

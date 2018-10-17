@@ -2,7 +2,6 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.UploadTask;
 
 public class AddCoursesActivity extends AppCompatActivity{
 
@@ -77,11 +74,13 @@ public class AddCoursesActivity extends AppCompatActivity{
         constraintLayout = findViewById(R.id.addCoursesConstraintLayout);
 
         // initialize progressbar
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Logging In");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
+
 
         // Display current user profile details
         mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {

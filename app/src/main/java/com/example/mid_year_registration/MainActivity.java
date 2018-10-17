@@ -4,14 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,8 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
+
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,43 +34,59 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG="MainActivity";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef;
-
+    ConstraintLayout mConstraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        mConstraintLayout = findViewById(R.id.activitymain);
         getSupportActionBar().setTitle("Student Requests");
         /* Set up the action bar */
+
+
         if(getSupportActionBar() != null){
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        if( isConnectingToInternet(MainActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
 
-        mProgressDialog = new ProgressDialog(MainActivity.this);
-        mProgressDialog.setTitle("Loading Concessions");
-        mProgressDialog.setMessage("Please wait...");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+            //mProgressDialog.dismiss();
+            return;
 
-        databaseRef = database.getReference().child("Concessions");
+        }
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // populate the list with concessions
-                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
-                    Concessions concession = childSnap.getValue(Concessions.class);
-                    initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+        else {
+
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+            mProgressDialog.setTitle("Loading Concessions");
+            mProgressDialog.setMessage("Please wait...");
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
+
+
+            databaseRef = database.getReference().child("Concessions");
+
+            databaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // populate the list with concessions
+
+
+                    for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                        Concessions concession = childSnap.getValue(Concessions.class);
+                        initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                    }
+                    initRecyclerView();
                 }
-                initRecyclerView();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+                }
+            });
+        }
     }
 
     private void initImageBitmap(String url, String name, String studentNo, String course){

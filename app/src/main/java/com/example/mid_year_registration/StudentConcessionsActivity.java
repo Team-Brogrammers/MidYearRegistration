@@ -2,9 +2,10 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
     DatabaseReference databaseRef;
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
+    ConstraintLayout mConstraintLayout;
 
     private ProgressDialog mProgressDialog;
 
@@ -40,7 +42,9 @@ public class StudentConcessionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_student_concessions);
+        mConstraintLayout = findViewById(R.id.studenconcessions);
         getSupportActionBar().setTitle("My Requests");
 
         /* Set up the action bar */
@@ -57,6 +61,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
 
         databaseRef = database.getReference().child("Concessions");
         databaseRef.addValueEventListener(new ValueEventListener() {
