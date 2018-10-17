@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class AddCoursesActivity extends AppCompatActivity{
 
     // initialize variables
@@ -108,6 +110,13 @@ public class AddCoursesActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // update account changes
+
+                if( isConnectingToInternet(AddCoursesActivity.this) == false) {
+                    Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+                    return;
+
+                }
                 updateAccount();
             }
         });
