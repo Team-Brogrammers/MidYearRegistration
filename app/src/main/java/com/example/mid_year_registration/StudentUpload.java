@@ -25,9 +25,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +52,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.example.mid_year_registration.R.layout.activity_student_upload;
 
-public class StudentUpload extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener {
+public class StudentUpload extends AppCompatActivity implements OnPageChangeListener,
+        OnLoadCompleteListener,AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
@@ -62,10 +66,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     Uri pdfUri;
     ProgressDialog progressDialog;
     FloatingActionButton addImageFab, convertFab, nextFab;
+    Spinner spinnerCourses;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
+    String courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,18 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 SelectImage();
             }
         });*/
+
+       spinnerCourses = (Spinner)findViewById(R.id.spinnerCourses);
+       pickCourses();
+
+    }
+
+    private void pickCourses() {
+        ArrayAdapter<CharSequence> courseArrayAdapter = ArrayAdapter
+                .createFromResource(getApplicationContext(),R.array.courses,android.R.layout.simple_spinner_item);
+        courseArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCourses.setAdapter(courseArrayAdapter);
+        spinnerCourses.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -327,33 +345,31 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
     public void nextPage(View view){
-        String mCourse=course.getText().toString();
+        String mCourse = courses;
         String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+        if(mCourse.equals("Course List") && mStdNo.isEmpty() ){
 
-            course.setError("input is empty!");
             stdNo.setError("input is empty!");
         }
         else if( mStdNo.isEmpty()){
             stdNo.setError("student number is empty!");
         }
 
-        else if(mCourse.isEmpty()){
-            course.setError("Course code is empty!");
+        else if(mCourse.equals("Course List")){
+            Toast.makeText(getApplicationContext(),"Please select Course",
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
 
         else if(!isValidStudentNo(mStdNo)) {
             stdNo.setError("invalid student number!");
         }
-        else if(!checkString(mCourse)){
-            course.setError("Course code is upper case and numbers only");
-        }
         else {
             Intent intent = new Intent(StudentUpload.this, UploadActivity.class);
             intent.putExtra("filename", text.getText().toString());
             intent.putExtra("studentNumber", stdNo.getText().toString());
-            intent.putExtra("courseCode", course.getText().toString());
+            intent.putExtra("courseCode", courses);
             startActivity(intent);
         }
     }
@@ -459,4 +475,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        courses = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(),courses,Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
