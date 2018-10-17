@@ -114,6 +114,105 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void pending(){
+
+
+        mNames.clear();
+        mImageUrls.clear();
+        mStudentNos.clear();
+        mCourses.clear();
+
+        DatabaseReference databaseRef1 = database.getReference().child("Concessions");
+        mProgressDialog.setTitle("Loading Concessions");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+        final String test = "pending";
+        databaseRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+
+
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    if (test.equals(childSnap.child("status").getValue())) {
+                        Concessions concession = childSnap.getValue(Concessions.class);
+                        Log.d("Concession", concession.getPdfUrl());
+
+                        initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                    }
+                    //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+                    initRecyclerView();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+            }
+        });
+    }
+
+    public void rejected(){
+
+
+        mNames.clear();
+        mImageUrls.clear();
+        mStudentNos.clear();
+        mCourses.clear();
+
+        DatabaseReference databaseRef1 = database.getReference().child("Comments");
+        final DatabaseReference databaseRef2 = database.getReference().child("Concessions");
+        mProgressDialog.setTitle("Loading Concessions");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+        final String test = "rejected";
+        databaseRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+
+
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    //
+                    //final String pdfKey = childSnap.getKey();
+                    //final String comment = childSnap.getKey();
+                        if (test.equals(childSnap.child("status").getValue())) {
+                            final String pdfKey = childSnap.getKey();
+                            //Toast.makeText(MainActivity.this, "Concession id: "+comment, Toast.LENGTH_LONG).show();
+                            databaseRef2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                                        if (pdfKey.equals(childSnap.getKey())) {
+                                            Concessions concession = childSnap.getValue(Concessions.class);
+                                            Log.d("Concession", concession.getPdfUrl());
+
+                                            initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                    //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+                    initRecyclerView();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+            }
+        });
+    }
+
     private void initImageBitmap(String url, String name, String studentNo, String course){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
@@ -153,11 +252,13 @@ public class MainActivity extends AppCompatActivity {
                 accepted();
                 return  true;
             case R.id.action_rejected:
-                Toast.makeText(MainActivity.this, "You selected Rejected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "You selected Rejected", Toast.LENGTH_SHORT).show();
+                rejected();
                 return true;
 
             case R.id.action_pending:
-                Toast.makeText(MainActivity.this, "You selected Pending", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "You selected Pending", Toast.LENGTH_SHORT).show();
+                pending();
                 return true;
 
             default:
