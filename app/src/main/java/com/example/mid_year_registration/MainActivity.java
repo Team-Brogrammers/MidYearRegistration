@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mStudentNos = new ArrayList<>();
     private ArrayList<String> mCourses = new ArrayList<>();
+
     private ProgressDialog mProgressDialog;
 
     private static final String TAG="MainActivity";
@@ -60,9 +59,52 @@ public class MainActivity extends AppCompatActivity {
                 // populate the list with concessions
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Concessions concession = childSnap.getValue(Concessions.class);
+                    Log.d("Concession", concession.getPdfUrl());
+
                     initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                 }
+                //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
                 initRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB Error", databaseError.toString()); //TODO handle error properly
+            }
+        });
+
+    }
+
+    public void accepted(){
+
+
+        mNames.clear();
+        mImageUrls.clear();
+        mStudentNos.clear();
+        mCourses.clear();
+
+        DatabaseReference databaseRef1 = database.getReference().child("Concessions");
+        mProgressDialog.setTitle("Loading Concessions");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+        final String test = "accepted";
+        databaseRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // populate the list with concessions
+
+
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    if (test.equals(childSnap.child("status").getValue())) {
+                        Concessions concession = childSnap.getValue(Concessions.class);
+                        Log.d("Concession", concession.getPdfUrl());
+
+                        initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                    }
+                    //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
+                    initRecyclerView();
+                }
             }
 
             @Override
@@ -92,26 +134,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.view_concession_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.action_logout) {
-            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        if(item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(MainActivity.this,CoordinatorMenuActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+        switch(item.getItemId()){
+            case R.id.action_logout:
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
 
+            case R.id.action_accepted:
+                //Toast.makeText(ViewConcessionActivity.this, "You selected Accepted", Toast.LENGTH_SHORT).show();
+                accepted();
+                return  true;
+            case R.id.action_rejected:
+                Toast.makeText(MainActivity.this, "You selected Rejected", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.action_pending:
+                Toast.makeText(MainActivity.this, "You selected Pending", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
     public ProgressDialog getmProgressDialog() {
         return mProgressDialog;
     }
