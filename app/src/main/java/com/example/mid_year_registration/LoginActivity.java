@@ -164,8 +164,8 @@ public class LoginActivity extends AppCompatActivity {
     static boolean wifiIsConnected = true;
 
 
-    static final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+    final static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static boolean hostAvailable() {
 
       /*   DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
@@ -213,10 +213,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 else{
                     wifiIsConnected = false;
-                    //user = FirebaseAuth.getInstance().getCurrentUser();
-                    final DatabaseReference myConnectionsRef = database.getReference(".info/connected");
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    final DatabaseReference myConnectionsRef = database.getReference("users/connections");
                     DatabaseReference con = myConnectionsRef.push();
                     con.onDisconnect().removeValue();
+
                 }
 
 

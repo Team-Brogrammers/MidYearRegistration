@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mStudentNos = new ArrayList<>();
     private ArrayList<String> mCourses = new ArrayList<>();
     private ProgressDialog mProgressDialog;
+    RecyclerView recyclerView;
 
     private static final String TAG="MainActivity";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         mConstraintLayout = findViewById(R.id.activitymain);
+        recyclerView = findViewById(R.id.recyclerView);
         getSupportActionBar().setTitle("Student Requests");
         /* Set up the action bar */
 
@@ -49,15 +51,8 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if( isConnectingToInternet(MainActivity.this) == false) {
-            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
 
-            //mProgressDialog.dismiss();
-            return;
 
-        }
-
-        else {
 
             mProgressDialog = new ProgressDialog(MainActivity.this);
             mProgressDialog.setTitle("Loading Concessions");
@@ -86,7 +81,19 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("DB Error", databaseError.toString()); //TODO handle error properly
                 }
             });
+
+            /******* Internet Connection****/
+
+          if( isConnectingToInternet(MainActivity.this) == false) {
+              recyclerView.setClickable(false);
+              Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+            //mProgressDialog.dismiss();
+            return;
+
         }
+
+
     }
 
     private void initImageBitmap(String url, String name, String studentNo, String course){

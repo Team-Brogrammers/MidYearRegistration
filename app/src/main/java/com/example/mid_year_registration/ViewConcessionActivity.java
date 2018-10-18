@@ -94,11 +94,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
         tvCourseCode.setText(course);
 
 
-
-
-
-
-
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
 
         mProgressDialog.setTitle("Loading Concession PDF");
@@ -106,19 +101,13 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
-        if(  isConnectingToInternet(ViewConcessionActivity.this) == false) {
-            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
-            mProgressDialog.dismiss();
-
-            return;
-
-        }
+        if(  isConnectingToInternet(ViewConcessionActivity.this) == true) {
 
 
 
-             firebaseAuth = FirebaseAuth.getInstance();
-             firebaseUser = firebaseAuth.getCurrentUser();
-             storage = FirebaseStorage.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
         localPdf = new File(Environment.getExternalStorageDirectory() + "/" + downloadDirectory);
 
@@ -176,6 +165,13 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
+    } else if(isConnectingToInternet(ViewConcessionActivity.this) == false) {
+        Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+        mProgressDialog.dismiss();
+        return;
+
+
+    }
     }
 
     public void onClick(View view){
@@ -196,9 +192,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
         final String comment = message.getText().toString();
 
         /************************************************************************************************************************************/
-        // HOW CAN I DISABLE THE RECYLCE VIEW IF THERE IS NO NETWORK
+        /*HOW CAN I DISABLE THE SUBMIT BUTTON  IF THERE IS NOTHING IN THE PDFVIEW OR HOW CAN I AVOID CONCESSION TO BE
+           VIEWED IF THERE IS NO NETWORK*/
 
-        /***Does not work **/
         if(comment.length() < 4  && isConnectingToInternet(ViewConcessionActivity.this) == true){
             Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
             return;
@@ -208,6 +204,10 @@ public class ViewConcessionActivity extends AppCompatActivity {
             Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
             return;
         }
+
+        /*if( pdfView.setActivated()){
+
+        }*/
         CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
 
         DatabaseReference databaseReference = database.getReference().child("Comments");
