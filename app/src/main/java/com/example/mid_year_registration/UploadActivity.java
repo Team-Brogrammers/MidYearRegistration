@@ -87,6 +87,7 @@ public class UploadActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, 86);
 
+
         //}
     }
 
@@ -103,6 +104,7 @@ public class UploadActivity extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
+            Toast.makeText(UploadActivity.this, "Pdf Uri: "+pdfUri, Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
@@ -126,6 +128,7 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
         //progressDialog.show();
+
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)

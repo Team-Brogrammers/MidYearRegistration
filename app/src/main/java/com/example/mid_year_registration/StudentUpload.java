@@ -11,17 +11,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -218,6 +215,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             //String targetPdf = "/test.pdf";
             File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+            Toast.makeText(StudentUpload.this, "Pdf Uri: "+root, Toast.LENGTH_LONG).show();
             if (!root.exists()) {
                 root.mkdir();
             }
