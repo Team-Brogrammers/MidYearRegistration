@@ -11,9 +11,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 
-public class AddCoursesActivity extends AppCompatActivity{
+public class AddCoursesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     // initialize variables
     private static final String ANONYMOUS = "anonymous";
@@ -43,6 +45,8 @@ public class AddCoursesActivity extends AppCompatActivity{
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mFireBaseDatabase;
     private DatabaseReference mUserDatabaseReference;
+
+    String[] bankNames={"BOI","SBI","HDFC","PNB","OBC"};
 
     private String mAuthor;
     public String mUsersKey;
@@ -69,22 +73,38 @@ public class AddCoursesActivity extends AppCompatActivity{
         mUsersKey = mFirebaseAuth.getCurrentUser().getUid();
 
         // get references
-        getCourse1 = findViewById(R.id.course1EditText);
+        //Getting the instance of Spinner and applying OnItemSelectedListener on it
+        Spinner spin0 = (Spinner) findViewById(R.id.spinner0);
+        spin0.setOnItemSelectedListener(this);
+
+        Spinner spin1 = (Spinner) findViewById(R.id.spinner0);
+        spin1.setOnItemSelectedListener(this);
+
+        //Creating the ArrayAdapter instance having the bank name list
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,bankNames);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spin0.setAdapter(aa);
+        spin1.setAdapter(aa);
+    }
+
+
+        /*getCourse1 = findViewById(R.id.course1EditText);
         getCourse2 = findViewById(R.id.course2EditText);
         getCourse3 = findViewById(R.id.course3EditText);
         getEmail = findViewById(R.id.addEmailTextInputLayout);
-        UpdateButton = findViewById(R.id.updateBotton);
-        constraintLayout = findViewById(R.id.addCoursesConstraintLayout);
+
+        constraintLayout = findViewById(R.id.addCoursesConstraintLayout);*/
 
         // initialize progressbar
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setTitle("Logging In");
+        /*mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Loading updates");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        mProgressDialog.show();*/
 
         // Display current user profile details
-        mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
+       /* mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -103,17 +123,17 @@ public class AddCoursesActivity extends AppCompatActivity{
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });
+        });*/
 
-        UpdateButton.setOnClickListener(new View.OnClickListener() {
+        /*UpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // update account changes
-                updateAccount();
+                //updateAccount();
             }
         });
 
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -172,6 +192,16 @@ public class AddCoursesActivity extends AppCompatActivity{
             mProgressDialog.dismiss();
             Toast.makeText(AddCoursesActivity.this, "Failed to update your profile, please try again.", Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
