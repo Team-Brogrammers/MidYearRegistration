@@ -184,7 +184,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
-                                if( isConnectingToInternet(CoordinatorUploadPdfActivity.this) == false) {
+                                if( isConnectingToInternet(CoordinatorUploadPdfActivity.this)  == false) {
                                     Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                                     //ProgressDialog.dismiss();
                                     return;

@@ -51,7 +51,7 @@ public class PasswordResetActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email = emailEditText.getText().toString();
-                if( isConnectingToInternet(PasswordResetActivity.this) == false) {
+                if(isConnectingToInternet(PasswordResetActivity.this) == false) {
                     Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
 
                     return;

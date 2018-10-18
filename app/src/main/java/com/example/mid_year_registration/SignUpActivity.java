@@ -123,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             progressDialog.setMessage("You are being registered...");
             progressDialog.show();
-            if( isConnectingToInternet(SignUpActivity.this) == false) {
+            if(  isConnectingToInternet(SignUpActivity.this) == false) {
                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 return;
@@ -185,7 +185,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 } else if (userName.endsWith("@wits.ac.za")) {
                     Intent activity = new Intent(SignUpActivity.this, CoordinatorMenuActivity.class);
-                    if( isConnectingToInternet(SignUpActivity.this) == false) {
+                    if(  isConnectingToInternet(SignUpActivity.this) == false) {
                         Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                         //ProgressDialog.dismiss();
                         return;

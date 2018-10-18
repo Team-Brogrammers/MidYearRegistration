@@ -45,7 +45,7 @@ public class StudentMenuActivity extends AppCompatActivity {
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request
-                            if( isConnectingToInternet(StudentMenuActivity.this) == false) {
+                            if(  isConnectingToInternet(StudentMenuActivity.this) == false) {
                                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                                 //mProgressDialog.dismiss();
                                 return;

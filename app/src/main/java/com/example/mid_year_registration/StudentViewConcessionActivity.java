@@ -2,12 +2,12 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -83,7 +83,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.show();
 
 
-        if( isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
+        if(  isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
             Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
             mProgressDialog.dismiss();
 
@@ -101,7 +101,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                if( isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
+                if(  isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
                     Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                     mProgressDialog.dismiss();
 

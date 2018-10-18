@@ -2,11 +2,11 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,21 +61,19 @@ public class StudentConcessionsActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
-        if( isConnectingToInternet(StudentConcessionsActivity.this) == false) {
-            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
-            mProgressDialog.dismiss();
-            return;
-
-        }
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-
-
         databaseRef = database.getReference().child("Concessions");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // populate the list with concessions
+                if(  isConnectingToInternet(StudentConcessionsActivity.this)== false) {
+                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+                    return;
+
+                }
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()){
                     CoordinatorConcession concession = childSnap.getValue(CoordinatorConcession.class);
                     if(firebaseUser != null){

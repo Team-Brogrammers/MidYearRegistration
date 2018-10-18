@@ -106,7 +106,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
-        if( isConnectingToInternet(ViewConcessionActivity.this) == false) {
+        if(  isConnectingToInternet(ViewConcessionActivity.this) == false) {
             Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
             mProgressDialog.dismiss();
 

@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
 
+//import static com.example.mid_year_registration.LoginActivity.hasInternetAccess;
+
 public class AddCoursesActivity extends AppCompatActivity{
 
     // initialize variables
@@ -111,7 +113,7 @@ public class AddCoursesActivity extends AppCompatActivity{
             public void onClick(View view) {
                 // update account changes
 
-                if( isConnectingToInternet(AddCoursesActivity.this) == false) {
+                if(  isConnectingToInternet(AddCoursesActivity.this) == false) {
                     Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
 
                     return;
