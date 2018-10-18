@@ -106,7 +106,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.student_view_concession_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
