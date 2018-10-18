@@ -55,4 +55,7 @@
     <string name="courses_logo">courses logo</string>
     <string name="sign_in">Sign In</string>
     <string name="wits_logo">Wits Logo</string>
+    <string name="your_courses">Your Courses:</string>
+    <string name="add_courses">Select new courses:</string>
+    <string name="course_title">Course Title:</string>
 </resources>

@@ -52,7 +52,13 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
         holder.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("ListClick", "Close Button clicked");
+                if (courses.size() == 1 && position == 1){
+                    courses.remove(0);
+                    notifyItemRemoved(0);
+                    return;
+                }
+                courses.remove(position);
+                notifyItemRemoved(position);
             }
         });
     }
@@ -62,4 +68,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
         return this.courses.size();
     }
 
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
 }
