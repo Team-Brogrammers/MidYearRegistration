@@ -478,7 +478,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         courses = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),courses,Toast.LENGTH_SHORT).show();
 
     }
 

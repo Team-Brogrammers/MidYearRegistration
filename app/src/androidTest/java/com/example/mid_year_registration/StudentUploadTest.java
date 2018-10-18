@@ -9,6 +9,7 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
+import android.support.test.rule.ActivityTestRule;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
@@ -16,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -32,6 +34,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentUpload> {
     StudentUpload activity;
@@ -43,13 +48,16 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
     public IntentsTestRule<StudentUpload> intentsTestRule =
             new IntentsTestRule<>(StudentUpload.class);
 
+    @Rule
+    public ActivityTestRule<StudentUpload> mActivityTestRule = new ActivityTestRule<StudentUpload>(StudentUpload.class);
+
     @Override
     protected void setUp() throws Exception{
         super.setUp();
         activity = getActivity();
     }
 
-    @SmallTest
+/*    @SmallTest
     public void testVisibility(){
         onView(withId(R.id.formImageView)).check(matches(isDisplayed()));
         onView(withId(R.id.PdfView)).check(matches(isDisplayed()));
@@ -57,20 +65,31 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.fileName)).check(matches(isDisplayed()));
 
         onView(withId(R.id.stdNoEditText)).check(matches(isDisplayed()));
-        onView(withId(R.id.etCourse)).check(matches(isDisplayed()));
+
 
         onView(withId(R.id.addImageFab)).check(matches(isDisplayed()));
         onView(withId(R.id.convertImageFab)).check(matches(isDisplayed()));
         onView(withId(R.id.nextFab)).check(matches(isDisplayed()));
-
-    }
+    }*/
 
     @SmallTest
+    public void testSpinner(){
+        /*Test Visibility of the spinner*/
+        String spinnerText = "Course List";
+        String spinnerItemText = "COMS3008";
+
+        /*Act*/
+        onView(withId(R.id.spinnerCourses)).perform(click());
+        onView(withText(spinnerText)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(spinnerItemText))).perform(click());
+    }
+
+  /*  @SmallTest
     public void testButtonsClickable(){
         onView(withId(R.id.addImageFab)).check(matches(isClickable()));
         onView(withId(R.id.convertImageFab)).check(matches(isClickable()));
         onView(withId(R.id.nextFab)).check(matches(isClickable()));
-    }
+    }*/
 
 //    @MediumTest
 //    public void activityResult_DisplaysImage() {
@@ -95,21 +114,19 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
 //        //onView(withId(R.id.fileName)).perform(setName(filename), ;
 //    }
 
-    @SmallTest
+ /*   @SmallTest
     public void testValidInputNextButton(){
         Intents.init();
         Intent resultData = new Intent();
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
         intending(toPackage("com.example.mid_year_registration")).respondWith(result);
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
         onView(withId(R.id.nextFab)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), UploadActivity.class)));
         Intents.release();
-    }
+    }*/
 
-    @Test
-    @SmallTest
+/*    @SmallTest
     public void testLogoutButton(){
 
         Intents.init();
@@ -120,6 +137,6 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withText(R.string.logout)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
         Intents.release();
-    }
+    }*/
 
 }
