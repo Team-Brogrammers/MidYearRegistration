@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,9 +26,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,10 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.File;
@@ -43,6 +49,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -51,7 +58,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
     Button addImage, upload;
-    EditText course, stdNo;
+    EditText stdNo;
+    Spinner  courseSpinner;
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
@@ -59,6 +67,9 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     Uri pdfUri;
     ProgressDialog progressDialog;
     FloatingActionButton addImageFab, convertFab, nextFab;
+    private ArrayList<String> courseList;
+    private ArrayAdapter<String> adapter;
+    private ProgressDialog mProgressDialog;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -70,7 +81,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         setContentView(R.layout.activity_coordinator_upload);
 
 
-        course=findViewById(R.id.etCourse);
+        courseSpinner=findViewById(R.id.courseSelectionSpinner);
         stdNo=findViewById(R.id.stdNoEditText);
         pdfView=findViewById(R.id.PdfView);
 
@@ -88,6 +99,34 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        mProgressDialog = new ProgressDialog(CoordinatorUploadActivity.this);
+        mProgressDialog.setTitle("Loading Data");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
+        // Populate the course list
+        courseList = new ArrayList<String>();
+        database.getReference().child("Courses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                    Course course = childSnap.getValue(Course.class);
+                    course.setCode(childSnap.getKey());
+                    courseList.add(course.getCode());
+                }
+                // Add the courses to the spinner
+                adapter = new ArrayAdapter<String>(CoordinatorUploadActivity.this, android.R.layout.simple_spinner_item, courseList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                courseSpinner.setAdapter(adapter);
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         addImageFab.setOnClickListener(new View.OnClickListener(){
@@ -102,12 +141,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-       /*addImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                SelectImage();
-            }
-        });*/
     }
 
     @Override
@@ -150,47 +183,34 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         return false;
     }
 
-
-
-    /*private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-        }
-
-        return hasImage;
-    }*/
-
     public void openPdf(View view){
 
-        String mCourse=course.getText().toString();
+        String mCourse = courseSpinner.getSelectedItem().toString();
         String mStdNo=stdNo.getText().toString();
 
         if(mCourse.isEmpty() || mStdNo.isEmpty() ){
-            if(mCourse.isEmpty()) {
-                course.setError("input is empty!");
-
-            }
-            else if(mStdNo.isEmpty()) {
+//            if(mCourse.isEmpty()) {
+//                course.error("input is empty!");
+//
+//            }
+            /*else*/ if(mStdNo.isEmpty()) {
                 stdNo.setError("input is empty!");
             }
-            else if(mCourse.isEmpty() && mCourse.isEmpty()){
-                stdNo.setError("input is empty!");
-                course.setError("input is empty!");
-            }
+//            else if(mCourse.isEmpty() && mCourse.isEmpty()){
+//                stdNo.setError("input is empty!");
+//                course.setError("input is empty!");
+//            }
         }
         else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
             if(!isValidStudentNo(mStdNo)) {
                 stdNo.setError("invalid student number!");
             }
             else if(!checkString(mCourse)) {
-                course.setError("Course code is upper case and numbers only");
+//                course.setError("Course code is upper case and numbers only");
             }
             else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
                 stdNo.setError("invalid student number!");
-                course.setError("Course code is upper case and numbers only");
+//                course.setError("Course code is upper case and numbers only");
             }
         }
         else if(bmp == null){
@@ -344,12 +364,12 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     }
 
     public void nextPage(View view){
-        String mCourse=course.getText().toString();
+        String mCourse=courseSpinner.getSelectedItem().toString();
         String mStdNo=stdNo.getText().toString();
 
         if(mCourse.isEmpty() && mStdNo.isEmpty() ){
 
-            course.setError("input is empty!");
+//            course.setError("input is empty!");
             stdNo.setError("input is empty!");
         }
         else if( mStdNo.isEmpty()){
@@ -357,20 +377,20 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
 
         else if(mCourse.isEmpty()){
-            course.setError("Course code is empty!");
+//            course.setError("Course code is empty!");
         }
 
         else if(!isValidStudentNo(mStdNo)) {
             stdNo.setError("invalid student number!");
         }
         else if(!checkString(mCourse)){
-            course.setError("Course code is upper case and numbers only");
+//            course.setError("Course code is upper case and numbers only");
         }
         else {
             Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
             intent.putExtra("filename", text.getText().toString());
             intent.putExtra("studentNumber", stdNo.getText().toString());
-            intent.putExtra("courseCode", course.getText().toString());
+            intent.putExtra("courseCode", courseSpinner.getSelectedItem().toString());
             startActivity(intent);
         }
     }
@@ -446,7 +466,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                     root.mkdir();
                 }
 
-                String mCourse = course.getText().toString();
+                String mCourse = courseSpinner.getSelectedItem().toString();
                 String mStdNo = stdNo.getText().toString();
 
                 Date today = new Date();
@@ -475,7 +495,9 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
     }
 
-
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
+    }
 }
 
 
