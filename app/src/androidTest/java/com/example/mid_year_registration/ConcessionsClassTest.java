@@ -14,12 +14,30 @@ import static junit.framework.Assert.assertEquals;
 public class ConcessionsClassTest{
     @Test
     public void testConcession() {
-        Concessions instance = new Concessions(null, null, null, null, null);
+        Concessions instance = new Concessions();
         assertEquals(instance.getUid(), null);
         assertEquals(instance.getStudentNo(), null);
         assertEquals(instance.getPdfName(), null);
         assertEquals(instance.getCourseCode(), null);
         assertEquals(instance.getPdfUrl(), null);
+        assertEquals(instance.getStatus(), null);
+    }
+
+    @Test
+    public void testSetStatus() {
+        String status = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
+        Concessions instance = new Concessions();
+        instance.setStatus(status);
+        assertEquals(instance.getStatus(), status);
+    }
+
+    @Test
+    public void testGetStatus() {
+        String expStatus = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
+        Concessions instance = new Concessions();
+        instance.setStatus("YqAJgqrNL3c4cWJ2p2S8hUIl9K22");
+        String status = instance.getStatus();
+        assertEquals(expStatus, status);
     }
 
     @Test

@@ -151,6 +151,7 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                         String studentNo = bundle.getString("studentNumber");
                         String courseCode = bundle.getString("courseCode");
                         String comment = message.getText().toString();
+                        final String status = "accepted";
 
                         CoordinatorConcession concessions = new CoordinatorConcession(
                                 firebaseUser.getUid(),
@@ -158,7 +159,8 @@ public class CoordinatorUploadPdfActivity extends AppCompatActivity {
                                 filename,
                                 courseCode,
                                 comment,
-                                url
+                                url,
+                                status
 
                         );
 
