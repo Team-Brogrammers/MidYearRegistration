@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AddCoursesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -113,7 +114,7 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         courses0.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         c0.setAdapter(courses0);
 
-        courses1 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course1Arr);
+        courses1 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course0Arr);
         courses1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         c1.setAdapter(courses1);
 
@@ -154,19 +155,19 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
 
                 //cast to an ArrayAdapter
                 ArrayAdapter myAdap0 = (ArrayAdapter) c0.getAdapter();
-                ArrayAdapter myAdap1 = (ArrayAdapter) c0.getAdapter();
-                ArrayAdapter myAdap2 = (ArrayAdapter) c0.getAdapter();
-                ArrayAdapter myAdap3 = (ArrayAdapter) c0.getAdapter();
-                ArrayAdapter myAdap4 = (ArrayAdapter) c0.getAdapter();
-                ArrayAdapter myAdap5 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap1 = (ArrayAdapter) c1.getAdapter();
+                ArrayAdapter myAdap2 = (ArrayAdapter) c2.getAdapter();
+                ArrayAdapter myAdap3 = (ArrayAdapter) c3.getAdapter();
+                ArrayAdapter myAdap4 = (ArrayAdapter) c4.getAdapter();
+                ArrayAdapter myAdap5 = (ArrayAdapter) c5.getAdapter();
 
                 // get position in the adapter
                 int spinnerPosition0 = myAdap0.getPosition(user_course0);
-                int spinnerPosition1 = myAdap1.getPosition(user_course0);
-                int spinnerPosition2 = myAdap2.getPosition(user_course0);
-                int spinnerPosition3 = myAdap3.getPosition(user_course0);
-                int spinnerPosition4 = myAdap4.getPosition(user_course0);
-                int spinnerPosition5 = myAdap5.getPosition(user_course0);
+                int spinnerPosition1 = myAdap1.getPosition(user_course1);
+                int spinnerPosition2 = myAdap2.getPosition(user_course2);
+                int spinnerPosition3 = myAdap3.getPosition(user_course3);
+                int spinnerPosition4 = myAdap4.getPosition(user_course4);
+                int spinnerPosition5 = myAdap5.getPosition(user_course5);
 
                 //set the default according to value
                 c0.setSelection(spinnerPosition0);
@@ -218,6 +219,10 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         String selectedc4 = c4.getSelectedItem().toString().trim();
         String selectedc5 = c5.getSelectedItem().toString().trim();
 
+        ArrayList<String> myArr = new ArrayList<String>();
+        ArrayList<String> Arr = new ArrayList<String>();
+        Arr.addAll(Arrays.asList(selectedc0, selectedc1, selectedc2, selectedc3, selectedc4, selectedc5));
+
         final String user_id = mFirebaseAuth.getCurrentUser().getUid();
 
         if((selectedc0.isEmpty() && selectedc1.isEmpty() && selectedc3.isEmpty() &&
@@ -231,6 +236,16 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
             mProgressDialog.setMessage("Please wait...");
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.show();
+
+            for(int i = 0; i < Arr.size(); i++) {
+                if (!myArr.contains(Arr.get(i))) {
+                    myArr.add(Arr.get(i));
+                }else {
+                    mProgressDialog.dismiss();
+                    Snackbar.make(constraintLayout, "Error! You selected a course more than once!", Snackbar.LENGTH_LONG ).show();
+                    return;
+                }
+            }
 
             mUserDatabaseReference.child(user_id).child("coordinate0").setValue(selectedc0);
             mUserDatabaseReference.child(user_id).child("coordinate1").setValue(selectedc1);
