@@ -237,6 +237,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view_concession_menu, menu);
         return super.onCreateOptionsMenu(menu);
+      /*  getMenuInflater().inflate(R.menu.menu_search , menu);
+        MenuItem searchItem = menu.findItem(R.id.search_btn);
+        SearchView searchView = (SearchView)
+                MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
+                });*/
+
     }
 
     @Override
