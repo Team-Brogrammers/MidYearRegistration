@@ -62,6 +62,15 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
                                                "MATH3006", "MATH3009", "MATH3010", "MATH3034", "MATH3031", "MATH3032"};
     public static final String[] course5Arr = {"No selection", "APPM1006", "APPM2007", "APPM3017"};
 
+    public static final String[] allCourses = {
+            "APPM1006", "APPM2007", "APPM3017",
+            "COMS1015", "COMS1018", "COMS1017", "COMS1016",
+            "COMS2002", "COMS2013", "COMS2014", "COMS2015",
+            "COMS3002", "COMS3003", "COMS3005", "COMS3006", "COMS3007", "COMS3008", "COMS3009",
+            "MATH1034", "MATH1036", "MATH2001", "MATH2007", "MATH2016", "MATH2015", "MATH2019", "MATH2003",
+            "MATH3001", "MATH3003", "MATH3004", "MATH3006", "MATH3009", "MATH3010", "MATH3034", "MATH3031", "MATH3032",
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
