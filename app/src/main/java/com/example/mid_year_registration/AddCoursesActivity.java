@@ -28,16 +28,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 
-public class AddCoursesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+import java.util.ArrayList;
+
+public class AddCoursesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // initialize variables
     private static final String ANONYMOUS = "anonymous";
     private ProgressDialog mProgressDialog;
     private ConstraintLayout constraintLayout;
-    private TextView getEmail;
-    private EditText getCourse1;
-    private EditText getCourse2;
-    private EditText getCourse3;
+    private Spinner c0;
+    private Spinner c1;
+    private Spinner c2;
+    private Spinner c3;
+    private Spinner c4;
+    private Spinner c5;
     private Button UpdateButton;
 
     // initialize Firebase variables
@@ -46,7 +50,7 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
     private FirebaseDatabase mFireBaseDatabase;
     private DatabaseReference mUserDatabaseReference;
 
-    String[] bankNames={"BOI","SBI","HDFC","PNB","OBC"};
+    String[] cNames = {"BOI", "SBI", "HDFC", "PNB", "OBC"};
 
     private String mAuthor;
     public String mUsersKey;
@@ -66,49 +70,117 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         // Initialize Firebase components
         mFireBaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mUserDatabaseReference = mFireBaseDatabase.getReference().child("users");
+        mUserDatabaseReference = mFireBaseDatabase.getReference().child("Coordinators");
 
         // get current user
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUsersKey = mFirebaseAuth.getCurrentUser().getUid();
 
         // get references
-        //Getting the instance of Spinner and applying OnItemSelectedListener on it
-        Spinner spin0 = (Spinner) findViewById(R.id.spinner0);
-        spin0.setOnItemSelectedListener(this);
+        c0 = findViewById(R.id.spinner0);
+        c1 = findViewById(R.id.spinner1);
+        c2 = findViewById(R.id.spinner2);
+        c3 = findViewById(R.id.spinner3);
+        c4 = findViewById(R.id.spinner4);
+        c5 = findViewById(R.id.spinner5);
+        constraintLayout = findViewById(R.id.addCoursesConstraintLayout);
+        UpdateButton = findViewById(R.id.updateBotton);
 
-        Spinner spin1 = (Spinner) findViewById(R.id.spinner0);
-        spin1.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> courses0;
+        ArrayAdapter<CharSequence> courses1;
+        ArrayAdapter<CharSequence> courses2;
+        ArrayAdapter<CharSequence> courses3;
+        ArrayAdapter<CharSequence> courses4;
+        ArrayAdapter<CharSequence> courses5;
 
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,bankNames);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        spin0.setAdapter(aa);
-        spin1.setAdapter(aa);
-    }
+        //ArrayList<ArrayAdapter> mylist = new ArrayList<ArrayAdapter>();
 
+        /*final String[] course0Arr = new String[10];
+        final String[] course1Arr = new String[10];
+        final String[] course2Arr = new String[10];
+        final String[] course3Arr = new String[10];
+        final String[] course4Arr = new String[10];
+        final String[] course5Arr = new String[10];
+        course0Arr[0] = "No selection";
+        course1Arr[0] = "No selection";
+        course2Arr[0] = "No selection";
+        course3Arr[0] = "No selection";
+        course4Arr[0] = "No selection";
+        course5Arr[0] = "No selection";*/
+        String[] course0Arr = {"select a 3rd year maths course", "remove selection", "MATH3001", "MATH3002", "MATH3034", "MATH3003", "MATH3035"};
+        String[] course1Arr = {"select a 3rd year coms course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
+        String[] course2Arr = {"select a 3rd year appm course", "remove selection", "MATH3001", "MATH3002", "MATH3034", "MATH3003", "MATH3035"};
+        String[] course3Arr = {"select a 2nd year maths course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
+        String[] course4Arr = {"select a 2nd year coms course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
+        String[] course5Arr = {"select a 2nd year maths course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
 
-        /*getCourse1 = findViewById(R.id.course1EditText);
-        getCourse2 = findViewById(R.id.course2EditText);
-        getCourse3 = findViewById(R.id.course3EditText);
-        getEmail = findViewById(R.id.addEmailTextInputLayout);
+        courses0 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course0Arr);
+        courses0.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c0.setAdapter(courses0);
 
-        constraintLayout = findViewById(R.id.addCoursesConstraintLayout);*/
+        courses1 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course1Arr);
+        courses1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c1.setAdapter(courses1);
+
+        courses2 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course2Arr);
+        courses2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c2.setAdapter(courses2);
+
+        courses3 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course3Arr);
+        courses3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c3.setAdapter(courses3);
+
+        courses4 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course4Arr);
+        courses4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c4.setAdapter(courses4);
+
+        courses5 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course5Arr);
+        courses5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c5.setAdapter(courses5);
 
         // initialize progressbar
-        /*mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading updates");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();*/
+        //mProgressDialog.show();
 
         // Display current user profile details
-       /* mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
+        /*mUserDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String user_course1 = (String) dataSnapshot.child("course1").getValue();
+                for(DataSnapshot child : dataSnapshot.getChildren()) {
+
+                    if(child.getValue().toString().contains("COMS2")){
+                        if(child.child("Coordinator_uid").equals(mUsersKey)) {
+                            course0Arr[n0] = child.getValue().toString();
+                            n0++;
+                        }
+                    }else if(child.getValue().toString().contains("COMS3")){
+                        if(child.child("Coordinator_uid").equals(mUsersKey)) {
+                            course1Arr[n1] = child.getValue().toString();
+                            n1++;
+                        }
+                    }else if(child.getValue().toString().contains("APPM")){
+                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
+                                course2Arr[n2] = child.getValue().toString();
+                                n2++;
+                            }
+                    }else if(child.getValue().toString().contains("MATH2")){
+                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
+                                course3Arr[n3] = child.getValue().toString();
+                                n3++;
+                            }
+                    }else if(child.getValue().toString().contains("MATH3")){
+                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
+                                course1Arr[n3] = child.getValue().toString();
+                                n3++;
+                            }
+                    }
+                }
+
+                /*String user_course1 = (String) dataSnapshot.child("course1").getValue();
                 String user_course2 = (String) dataSnapshot.child("course2").getValue();
                 String user_course3 = (String) dataSnapshot.child("course3").getValue();
                 String user_email = mFirebaseAuth.getCurrentUser().getEmail();
@@ -116,24 +188,37 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
                 getCourse1.setText(user_course1);
                 getEmail.setText(user_email);
                 getCourse2.setText(user_course2);
-                getCourse3.setText(user_course3);
+                getCourse3.setText(user_course3);*/
 
-                mProgressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
+                //mProgressDialog.dismiss();
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//            });
+//
 
-        /*UpdateButton.setOnClickListener(new View.OnClickListener() {
+
+        /*String selectedc0 = c0.getSelectedItem().toString();
+        String selectedc1 = c1.getSelectedItem().toString();
+        String selectedc2 = c2.getSelectedItem().toString();
+        String selectedc3 = c3.getSelectedItem().toString();
+        String selectedc4 = c4.getSelectedItem().toString();
+        String selectedc5 = c5.getSelectedItem().toString();*/
+
+       // Toast.makeText(getApplicationContext(), "selected "+selectedc0, Toast.LENGTH_LONG).show();
+
+        UpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // update account changes
-                //updateAccount();
+                updateAccount();
             }
         });
 
-    }*/
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -150,35 +235,36 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-    //
+    
     private void updateAccount() {
         assert mFirebaseAuth.getCurrentUser() != null;
-        final String user_id = mFirebaseAuth.getCurrentUser().getUid();
-        final String course1 = getCourse1.getText().toString();
-        final String course2 = getCourse2.getText().toString();
-        final String course3 = getCourse3.getText().toString();
-        String email = mFirebaseAuth.getCurrentUser().getEmail();
+        String selectedc0 = c0.getSelectedItem().toString().trim();
+        String selectedc1 = c1.getSelectedItem().toString().trim();
+        String selectedc2 = c2.getSelectedItem().toString().trim();
+        String selectedc3 = c3.getSelectedItem().toString().trim();
+        String selectedc4 = c4.getSelectedItem().toString().trim();
+        String selectedc5 = c5.getSelectedItem().toString().trim();
 
-        if(email.isEmpty()){
-            getEmail.setError("Provide email address");
-            return;
-        }
-        if((course1.isEmpty() && course2.isEmpty() && course3.isEmpty())){
+        final String user_id = mFirebaseAuth.getCurrentUser().getUid();
+
+        if((selectedc0.isEmpty() && selectedc1.isEmpty() && selectedc3.isEmpty() &&
+                selectedc4.isEmpty() && selectedc5.isEmpty())){
             Snackbar.make(constraintLayout, "Provide at least one course that you're coordinating!", Snackbar.LENGTH_LONG ).show();
             return;
         }
 
-        if(!TextUtils.isEmpty(mAuthor) && !TextUtils.isEmpty(email)){
-            mProgressDialog.setTitle("Setting Up Profile");
+        if(!TextUtils.isEmpty(mAuthor) && (mFirebaseAuth.getCurrentUser() != null)){
+            mProgressDialog.setTitle("Updating Profile");
             mProgressDialog.setMessage("Please wait...");
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.show();
 
-            mUserDatabaseReference.child(user_id).child("email").setValue(email);
-            mUserDatabaseReference.child(user_id).child("course1").setValue(course1);
-            mUserDatabaseReference.child(user_id).child("course2").setValue(course2);
-            mUserDatabaseReference.child(user_id).child("course3").setValue(course3);
+            mUserDatabaseReference.child(user_id).child("coordinate0").setValue(selectedc0);
+            mUserDatabaseReference.child(user_id).child("coordinate1").setValue(selectedc1);
+            mUserDatabaseReference.child(user_id).child("coordinate2").setValue(selectedc2);
+            mUserDatabaseReference.child(user_id).child("coordinate3").setValue(selectedc3);
+            mUserDatabaseReference.child(user_id).child("coordinate4").setValue(selectedc4);
+            mUserDatabaseReference.child(user_id).child("coordinate5").setValue(selectedc5);
 
             mProgressDialog.dismiss();
             Toast.makeText(AddCoursesActivity.this, "Profile successfully updated", Toast.LENGTH_LONG).show();
