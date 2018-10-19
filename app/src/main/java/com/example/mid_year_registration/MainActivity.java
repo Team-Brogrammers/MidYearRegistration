@@ -1,12 +1,15 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -235,26 +238,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.view_concession_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_btn).getActionView();
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        Toast.makeText(MainActivity.this, "Search Complete", Toast.LENGTH_SHORT).show();
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.requestFocus(1);
+
         return super.onCreateOptionsMenu(menu);
-      /*  getMenuInflater().inflate(R.menu.menu_search , menu);
-        MenuItem searchItem = menu.findItem(R.id.search_btn);
-        SearchView searchView = (SearchView)
-                MenuItemCompat.getActionView(searchItem);
-
-        searchView.setOnQueryTextListener(
-                new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
-                    }
-                });*/
-
+        //return true;
     }
 
     @Override
