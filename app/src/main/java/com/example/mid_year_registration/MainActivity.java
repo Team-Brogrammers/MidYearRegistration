@@ -244,10 +244,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        Toast.makeText(MainActivity.this, "Search Complete", Toast.LENGTH_SHORT).show();
+
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.requestFocus(1);
+        Toast.makeText(MainActivity.this, "Search Complete", Toast.LENGTH_SHORT).show();
 
         return super.onCreateOptionsMenu(menu);
         //return true;
