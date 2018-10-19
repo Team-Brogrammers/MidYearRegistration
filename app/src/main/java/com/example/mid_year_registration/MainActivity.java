@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
-        final String test = "pending";
+        final String test = "123456";  // string for student numbers
         databaseRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    if (test.equals(childSnap.child("status").getValue())) {
+                    if (test.equals(childSnap.child("student_number").getValue())) { // course code or student number
                         Concessions concession = childSnap.getValue(Concessions.class);
                         Log.d("Concession", concession.getPdfUrl());
 

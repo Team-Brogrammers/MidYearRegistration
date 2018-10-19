@@ -16,26 +16,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
 
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" android:host="www.example.com" />
-            <data android:scheme="https" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
+                <data
+                    android:host="www.example.com"
+                    android:scheme="http" />
+                <data android:scheme="https" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".MainActivity">
 
-        <activity android:name=".MainActivity" />
+        <meta-data android:name="android.app.searchable"
+            android:resource="@layout/activity_searchable" />
+
+           </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".StudentUpload" />
         <activity android:name=".UploadActivity" />
@@ -47,7 +51,8 @@
         <activity android:name=".StudentMenuActivity" />
         <activity android:name=".CoordinatorUploadActivity" />
         <activity android:name=".StudentConcessionsActivity" />
-        <activity android:name=".StudentViewConcessionActivity"></activity>
+        <activity android:name=".StudentViewConcessionActivity" />
+        <activity android:name=".SearchableActivity"></activity>
     </application>
 
 </manifest>
