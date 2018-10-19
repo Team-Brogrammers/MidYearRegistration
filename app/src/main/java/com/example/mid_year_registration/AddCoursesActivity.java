@@ -49,11 +49,18 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mFireBaseDatabase;
     private DatabaseReference mUserDatabaseReference;
-
-    String[] cNames = {"BOI", "SBI", "HDFC", "PNB", "OBC"};
-
     private String mAuthor;
     public String mUsersKey;
+
+    public static final String[] course0Arr = {"No selection", "COMS2002", "COMS2013", "COMS2014", "COMS2015"};
+    public static final String[] course1Arr = {"No selection", "COMS3002", "COMS3003", "COMS3005",
+                                               "COMS3006", "COMS3007", "COMS3008", "COMS3009"};
+    public static final String[] course2Arr = {"No selection", "MATH1034", "MATH1036"};
+    public static final String[] course3Arr = {"No selection", "MATH2001", "MATH2007", "MATH2016",
+                                               "MATH2015", "MATH2019", "MATH2003"};
+    public static final String[] course4Arr = {"No selection", "MATH3001", "MATH3003", "MATH3004",
+                                               "MATH3006", "MATH3009", "MATH3010", "MATH3034", "MATH3031", "MATH3032"};
+    public static final String[] course5Arr = {"No selection", "APPM1006", "APPM2007", "APPM3017"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,27 +100,6 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         ArrayAdapter<CharSequence> courses4;
         ArrayAdapter<CharSequence> courses5;
 
-        //ArrayList<ArrayAdapter> mylist = new ArrayList<ArrayAdapter>();
-
-        /*final String[] course0Arr = new String[10];
-        final String[] course1Arr = new String[10];
-        final String[] course2Arr = new String[10];
-        final String[] course3Arr = new String[10];
-        final String[] course4Arr = new String[10];
-        final String[] course5Arr = new String[10];
-        course0Arr[0] = "No selection";
-        course1Arr[0] = "No selection";
-        course2Arr[0] = "No selection";
-        course3Arr[0] = "No selection";
-        course4Arr[0] = "No selection";
-        course5Arr[0] = "No selection";*/
-        String[] course0Arr = {"select a 3rd year maths course", "remove selection", "MATH3001", "MATH3002", "MATH3034", "MATH3003", "MATH3035"};
-        String[] course1Arr = {"select a 3rd year coms course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
-        String[] course2Arr = {"select a 3rd year appm course", "remove selection", "MATH3001", "MATH3002", "MATH3034", "MATH3003", "MATH3035"};
-        String[] course3Arr = {"select a 2nd year maths course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
-        String[] course4Arr = {"select a 2nd year coms course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
-        String[] course5Arr = {"select a 2nd year maths course", "remove selection", "COMS3003", "COMS3009", "COMS3011", "COMS3002", "COMS3000"};
-
         courses0 = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, course0Arr);
         courses0.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         c0.setAdapter(courses0);
@@ -143,70 +129,48 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         mProgressDialog.setTitle("Loading updates");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        //mProgressDialog.show();
+        mProgressDialog.show();
 
         // Display current user profile details
-        /*mUserDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot child : dataSnapshot.getChildren()) {
+                String user_course0 = (String) dataSnapshot.child("coordinate0").getValue();
+                String user_course1 = (String) dataSnapshot.child("coordinate1").getValue();
+                String user_course2 = (String) dataSnapshot.child("coordinate2").getValue();
+                String user_course3 = (String) dataSnapshot.child("coordinate3").getValue();
+                String user_course4 = (String) dataSnapshot.child("coordinate4").getValue();
+                String user_course5 = (String) dataSnapshot.child("coordinate5").getValue();
 
-                    if(child.getValue().toString().contains("COMS2")){
-                        if(child.child("Coordinator_uid").equals(mUsersKey)) {
-                            course0Arr[n0] = child.getValue().toString();
-                            n0++;
-                        }
-                    }else if(child.getValue().toString().contains("COMS3")){
-                        if(child.child("Coordinator_uid").equals(mUsersKey)) {
-                            course1Arr[n1] = child.getValue().toString();
-                            n1++;
-                        }
-                    }else if(child.getValue().toString().contains("APPM")){
-                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
-                                course2Arr[n2] = child.getValue().toString();
-                                n2++;
-                            }
-                    }else if(child.getValue().toString().contains("MATH2")){
-                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
-                                course3Arr[n3] = child.getValue().toString();
-                                n3++;
-                            }
-                    }else if(child.getValue().toString().contains("MATH3")){
-                            if(child.child("Coordinator_uid").equals(mUsersKey)) {
-                                course1Arr[n3] = child.getValue().toString();
-                                n3++;
-                            }
-                    }
-                }
+                //cast to an ArrayAdapter
+                ArrayAdapter myAdap0 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap1 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap2 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap3 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap4 = (ArrayAdapter) c0.getAdapter();
+                ArrayAdapter myAdap5 = (ArrayAdapter) c0.getAdapter();
 
-                /*String user_course1 = (String) dataSnapshot.child("course1").getValue();
-                String user_course2 = (String) dataSnapshot.child("course2").getValue();
-                String user_course3 = (String) dataSnapshot.child("course3").getValue();
-                String user_email = mFirebaseAuth.getCurrentUser().getEmail();
+                // get position in the adapter
+                int spinnerPosition0 = myAdap0.getPosition(user_course0);
+                int spinnerPosition1 = myAdap1.getPosition(user_course0);
+                int spinnerPosition2 = myAdap2.getPosition(user_course0);
+                int spinnerPosition3 = myAdap3.getPosition(user_course0);
+                int spinnerPosition4 = myAdap4.getPosition(user_course0);
+                int spinnerPosition5 = myAdap5.getPosition(user_course0);
 
-                getCourse1.setText(user_course1);
-                getEmail.setText(user_email);
-                getCourse2.setText(user_course2);
-                getCourse3.setText(user_course3);*/
+                //set the default according to value
+                c0.setSelection(spinnerPosition0);
+                c1.setSelection(spinnerPosition1);
+                c2.setSelection(spinnerPosition2);
+                c3.setSelection(spinnerPosition3);
+                c4.setSelection(spinnerPosition4);
+                c5.setSelection(spinnerPosition5);
 
-                //mProgressDialog.dismiss();
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//            });
-//
-
-
-        /*String selectedc0 = c0.getSelectedItem().toString();
-        String selectedc1 = c1.getSelectedItem().toString();
-        String selectedc2 = c2.getSelectedItem().toString();
-        String selectedc3 = c3.getSelectedItem().toString();
-        String selectedc4 = c4.getSelectedItem().toString();
-        String selectedc5 = c5.getSelectedItem().toString();*/
-
-       // Toast.makeText(getApplicationContext(), "selected "+selectedc0, Toast.LENGTH_LONG).show();
+                mProgressDialog.dismiss();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }});
 
         UpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +199,7 @@ public class AddCoursesActivity extends AppCompatActivity implements AdapterView
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    
+
     private void updateAccount() {
         assert mFirebaseAuth.getCurrentUser() != null;
         String selectedc0 = c0.getSelectedItem().toString().trim();
