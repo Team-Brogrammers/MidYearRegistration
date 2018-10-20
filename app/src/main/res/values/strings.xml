@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="app_label1">Search Results</string>
     <string name="email">Email</string>
     <string name="hint">Search for concession</string>
     <string name="login">Login</string>
