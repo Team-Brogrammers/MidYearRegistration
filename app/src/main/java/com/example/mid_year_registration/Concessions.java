@@ -5,15 +5,16 @@ public class Concessions {
     String studentNo;
     String pdfName;
     String courseCode;
-
     String pdfUrl;
+    String status;
 
-    public Concessions(String uid, String studentNo, String pdfName, String courseCode, String pdfUrl) {
+    public Concessions(String uid, String studentNo, String pdfName, String courseCode, String pdfUrl, String status) {
         this.uid = uid;
         this.studentNo = studentNo;
         this.pdfName = pdfName;
         this.courseCode = courseCode;
         this.pdfUrl = pdfUrl;
+        this.status = status;
     }
 
     public Concessions(){
@@ -60,6 +61,10 @@ public class Concessions {
     public void setPdfUrl(String pdfUrl) {
         this.pdfUrl = pdfUrl;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
 
 

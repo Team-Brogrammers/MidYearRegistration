@@ -93,9 +93,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
 
-
         mProgressDialog = new ProgressDialog(ViewConcessionActivity.this);
-
         mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -109,6 +107,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
+
         localPdf = new File(Environment.getExternalStorageDirectory() + "/" + downloadDirectory);
 
         storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -147,19 +146,17 @@ public class ViewConcessionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // populate the list with concessions
-
-                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    if (studentNo.equals(childSnap.child("studentNo").getValue())) {
-                        pdfKey = childSnap.getKey().toString();
-                        uid = childSnap.child("uid").getValue().toString();
-                        Toast.makeText(ViewConcessionActivity.this, "PDFId: " + pdfKey, Toast.LENGTH_SHORT).show();
-                        break;
-                    }
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                   if(studentNo.equals(childSnap.child("studentNo").getValue())){
+                       pdfKey=childSnap.getKey().toString();
+                       uid=childSnap.child("uid").getValue().toString();
+                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
+                       break;
+                   }
                 }
                 //Toast.makeText(ViewConcessionActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
@@ -176,21 +173,19 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
     public void onClick(View view){
 
-
-
-
         if( isConnectingToInternet(ViewConcessionActivity.this) == false) {
             Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
 
             mProgressDialog.dismiss();
             return;
-
         }
 
         final String responseId = databaseRef.push().getKey();
         final String coordId = firebaseAuth.getUid();
         final String comment = message.getText().toString();
+        final String status = "rejected";
 
+        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment, status);
         /************************************************************************************************************************************/
         /*HOW CAN I DISABLE THE SUBMIT BUTTON  IF THERE IS NOTHING IN THE PDFVIEW OR HOW CAN I AVOID CONCESSION TO BE
            VIEWED IF THERE IS NO NETWORK*/
@@ -208,14 +203,13 @@ public class ViewConcessionActivity extends AppCompatActivity {
         /*if( pdfView.setActivated()){
 
         }*/
-        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
+       // CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
 
         DatabaseReference databaseReference = database.getReference().child("Comments");
 
         databaseReference.child(responseId).setValue(response).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
 
                 if(task.isSuccessful()) {
                     // send email to the relevant student

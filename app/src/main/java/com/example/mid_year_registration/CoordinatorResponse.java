@@ -5,16 +5,18 @@ public class CoordinatorResponse {
     String uidCoord;
     String pdfId;
     String comment;
+    String status;
 
     public CoordinatorResponse(){
 
     }
 
-    public CoordinatorResponse(String uidStd, String uidCoord, String pdfId, String comment) {
+    public CoordinatorResponse(String uidStd, String uidCoord, String pdfId, String comment, String status) {
         this.uidStd = uidStd;
         this.uidCoord = uidCoord;
         this.pdfId = pdfId;
         this.comment = comment;
+        this.status = status;
     }
 
 
@@ -49,6 +51,10 @@ public class CoordinatorResponse {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
 
 }
