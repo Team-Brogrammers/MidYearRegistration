@@ -2,10 +2,12 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class StudentViewConcessionActivity extends AppCompatActivity {
 
     private String course;
@@ -37,6 +41,8 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private PDFView pdfView;
     public static final String downloadDirectory = "Downloads";
+
+    ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         tvComment = findViewById(R.id.tvCommentView);
         pdfView = findViewById(R.id.StudentPdfView);
         tvCourseCode.setText(course);
+        mConstraintLayout = findViewById(R.id.studentviewconcessions);
 
         // Display the comment text if the concession has been commented, else display the default text
         if (!comment.equals("")){
@@ -76,6 +83,15 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.show();
 
 
+        if(  isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+            mProgressDialog.dismiss();
+
+            return;
+
+        }
+
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://mid-year-registration-ef4af.appspot.com/").child("Concessions/" + name);
 
@@ -84,6 +100,14 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                if(  isConnectingToInternet(StudentViewConcessionActivity.this) == false) {
+                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+
+                    return;
+
+                }
                 pdfView.fromFile(localPdf).
                         defaultPage(0).enableSwipe(true)
                         .swipeHorizontal(false)

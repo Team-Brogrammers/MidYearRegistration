@@ -35,7 +35,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.UploadTask;
+
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
+//import static com.example.mid_year_registration.LoginActivity.hasInternetAccess;
 
 import java.util.ArrayList;
 
@@ -139,6 +142,13 @@ public class AddCoursesActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // update account changes
+
+                if(  isConnectingToInternet(AddCoursesActivity.this) == false) {
+                    Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+                    return;
+
+                }
                 updateAccount();
             }
         });

@@ -3,6 +3,8 @@ package com.example.mid_year_registration;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -10,14 +12,17 @@ import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class CoordinatorMenuActivity extends AppCompatActivity {
 
     String arrayName[] = {"Upload Student Form", "Add Courses", "Reset Password","Logout", "View Student Request"};
-
+    ConstraintLayout mConstraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coordinator_menu_activity);
+        mConstraintLayout = findViewById(R.id.coordinatormenu);
 
         getSupportActionBar().setTitle("Main Menu");
 
@@ -39,11 +44,22 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("View Student Request")){
+                            if( isConnectingToInternet(CoordinatorMenuActivity.this) == false) {
+                                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                return;
+
+                            }
                             Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(CoordinatorMenuActivity.this, MainActivity.class);
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("Add Courses")){
+                            if( isConnectingToInternet(CoordinatorMenuActivity.this) == false) {
+                                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+                                return;
+
+                            }
                             Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(CoordinatorMenuActivity.this, AddCoursesActivity.class);
                             startActivity(activity);
