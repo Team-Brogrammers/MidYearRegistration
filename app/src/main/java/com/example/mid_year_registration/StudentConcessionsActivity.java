@@ -47,7 +47,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_student_concessions);
-        mConstraintLayout = findViewById(R.id.studenconcessions);
+        mConstraintLayout = findViewById(R.id.studentconcessions);
         getSupportActionBar().setTitle("My Requests");
 
         /* Set up the action bar */
