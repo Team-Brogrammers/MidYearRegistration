@@ -88,6 +88,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.CoordPdfView);
         message = findViewById(R.id.viewConcessionComment);
         submit = findViewById(R.id.submitResponseButton);
+        submit.setEnabled(false);
         mConstraintLayout = findViewById(R.id.viewconcessionConstraintLayout);
 
         tvStudentNo.setText(studentNo);
@@ -126,6 +127,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 //                Intent intent = Intent.createChooser(target, "Open File");
 //                startActivity(intent);
+                submit.setEnabled(true);
                 mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this, "Download Success!", Toast.LENGTH_SHORT).show();
 
@@ -186,9 +188,6 @@ public class ViewConcessionActivity extends AppCompatActivity {
         final String status = "rejected";
 
         CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment, status);
-        /************************************************************************************************************************************/
-        /*HOW CAN I DISABLE THE SUBMIT BUTTON  IF THERE IS NOTHING IN THE PDFVIEW OR HOW CAN I AVOID CONCESSION TO BE
-           VIEWED IF THERE IS NO NETWORK*/
 
         if(comment.length() < 4  && isConnectingToInternet(ViewConcessionActivity.this) == true){
             Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
