@@ -78,7 +78,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         super.onCreate(savedInstanceState);
         setContentView(activity_student_upload);
 
-        course=findViewById(R.id.etCourse);
+        //course=findViewById(R.id.etCourse);
         stdNo=findViewById(R.id.stdNoEditText);
 
         pdfView=findViewById(R.id.PdfView);
@@ -173,32 +173,35 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     public void openPdf(View view){
 
-        String mCourse=course.getText().toString();
+        String mCourse=courses;
         String mStdNo=stdNo.getText().toString();
 
         if(mCourse.isEmpty() || mStdNo.isEmpty() ){
-            if(mCourse.isEmpty()) {
-                course.setError("input is empty!");
-
+            if(mCourse.equals("Course List")){
+                Toast.makeText(getApplicationContext(),"Please select Course",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
             else if(mStdNo.isEmpty()) {
                 stdNo.setError("input is empty!");
             }
             else if(mCourse.isEmpty() && mCourse.isEmpty()){
                 stdNo.setError("input is empty!");
-                course.setError("input is empty!");
+                //course.setError("input is empty!");
             }
         }
         else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
             if(!isValidStudentNo(mStdNo)) {
                 stdNo.setError("invalid student number!");
             }
-            else if(!checkString(mCourse)) {
-                course.setError("Course code is upper case and numbers only");
+            else if(mCourse.equals("Course List")){
+                Toast.makeText(getApplicationContext(),"Please select Course",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
             else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
                 stdNo.setError("invalid student number!");
-                course.setError("Course code is upper case and numbers only");
+               // course.setError("Course code is upper case and numbers only");
             }
         }
         else if(bmp == null){
@@ -445,7 +448,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     root.mkdir();
                 }
 
-                String mCourse = course.getText().toString();
+                String mCourse = courses;
                 String mStdNo = stdNo.getText().toString();
 
                 Date today = new Date();
