@@ -46,7 +46,6 @@
     <string name="no_comment">No response comment has been added to this concession request.</string>
     <string name="file_name">FILE NAME :</string>
     <string name="file_name1">File name</string>
-    <string name="todo">TODO</string>
     <string name="write_a_comment">Write a comment</string>
     <string name="preview">PREVIEW</string>
     <string name="student_number1">Student Number</string>
@@ -87,4 +86,5 @@
     <string name="your_courses">Your Courses:</string>
     <string name="add_courses">Select new courses:</string>
     <string name="course_title">Course Title:</string>
+    <string name="todo">TODO</string>
 </resources>
