@@ -22,7 +22,7 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coordinator_menu_activity);
-        mConstraintLayout = findViewById(R.id.coordinatormenu);
+        mConstraintLayout = findViewById(R.id.cordinatormenu);
 
         getSupportActionBar().setTitle("Main Menu");
 

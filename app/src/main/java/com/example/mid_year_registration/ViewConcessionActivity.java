@@ -88,7 +88,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.CoordPdfView);
         message = findViewById(R.id.viewConcessionComment);
         submit = findViewById(R.id.submitResponseButton);
-        mConstraintLayout = findViewById(R.id.viewconcessionConstraintLayout);
+        submit.setEnabled(false);
+        mConstraintLayout = findViewById(R.id.viewconcession);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
@@ -126,6 +127,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 //                Intent intent = Intent.createChooser(target, "Open File");
 //                startActivity(intent);
+                submit.setEnabled(true);
                 mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this, "Download Success!", Toast.LENGTH_SHORT).show();
 

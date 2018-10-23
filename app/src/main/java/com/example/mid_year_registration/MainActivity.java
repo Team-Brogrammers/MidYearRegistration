@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        mConstraintLayout = findViewById(R.id.activitymain);
+        mConstraintLayout = findViewById(R.id.activitymainactivity);
         recyclerView = findViewById(R.id.recyclerView);
         getSupportActionBar().setTitle("Student Requests");
         /* Set up the action bar */

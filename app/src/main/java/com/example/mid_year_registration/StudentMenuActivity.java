@@ -23,7 +23,7 @@ public class StudentMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_menu_activity);
-        mConstraintLayout = findViewById(R.id.studentmenu);
+        mConstraintLayout = findViewById(R.id.studentMenu);
 
         getSupportActionBar().setTitle("Main Menu");
 

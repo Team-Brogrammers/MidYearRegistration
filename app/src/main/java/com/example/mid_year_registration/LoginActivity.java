@@ -162,41 +162,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /***Checking Internert Connection***/
     static boolean wifiIsConnected = true;
-
-
-
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
+
     public static boolean hostAvailable() {
-
-      /*   DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-
-
-
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    //System.out.println("connected");
-                    wifiIsConnected = true;
-                } else {
-                    //System.out.println("not connected");
-                    wifiIsConnected = false;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                //System.err.println("Listener was cancelled");
-            }
-        });*/
-
-        // since I can connect from multiple devices, we store each connection instance separately
-// any time that connectionsRef's value is null (i.e. has no children) I am offline
-
-
-// stores the timestamp of my last disconnect (the last time I was seen online)
-       // final DatabaseReference lastOnlineRef = database.getReference("/users/"+user+"/lastOnline");
 
         final DatabaseReference connectedRef = database.getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
@@ -220,19 +188,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
 
-
-                // when I disconnect, update the last time I was seen online
-                //lastOnlineRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
-
-                // add this device to my connections list
-                // this value could contain info about the device or a timestamp too
-               // con.setValue(Boolean.TRUE);
-
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                //System.err.println("Listener was cancelled at .info/connected");
+
             }
         });
         return wifiIsConnected;
@@ -252,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
         if (mobile == NetworkInfo.State.CONNECTED || mobile == NetworkInfo.State.CONNECTING )
         {
 
-            if(hostAvailable()== true) {
+            if( isOnline()== true) {
                 return true;
             }
 
@@ -270,68 +230,6 @@ public class LoginActivity extends AppCompatActivity {
 
         return false;
     }
-
-    /********************/
-
-  /* public static boolean hasInternetAccess(Context context) {
-       //String TAG = "Activity";
-       if (isConnectingToInternet(context) == true) {
-           try {
-               HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-               urlc.setRequestProperty("User-Agent", "Test");
-               urlc.setRequestProperty("Connection", "close");
-               urlc.setConnectTimeout(1500);
-               urlc.connect();
-
-               if (urlc.getResponseCode() == 200) {
-                   return true;
-               }
-           } catch (IOException e) {
-
-               // Log.e(LOG_TAG, "Error checking internet connection", e);
-           }
-       }
-
-       return false;
-   }*/
-
-
-    //static  boolean  dum_variable = true;
-  /*  public  void TimeOut()  {
-
-
-
-        boolean isInternetAvailable = isConnectingToInternet(this);
-
-        if(isInternetAvailable == true) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Toast.makeText(LoginActivity.this, "No INTERNET CHECK YOUR CONNECTION", Toast.LENGTH_SHORT).show();
-                    try {
-                        InetAddress ipAddr = InetAddress.getByName("www.google.com"); //You can replace it with your name
-                        if(!ipAddr.equals("")){
-                            dum_variable = true;
-                        }
-                    } catch (Exception e) {
-                        dum_variable = false;
-                    }
-
-                }
-            }, 10);
-        }
-
-        else if(isInternetAvailable == false){
-            dum_variable = false;*/
-       /* }
-
-    /*}******/
-
-   /* public static boolean hasInternetAccess(){
-
-
-        return dum_variable;
-    }*/
 
 
 
