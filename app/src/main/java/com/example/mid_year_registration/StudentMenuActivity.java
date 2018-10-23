@@ -1,10 +1,12 @@
 package com.example.mid_year_registration;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -86,6 +88,27 @@ public class StudentMenuActivity extends AppCompatActivity {
 
         });
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
+        builder.setMessage("Sure to exit the App?").setCancelable(false);
+        builder.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("STAY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        android.app.AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
     }
 
