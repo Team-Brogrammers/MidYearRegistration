@@ -55,6 +55,33 @@
     <string name="courses_logo">courses logo</string>
     <string name="sign_in">Sign In</string>
     <string name="wits_logo">Wits Logo</string>
+
+    <!--Computer Science Courses-->
+    <string-array name="courses">
+        <!--LEVEL ONE-->
+        <item>Course List</item>
+        <item>COMS1015</item>
+        <item>COMS1016</item>
+        <item>COMS1017</item>
+        <item>COMS1018</item>
+        <!--LEVEL TWO-->
+        <item>COMS2002</item>
+        <item>COMS2013</item>
+        <item>COMS2014</item>
+        <item>COMS2015</item>
+        <!--LEVEL THREE-->
+        <item>COMS3002</item>
+        <item>COMS3003</item>
+        <item>COMS3005</item>
+        <item>COMS3007</item>
+        <item>COMS3008</item>
+        <item>COMS3009</item>
+        <item>COMS3010</item>
+        <item>COMS3006</item>
+        <item>COMS3011</item>
+
+
+    </string-array>
     <string name="your_courses">Your Courses:</string>
     <string name="add_courses">Select new courses:</string>
     <string name="course_title">Course Title:</string>

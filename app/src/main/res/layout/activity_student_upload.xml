@@ -24,12 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fileName"
-        android:baselineAligned="false">
+        app:layout_constraintTop_toBottomOf="@+id/fileName">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
@@ -49,15 +50,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etCourse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/course_code1"
-                android:inputType="textPersonName" />
+            <Spinner
+                android:id="@+id/spinnerCourses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Spinner>
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearLayout3"
