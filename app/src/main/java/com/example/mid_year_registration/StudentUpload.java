@@ -101,6 +101,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         database = FirebaseDatabase.getInstance();
 
         getSupportActionBar().setTitle("Submit Concession Form");
+        if(getSupportActionBar() != null){
+            //enable back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
        /*addImage.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -143,6 +147,11 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
         if(item.getItemId()==R.id.action_logout){
             Intent intent = new Intent(StudentUpload.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(StudentUpload.this, StudentMenuActivity.class);
             startActivity(intent);
             finish();
         }

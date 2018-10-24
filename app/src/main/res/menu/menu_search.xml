@@ -10,6 +10,18 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
+        android:id="@+id/action_accepted"
+        app:showAsAction="never"
+        android:title="Accepted" />
+    <item
+        android:id="@+id/action_rejected"
+        app:showAsAction="never"
+        android:title="Rejected" />
+    <item
+        android:id="@+id/action_pending"
+        app:showAsAction="never"
+        android:title="Pending" />
+    <item
         android:id="@+id/action_logout"
         app:showAsAction="never"
         android:title="@string/logout" />

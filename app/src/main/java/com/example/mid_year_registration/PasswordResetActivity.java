@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +44,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         getSupportActionBar().setTitle("Reset Password");
-
+     
         // Initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
 
@@ -144,6 +146,25 @@ public class PasswordResetActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+
+        if(item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(PasswordResetActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

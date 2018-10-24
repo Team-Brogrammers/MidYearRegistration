@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.requestFocus(1);
-        Toast.makeText(MainActivity.this, "Search Complete", Toast.LENGTH_SHORT).show();
 
         return super.onCreateOptionsMenu(menu);
         //return true;
@@ -282,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "You selected Pending", Toast.LENGTH_SHORT).show();
                 pending();
                 return true;
+            case  android.R.id.home:
+                    Intent intent1 = new Intent(MainActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(intent1);
+                    finish();
+                    return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

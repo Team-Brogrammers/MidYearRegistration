@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_btn"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="Search"
+        android:contentDescription="search option"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
         android:id="@+id/action_accepted"
         app:showAsAction="never"
         android:title="Accepted" />
