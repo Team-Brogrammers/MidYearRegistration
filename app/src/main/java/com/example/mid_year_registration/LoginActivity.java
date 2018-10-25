@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                             if (!user.isEmailVerified()) {
                                                 mProgressDialog.dismiss();
                                                 Snackbar.make(mConstraintLayout, "Unverified Email", Snackbar.LENGTH_LONG)
-                                                        .setAction("RESEND ME VERIFICATION EMAIL", new View.OnClickListener() {
+                                                        .setAction("verify email?", new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {
                                                                 user.sendEmailVerification();
