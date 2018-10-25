@@ -66,7 +66,7 @@ public class StudentViewConcessionActivity extends AppCompatActivity {
         tvComment = findViewById(R.id.tvCommentView);
         pdfView = findViewById(R.id.StudentPdfView);
         tvCourseCode.setText(course);
-        mConstraintLayout = findViewById(R.id.studentviewconcessions);
+        mConstraintLayout = findViewById(R.id.studentViewconcessions);
 
         // Display the comment text if the concession has been commented, else display the default text
         if (!comment.equals("")){

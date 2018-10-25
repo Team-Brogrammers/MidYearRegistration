@@ -28,7 +28,7 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coordinator_menu_activity);
-        mConstraintLayout = findViewById(R.id.coordinatormenu);
+        mConstraintLayout = findViewById(R.id.cordinatormenu);
 
         bundle1 = getIntent().getExtras();
         personNumber = bundle1.getString("personNumber");
