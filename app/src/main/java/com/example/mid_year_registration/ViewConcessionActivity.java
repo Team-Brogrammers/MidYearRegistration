@@ -152,7 +152,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                    if(studentNo.equals(childSnap.child("studentNo").getValue())){
                        pdfKey=childSnap.getKey().toString();
                        uid=childSnap.child("uid").getValue().toString();
-                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
                        break;
                    }
                 }

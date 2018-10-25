@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,6 +110,7 @@ public class UploadActivity extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
+            Toast.makeText(UploadActivity.this, "Pdf Uri: "+pdfUri, Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
@@ -117,7 +119,6 @@ public class UploadActivity extends AppCompatActivity {
 
     public void uploadPdf(View view){
         if(text!=null){ //an image has been converted
-
             upload(pdfUri);
         }
         else{

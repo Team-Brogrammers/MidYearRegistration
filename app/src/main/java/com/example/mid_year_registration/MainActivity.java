@@ -1,6 +1,8 @@
 package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
-        final String test = "pending";
+        final String test = "pending";  // string for student numbers
         databaseRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    if (test.equals(childSnap.child("status").getValue())) {
+                    if (test.equals(childSnap.child("status").getValue())) { // course code or student number
                         Concessions concession = childSnap.getValue(Concessions.class);
                         Log.d("Concession", concession.getPdfUrl());
 
@@ -183,30 +186,30 @@ public class MainActivity extends AppCompatActivity {
                     //
                     //final String pdfKey = childSnap.getKey();
                     //final String comment = childSnap.getKey();
-                        if (test.equals(childSnap.child("status").getValue())) {
-                            final String pdfKey = childSnap.child("pdfId").getValue().toString();
-                            Toast.makeText(MainActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
-                            databaseRef2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                                        //Toast.makeText(MainActivity.this, "Concession id: "+childSnap.getKey(), Toast.LENGTH_LONG).show();
-                                        if (pdfKey.equals(childSnap.getKey())) {
-                                            Concessions concession = childSnap.getValue(Concessions.class);
-                                            Log.d("Concession", concession.getPdfUrl());
+                    if (test.equals(childSnap.child("status").getValue())) {
+                        final String pdfKey = childSnap.child("pdfId").getValue().toString();
+                        Toast.makeText(MainActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
+                        databaseRef2.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                                    //Toast.makeText(MainActivity.this, "Concession id: "+childSnap.getKey(), Toast.LENGTH_LONG).show();
+                                    if (pdfKey.equals(childSnap.getKey())) {
+                                        Concessions concession = childSnap.getValue(Concessions.class);
+                                        Log.d("Concession", concession.getPdfUrl());
 
-                                            initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
-                                        }
-                                        initRecyclerView();
+                                        initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
                                     }
+                                    initRecyclerView();
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                }
-                            });
-                        }
+                            }
+                        });
+                    }
 
                     //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
@@ -240,8 +243,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.view_concession_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_btn).getActionView();
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.requestFocus(1);
+
         return super.onCreateOptionsMenu(menu);
+        //return true;
     }
 
     @Override
@@ -267,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "You selected Pending", Toast.LENGTH_SHORT).show();
                 pending();
                 return true;
+            case  android.R.id.home:
+                    Intent intent1 = new Intent(MainActivity.this, CoordinatorMenuActivity.class);
+                    startActivity(intent1);
+                    finish();
+                    return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

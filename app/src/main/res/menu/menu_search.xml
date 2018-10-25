@@ -9,7 +9,6 @@
         android:contentDescription="search option"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
-
     <item
         android:id="@+id/action_accepted"
         app:showAsAction="never"
@@ -22,10 +21,8 @@
         android:id="@+id/action_pending"
         app:showAsAction="never"
         android:title="Pending" />
-
     <item
         android:id="@+id/action_logout"
-        android:title="@string/logout"
-        app:showAsAction="never" />
-
+        app:showAsAction="never"
+        android:title="@string/logout" />
 </menu>
