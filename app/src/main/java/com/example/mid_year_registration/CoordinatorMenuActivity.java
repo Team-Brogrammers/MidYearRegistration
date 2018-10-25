@@ -21,11 +21,17 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
 
     String arrayName[] = {"Upload Student Form", "Add Courses", "Reset Password","Logout", "View Student Request"};
     ConstraintLayout mConstraintLayout;
+
+    Bundle bundle1;
+    String personNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coordinator_menu_activity);
         mConstraintLayout = findViewById(R.id.coordinatormenu);
+
+        bundle1 = getIntent().getExtras();
+        personNumber = bundle1.getString("personNumber");
 
         getSupportActionBar().setTitle("Main Menu");
 
@@ -44,6 +50,7 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
                         if(arrayName[index].contains("Upload Student Form")){
                             Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(CoordinatorMenuActivity.this, CoordinatorUploadActivity.class);
+                            activity.putExtra("personNumber", personNumber);
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("View Student Request")){

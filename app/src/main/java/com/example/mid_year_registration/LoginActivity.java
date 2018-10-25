@@ -3,6 +3,7 @@ package com.example.mid_year_registration;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +21,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,10 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     // Firebase instance variables
     private FirebaseAuth mAuth;
 
-
     //Reference variables
     private ProgressDialog mProgressDialog;
-    private EditText etEmail;
+   static private EditText etEmail;
     private EditText etPassword;
     private ConstraintLayout mConstraintLayout;
     static FirebaseUser user = null;
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.passwordEditText);
         mConstraintLayout = findViewById(R.id.loginConstraintLayout);
 
+
     }
 
     /* Triggers when LOGIN Button clicked
@@ -66,14 +69,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
 
 
-
-        static ArrayList<String> arrayList = new ArrayList<>();
-        static boolean RegisteredEmail(String email){
-            arrayList.add(email);
-            return true;
-        }
-
-    public void checkLogin(View arg0) {
+    public void checkLogin(final View arg0) {
         final String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
@@ -86,7 +82,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if((email.contains("@wits.ac.za")) || (email.contains("@students.wits.ac.za"))) {
+
+
+        if((email.endsWith("@wits.ac.za")) || (email.endsWith("@students.wits.ac.za"))) {
             mProgressDialog.setTitle("Logging In");
             mProgressDialog.setMessage("Please wait...");
             mProgressDialog.setCanceledOnTouchOutside(false);
@@ -97,42 +95,86 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if( isConnectingToInternet(LoginActivity.this) == false) {
+                        public void onComplete(@NonNull final Task<AuthResult> task) {
+                            if (isConnectingToInternet(LoginActivity.this) == false) {
                                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                                 mProgressDialog.dismiss();
                                 return;
 
                             }
+                            else if( isConnectingToInternet(LoginActivity.this) == true){
+                            mAuth = FirebaseAuth.getInstance();
+                            mAuth.fetchProvidersForEmail(etEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener <ProviderQueryResult>() {
 
-                            if (task.isSuccessful()) {
+                                @Override
+                                public void onComplete(@NonNull Task <ProviderQueryResult> task1) {
+                                    if (!task1.getResult().getProviders().isEmpty()) {
+
+                                        if (user != null) {
+                                            FirebaseAuth.getInstance().getCurrentUser().reload();
+                                            if (!user.isEmailVerified()) {
+                                                mProgressDialog.dismiss();
+                                                Snackbar.make(mConstraintLayout, "Unverified Email", Snackbar.LENGTH_LONG)
+                                                        .setAction("RESEND ME VERIFICATION EMAIL", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                user.sendEmailVerification();
+                                                            }
+                                                        })
+                                                        .setActionTextColor(Color.GREEN)
+                                                        .show();
+
+                                                // Toast.makeText(LoginActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+
+                                                return;
+                                            }
+                                        }
+
+                                        if (task.isSuccessful()) {
 
 
-                               mProgressDialog.dismiss();
-                                if (email.endsWith("@students.wits.ac.za")) {
-                                    Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
-                                    startActivity(activity);
+                                            mProgressDialog.dismiss();
 
-                                } else if (email.endsWith("@wits.ac.za")) {
-                                    Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
-                                    startActivity(activity);
+                                            String personNumber = email.substring(0, email.indexOf("@"));
+                                            if (email.endsWith("@students.wits.ac.za")) {
+                                                Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
+                                                activity.putExtra("personNumber", personNumber);
+                                                startActivity(activity);
 
+                                            } else if (email.endsWith("@wits.ac.za")) {
+                                                Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
+                                                activity.putExtra("personNumber", personNumber);
+                                                startActivity(activity);
+
+                                            }
+
+                                        } else {
+                                            //mProgressDialog.dismiss();
+                                            Snackbar.make(mConstraintLayout, "Authentication Failed, wrong Password!", Snackbar.LENGTH_LONG).show();
+                                            mProgressDialog.dismiss();
+
+                                        }
+
+                                    } else {
+                                        Snackbar.make(mConstraintLayout, "You are not registered, please sign up  first!", Snackbar.LENGTH_LONG).show();
+                                        mProgressDialog.dismiss();
+                                        return;
+                                    }
                                 }
-
-                            } else {
-                                //mProgressDialog.dismiss();
-                                Snackbar.make(mConstraintLayout, "Authentication Failed, Invalid Email or Password!", Snackbar.LENGTH_LONG).show();
-                                mProgressDialog.dismiss();
-
-                            }
+                            });
+                        }
                         }
                     });
+
+
         }else {
             etEmail.setError("Wits email required");
             return;
         }
 
+
     }
+
 
 
     /************Checking if Mobile data is Avalaible*****/

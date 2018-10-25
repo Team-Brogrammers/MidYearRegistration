@@ -60,11 +60,13 @@
         android:layout_marginEnd="4dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="310dp"
-        android:text="@string/file_name1"
+        android:text="FILE NAME :"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/fileName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+
     <TextView
         android:id="@+id/fileName"
         android:layout_width="0dp"
@@ -72,6 +74,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="310dp"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/fileNameIdentifier"
@@ -97,12 +101,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/stdNoEditText"
+            <TextView
+                android:id="@+id/staffNumber"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/student_number3"
-                android:inputType="textPersonName" />
+                android:layout_marginLeft="5dp"
+                android:textSize="16sp"
+                android:text="SELECT COURSE :"
+                android:layout_height="match_parent"
+               android:gravity="left"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="@+id/courseSelectionSpinner"
+                android:layout_weight="1"
+                 />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -114,6 +124,7 @@
                 android:id="@+id/courseSelectionSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:layout_weight="1" />
         </android.support.design.widget.TextInputLayout>
 

@@ -58,11 +58,12 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
     Button addImage, upload;
-    EditText stdNo;
+    String stdNo;
     Spinner  courseSpinner;
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
+    TextView textfilename;
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
@@ -70,6 +71,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private ArrayList<String> courseList;
     private ArrayAdapter<String> adapter;
     private ProgressDialog mProgressDialog;
+    Bundle bundle;
+    String personNumber;
 
     //Firebase
     FirebaseStorage storage; //Used for uploading pdfs
@@ -82,19 +85,25 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
 
         courseSpinner=findViewById(R.id.courseSelectionSpinner);
-        stdNo=findViewById(R.id.stdNoEditText);
         pdfView=findViewById(R.id.PdfView);
 
         ivImage = findViewById(R.id.formImageView);
         text = findViewById(R.id.fileName);
         upload = findViewById(R.id.submitButton);
 
+        bundle = getIntent().getExtras();
+        personNumber = bundle.getString("personNumber");
+        stdNo =personNumber;
+
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
+        textfilename = findViewById(R.id.fileNameIdentifier);
 
         convertFab.setVisibility(View.INVISIBLE);
         nextFab.setVisibility(View.INVISIBLE);
+        text.setVisibility(View.INVISIBLE);
+        textfilename.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -186,7 +195,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     public void openPdf(View view){
 
         String mCourse = courseSpinner.getSelectedItem().toString();
-        String mStdNo=stdNo.getText().toString();
+        String mStdNo=personNumber;
 
         if(mCourse.isEmpty() || mStdNo.isEmpty() ){
 //            if(mCourse.isEmpty()) {
@@ -194,7 +203,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 //
 //            }
             /*else*/ if(mStdNo.isEmpty()) {
-                stdNo.setError("input is empty!");
+               // stdNo.setError("input is empty!");
             }
 //            else if(mCourse.isEmpty() && mCourse.isEmpty()){
 //                stdNo.setError("input is empty!");
@@ -203,13 +212,13 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
         else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
             if(!isValidStudentNo(mStdNo)) {
-                stdNo.setError("invalid student number!");
+               // stdNo.setError("invalid student number!");
             }
             else if(!checkString(mCourse)) {
 //                course.setError("Course code is upper case and numbers only");
             }
             else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
-                stdNo.setError("invalid student number!");
+                //stdNo.setError("invalid student number!");
 //                course.setError("Course code is upper case and numbers only");
             }
         }
@@ -285,6 +294,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             Toast toast = Toast.makeText(context, meessage, duration);
             toast.show();
+            text.setVisibility(View.VISIBLE);
+            textfilename.setVisibility(View.VISIBLE);
             nextFab.setVisibility(View.VISIBLE);
         }
     }
@@ -364,10 +375,10 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     }
 
     public void nextPage(View view){
-        String mCourse=courseSpinner.getSelectedItem().toString();
-        String mStdNo=stdNo.getText().toString();
+       // String mCourse=courseSpinner.getSelectedItem().toString();
+        //String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+        /*if(mCourse.isEmpty() && mStdNo.isEmpty() ){
 
 //            course.setError("input is empty!");
             stdNo.setError("input is empty!");
@@ -382,17 +393,18 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
         else if(!isValidStudentNo(mStdNo)) {
             stdNo.setError("invalid student number!");
-        }
+        }*
         else if(!checkString(mCourse)){
 //            course.setError("Course code is upper case and numbers only");
-        }
-        else {
+        }*/
+
             Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
             intent.putExtra("filename", text.getText().toString());
-            intent.putExtra("studentNumber", stdNo.getText().toString());
+            intent.putExtra("studentNumber", stdNo);
             intent.putExtra("courseCode", courseSpinner.getSelectedItem().toString());
+
             startActivity(intent);
-        }
+
     }
 
     @Override
@@ -467,7 +479,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 }
 
                 String mCourse = courseSpinner.getSelectedItem().toString();
-                String mStdNo = stdNo.getText().toString();
+                String mStdNo = stdNo;
 
                 Date today = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
