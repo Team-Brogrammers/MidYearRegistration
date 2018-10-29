@@ -310,19 +310,23 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                     if (intent.resolveActivity(getPackageManager()) != null) {
+                        nextFab.setVisibility(View.VISIBLE);
+                        sendHint.setVisibility(View.VISIBLE);
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }
                     /*final String cameraPermission = Manifest.permission.CAMERA;
                     if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }*/
-                    nextFab.setVisibility(View.VISIBLE);
-                    sendHint.setVisibility(View.VISIBLE);
+
 
                 } else if (items[i].equals("Gallery")) {
 
                     final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     if (EasyPermissions.hasPermissions(StudentUpload.this, galleryPermissions)) {
+                        nextFab.setVisibility(View.VISIBLE);
+                        sendHint.setVisibility(View.VISIBLE);
+
                         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         intent.setType("image/*");
                         //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
@@ -334,8 +338,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                 101, galleryPermissions);
                     }
                     //convertFab.setVisibility(View.VISIBLE);
-                  nextFab.setVisibility(View.VISIBLE);
-                    sendHint.setVisibility(View.VISIBLE);
 
                 } else if (items[i].equals("Cancel")) {
                     nextFab.setVisibility(View.INVISIBLE);
@@ -369,7 +371,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 //Bundle bundle = data.getExtras();
                 bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
-
                 //Uri selectedImageUri = data.getData();
 
 
