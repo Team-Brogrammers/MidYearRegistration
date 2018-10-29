@@ -20,13 +20,16 @@ public class StudentMenuActivity extends AppCompatActivity {
 
     String arrayName[] = { "Upload Request", "", "Reset Password","Logout", "View Request"};
     ConstraintLayout mConstraintLayout;
+    Bundle bundle1;
+    String studentNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_menu_activity);
         mConstraintLayout = findViewById(R.id.studentMenu);
-
+        bundle1 = getIntent().getExtras();
+        studentNumber = bundle1.getString("studentNumber");
         getSupportActionBar().setTitle("Main Menu");
 
         CircleMenu circleMenu = findViewById(R.id.circle_menu);
@@ -44,6 +47,7 @@ public class StudentMenuActivity extends AppCompatActivity {
                         if(arrayName[index].contains("Upload Request")){
                             Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
+                            activity.putExtra("studentNumber", studentNumber);
                             startActivity(activity);
                         }
                         if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request

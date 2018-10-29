@@ -69,10 +69,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     ImageView ivImage;
     Button addImage, upload;
     EditText course;
-    EditText stdNo;
+   // EditText stdNo;
    // PDFView pdfView;
     Bitmap bmp;
-    TextView text;
+    TextView text,sendHint;
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
@@ -103,12 +103,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         ivImage = findViewById(R.id.formImageView);
         // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        stdNo =(EditText) findViewById(R.id.stdNoEditText);
+        //stdNo =(EditText) findViewById(R.id.stdNoEditText);
         //upload = findViewById(R.id.submitButton1);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
+        sendHint = (TextView)findViewById(R.id.nextFabTextview) ;
+        sendHint.setVisibility(View.INVISIBLE);
 
         convertFab.setVisibility(View.INVISIBLE);
         nextFab.setVisibility(View.INVISIBLE);
@@ -248,8 +250,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 String dateToStr = format.format(today);
 
-                File file = new File(root, stdNo.getText().toString() + "_" + mCourse + "_" + dateToStr + ".pdf");
-                pdfName =  stdNo.getText().toString() + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+                File file = new File(root, studentNumber + "_" + mCourse + "_" + dateToStr + ".pdf");
+                pdfName =  studentNumber + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     pdf.writeTo(fileOutputStream);
@@ -265,7 +267,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 CharSequence meessage = "Image Successfully converted!";
                 int duration = Toast.LENGTH_SHORT;
 
-                text.setText(stdNo.getText().toString() + "_" + mCourse + "_" + dateToStr + ".pdf");
+                text.setText(studentNumber + "_" + mCourse + "_" + dateToStr + ".pdf");
 
                 Toast toast = Toast.makeText(context, meessage, duration);
                 toast.show();
@@ -314,7 +316,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     if (EasyPermissions.hasPermissions(StudentUpload.this, cameraPermission)) {
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }*/
-
+                    nextFab.setVisibility(View.VISIBLE);
+                    sendHint.setVisibility(View.VISIBLE);
 
                 } else if (items[i].equals("Gallery")) {
 
@@ -332,9 +335,11 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                     }
                     //convertFab.setVisibility(View.VISIBLE);
                   nextFab.setVisibility(View.VISIBLE);
+                    sendHint.setVisibility(View.VISIBLE);
 
                 } else if (items[i].equals("Cancel")) {
                     nextFab.setVisibility(View.INVISIBLE);
+                    sendHint.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
             }
@@ -414,14 +419,14 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 }
 
                 String mCourse = courses;
-                String mStdNo =stdNo.getText().toString();
+                String mStdNo =studentNumber;
 
                 Date today = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 String dateToStr = format.format(today);
 
                 File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                pdfName =  stdNo.getText().toString() + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+                pdfName =  studentNumber+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     pdf.writeTo(fileOutputStream);
@@ -467,7 +472,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                         CoordinatorConcession concessions = new CoordinatorConcession(
                                 firebaseUser.getUid(),
-                                stdNo.getText().toString(),
+                                studentNumber,
                                 text.getText().toString(),
                                 spinnerCourses.getSelectedItem().toString(),
                                 "hey",
