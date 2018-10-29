@@ -27,10 +27,11 @@
         android:layout_height="50dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+
         android:layout_marginBottom="28dp"
         android:layout_marginStart="32dp"
         android:layout_weight="1"
-        android:onClick="openPdf"
+
         android:src="@drawable/ic_convert"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +48,6 @@
         android:layout_marginStart="32dp"
         android:layout_weight="1"
         android:clickable="true"
-        android:onClick="openPdf"
         android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,12 +101,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <TextView
+            <EditText
                 android:id="@+id/staffNumber"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
                 android:textSize="16sp"
-                android:text="SELECT COURSE :"
                 android:layout_height="match_parent"
                android:gravity="left"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout"
@@ -150,19 +149,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/white"
-            app:srcCompat="@drawable/upload_logo_upload"
+            app:srcCompat="@drawable/upload_s_upload"
             tools:layout_editor_absoluteX="304dp"
             tools:layout_editor_absoluteY="95dp"
             android:contentDescription="@string/todo" />
-
-        <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/PdfView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteX="376dp"
-            tools:layout_editor_absoluteY="303dp" />
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
