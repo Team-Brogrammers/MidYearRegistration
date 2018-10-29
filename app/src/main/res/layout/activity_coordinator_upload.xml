@@ -15,8 +15,22 @@
         android:layout_marginBottom="28dp"
         android:layout_weight="1"
         android:onClick="nextPage"
-        android:src="@drawable/ic_forward"
+        android:src="@drawable/ic_send"
         android:tint="@color/white"
+        tools:layout_editor_absoluteY="423dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextFabTextview"
+
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/nextFabTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="1"
+        android:text="send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -27,16 +41,28 @@
         android:layout_height="50dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-
-        android:layout_marginBottom="28dp"
         android:layout_marginStart="32dp"
         android:layout_weight="1"
-
         android:src="@drawable/ic_convert"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/convertTextview"
         app:layout_constraintEnd_toStartOf="@+id/nextFab"
+        app:layout_constraintHorizontal_bias="0.547"
+
         app:layout_constraintStart_toEndOf="@+id/addImageFab" />
+
+    <TextView
+        android:id="@+id/convertTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="104dp"
+        android:layout_weight="1"
+        android:text="convert"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nextFabTextview" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addImageFab"
@@ -48,10 +74,24 @@
         android:layout_marginStart="32dp"
         android:layout_weight="1"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/addimageTextview"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addimageTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="172dp"
+        android:layout_marginStart="90dp"
+        android:layout_weight="1"
+        android:text="camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:focusable="true" />
+        app:layout_constraintEnd_toStartOf="@+id/convertTextview"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/fileNameIdentifier"
@@ -95,23 +135,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fileName"
         android:baselineAligned="false">
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:layout_weight="1">
 
             <EditText
                 android:id="@+id/staffNumber"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="5dp"
-                android:textSize="16sp"
                 android:layout_height="match_parent"
-               android:gravity="left"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="@+id/courseSelectionSpinner"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                 />
+                android:gravity="left"
+                android:hint="recipient student num"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/courseSelectionSpinner"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

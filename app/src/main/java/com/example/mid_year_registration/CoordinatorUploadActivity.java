@@ -75,7 +75,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
-    TextView textfilename;
+    TextView textfilename,cameraClue;
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
@@ -85,6 +85,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private ProgressDialog mProgressDialog;
     Bundle bundle;
     String personNumber, pdfName;
+
 
     //Firebase
     FirebaseUser firebaseUser;
@@ -115,7 +116,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
         textfilename = findViewById(R.id.fileNameIdentifier);
-
+        cameraClue = (TextView)findViewById(R.id.nextFabTextview);
+        cameraClue.setVisibility(View.INVISIBLE);
         convertFab.setVisibility(View.INVISIBLE);
         nextFab.setVisibility(View.INVISIBLE);
         text.setVisibility(View.INVISIBLE);
@@ -213,19 +215,22 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         String mCourse = courseSpinner.getSelectedItem().toString();
         String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() || mStdNo.isEmpty() ){
-//            if(mCourse.isEmpty()) {
-//                course.error("input is empty!");
-//
-//            }
-            /*else*/ if(mStdNo.isEmpty()) {
-                // stdNo.setError("input is empty!");
+        if(mStdNo.isEmpty() ){
+
+            Toast.makeText(getApplicationContext(), "recepient student number is required",
+                    Toast.LENGTH_SHORT).show();
             }
+            else if(bmp == null){
+            Context context = getApplicationContext();
+            CharSequence meessage = "Please select an image!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, meessage, duration).show();
+        }
 //            else if(mCourse.isEmpty() && mCourse.isEmpty()){
 //                stdNo.setError("input is empty!");
 //                course.setError("input is empty!");
 //            }
-        }
+      /*  }
         else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
             if(!isValidStudentNo(mStdNo)) {
                 // stdNo.setError("invalid student number!");
@@ -237,13 +242,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 //stdNo.setError("invalid student number!");
 //                course.setError("Course code is upper case and numbers only");
             }
-        }
-        else if(bmp == null){
-            Context context = getApplicationContext();
-            CharSequence meessage = "Please select an image!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, meessage, duration).show();
-        }
+        }*/
+
 
 
         /*else if(!imageSelected){
@@ -363,6 +363,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             nextFab.setVisibility(View.VISIBLE);
+                            cameraClue.setVisibility(View.VISIBLE);
                             startActivityForResult(intent, REQUEST_CAMERA);
                         }
                     }
@@ -375,6 +376,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                     final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     if (EasyPermissions.hasPermissions(CoordinatorUploadActivity.this, galleryPermissions)) {
                         nextFab.setVisibility(View.VISIBLE);
+                        cameraClue.setVisibility(View.VISIBLE);
                         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         intent.setType("image/*");
                         //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
@@ -390,6 +392,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                 } else if (items[i].equals("Cancel")) {
                     nextFab.setVisibility(View.INVISIBLE);
+                    cameraClue.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
             }
@@ -610,8 +613,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                                     //progressDialog.dismiss();
                                     Toast.makeText(CoordinatorUploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    /*Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
-                                    startActivity(activity);*/
+                                    Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
                                     Toast.makeText(CoordinatorUploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
