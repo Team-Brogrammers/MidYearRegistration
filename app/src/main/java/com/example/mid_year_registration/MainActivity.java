@@ -16,6 +16,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mCourses = new ArrayList<>();
     private ProgressDialog mProgressDialog;
     RecyclerView recyclerView;
+    int numberOfResults = 0;
 
     private static final String TAG="MainActivity";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mImageUrls.clear();
         mStudentNos.clear();
         mCourses.clear();
+        numberOfResults=0;
 
         DatabaseReference databaseRef1 = database.getReference().child("Concessions");
         mProgressDialog.setTitle("Loading Concessions");
@@ -109,10 +112,19 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Concession", concession.getPdfUrl());
 
                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                        numberOfResults++;
                     }
                     //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
                     initRecyclerView();
+
                 }
+                if (mNames.size()==0){
+
+                    View s = findViewById(R.id.activitymain);
+                    Snackbar.make(s, "No results found", Snackbar.LENGTH_LONG).show();
+
+                }
+                getSupportActionBar().setTitle(numberOfResults+" Results Found");
             }
 
             @Override
@@ -129,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         mImageUrls.clear();
         mStudentNos.clear();
         mCourses.clear();
+        numberOfResults=0;
+
 
         DatabaseReference databaseRef1 = database.getReference().child("Concessions");
         mProgressDialog.setTitle("Loading Concessions");
@@ -136,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
         final String test = "pending";  // string for student numbers
+
         databaseRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -148,10 +163,19 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Concession", concession.getPdfUrl());
 
                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                        numberOfResults++;
+
                     }
                     //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
                     initRecyclerView();
                 }
+                if (mNames.size()==0){
+
+                    View s = findViewById(R.id.activitymain);
+                    Snackbar.make(s, "No results found", Snackbar.LENGTH_LONG).show();
+
+                }
+                getSupportActionBar().setTitle(numberOfResults+" Results Found");
             }
 
             @Override
@@ -168,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         mImageUrls.clear();
         mStudentNos.clear();
         mCourses.clear();
+        numberOfResults=0;
 
         DatabaseReference databaseRef1 = database.getReference().child("Comments");
         final DatabaseReference databaseRef2 = database.getReference().child("Concessions");
@@ -183,26 +208,35 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    //
-                    //final String pdfKey = childSnap.getKey();
-                    //final String comment = childSnap.getKey();
+
                     if (test.equals(childSnap.child("status").getValue())) {
                         final String pdfKey = childSnap.child("pdfId").getValue().toString();
-                        Toast.makeText(MainActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
                         databaseRef2.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                                    //Toast.makeText(MainActivity.this, "Concession id: "+childSnap.getKey(), Toast.LENGTH_LONG).show();
+
                                     if (pdfKey.equals(childSnap.getKey())) {
                                         Concessions concession = childSnap.getValue(Concessions.class);
                                         Log.d("Concession", concession.getPdfUrl());
 
                                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                                        numberOfResults++;
                                     }
                                     initRecyclerView();
                                 }
+                                if (mNames.size()==0){
+
+                                    View s = findViewById(R.id.activitymain);
+                                    Snackbar.make(s, "No results found", Snackbar.LENGTH_LONG).show();
+
+                                }
+                                getSupportActionBar().setTitle(numberOfResults+" Results Found");
+
                             }
+
+
+
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -213,7 +247,10 @@ public class MainActivity extends AppCompatActivity {
 
                     //Toast.makeText(MainActivity.this, "Concession id: "+dataSnapshot.getKey(), Toast.LENGTH_LONG).show();
 
+
                 }
+
+
             }
 
             @Override
@@ -269,11 +306,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_accepted:
-                //Toast.makeText(ViewConcessionActivity.this, "You selected Accepted", Toast.LENGTH_SHORT).show();
                 accepted();
                 return  true;
             case R.id.action_rejected:
-                //Toast.makeText(MainActivity.this, "You selected Rejected", Toast.LENGTH_SHORT).show();
+
                 rejected();
                 return true;
 

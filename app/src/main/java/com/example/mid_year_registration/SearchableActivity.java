@@ -29,6 +29,7 @@ public class SearchableActivity extends AppCompatActivity {
     private ArrayList<String> mStudentNos = new ArrayList<>();
     private ArrayList<String> mCourses = new ArrayList<>();
     private ProgressDialog mProgressDialog;
+    int numberOfResults;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef;
@@ -72,7 +73,7 @@ public class SearchableActivity extends AppCompatActivity {
 
 
         DatabaseReference databaseRef1 = database.getReference().child("Concessions");
-       // mProgressDialog.setTitle("Loading Concessions");
+        //mProgressDialog.setTitle("Loading Concessions");
       //  mProgressDialog.setMessage("Please wait...");
        // mProgressDialog.setCanceledOnTouchOutside(false);
         //mProgressDialog.show();
@@ -81,6 +82,7 @@ public class SearchableActivity extends AppCompatActivity {
                 .startAt(search_string)
                 .endAt(search_string+"\uf8ff");*/
         //final String test = "accepted";
+        numberOfResults=0;
         databaseRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,6 +99,7 @@ public class SearchableActivity extends AppCompatActivity {
                         Log.d("Concession", concession.getPdfUrl());
 
                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
+                        numberOfResults++;
 
 
                     }
@@ -120,6 +123,7 @@ public class SearchableActivity extends AppCompatActivity {
                     Snackbar.make(s, "No results found", Snackbar.LENGTH_LONG).show();
 
                 }
+                getSupportActionBar().setTitle(numberOfResults+" Results Found");
             }
 
             @Override
