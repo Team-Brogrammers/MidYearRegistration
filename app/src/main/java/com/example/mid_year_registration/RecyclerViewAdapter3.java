@@ -51,7 +51,7 @@ public class RecyclerViewAdapter3 extends RecyclerView.Adapter<RecyclerViewAdapt
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick:clicked"+mDocNames.get(position));
-                Intent intent = new Intent(mContext, SearchableActivity.class);
+                Intent intent = new Intent(mContext, ViewConcessionActivity.class);
                 intent.putExtra("name", mDocNames.get(position));
                 intent.putExtra("studentNo", mStudentNos.get(position));
                 intent.putExtra("course", mCourses.get(position));

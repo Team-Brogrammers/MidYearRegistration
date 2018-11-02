@@ -44,7 +44,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         getSupportActionBar().setTitle("Reset Password");
-     
+
         // Initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
 
