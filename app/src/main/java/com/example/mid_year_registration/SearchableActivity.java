@@ -91,7 +91,8 @@ public class SearchableActivity extends AppCompatActivity {
 
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
 
-                   if (search_string.equals(childSnap.child("studentNo").getValue()) || search_string.equals(childSnap.child("courseCode").getValue())){
+                  // if (search_string.equals(childSnap.child("studentNo").getValue()) || search_string.equals(childSnap.child("courseCode").getValue())){
+                    if((childSnap.child("studentNo").getValue()).toString().startsWith(search_string)){
 
 
 
