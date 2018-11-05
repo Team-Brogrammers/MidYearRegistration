@@ -524,10 +524,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                             })
                                             .send();
 
-                                    //progressDialog.dismiss();
+                                    progressDialog.dismiss();
                                     Toast.makeText(StudentUpload.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    /*Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
-                                    startActivity(activity);*/
+                                    Intent activity = new Intent(getApplicationContext(), CoordinatorMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
                                     Toast.makeText(StudentUpload.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
