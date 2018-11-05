@@ -90,6 +90,13 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     String courses;
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), StudentMenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_student_upload);
@@ -202,6 +209,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         }
         return hasImage;
     }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     public void openPdf() {
 
