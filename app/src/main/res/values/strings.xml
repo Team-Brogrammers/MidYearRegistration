@@ -58,18 +58,17 @@
 
     <!--Computer Science Courses-->
     <string-array name="courses">
-        <!--LEVEL ONE-->
+
         <item>Course List</item>
+        <!--Computer Science-->
         <item>COMS1015</item>
         <item>COMS1016</item>
         <item>COMS1017</item>
         <item>COMS1018</item>
-        <!--LEVEL TWO-->
         <item>COMS2002</item>
         <item>COMS2013</item>
         <item>COMS2014</item>
         <item>COMS2015</item>
-        <!--LEVEL THREE-->
         <item>COMS3002</item>
         <item>COMS3003</item>
         <item>COMS3005</item>
@@ -79,7 +78,28 @@
         <item>COMS3010</item>
         <item>COMS3006</item>
         <item>COMS3011</item>
-
-
+        <!--Applied Mathematics-->
+        <item>APPM1006</item>
+        <item>APPM2007</item>
+        <item>APPM3017</item>
+        <!--Mathematics-->
+        <item>MATH1034</item>
+        <item>MATH1036</item>
+        <item>MATH1041</item>
+        <item>MATH2003</item>
+        <item>MATH2015</item>
+        <item>MATH2019</item>
+        <item>MATH2021</item>
+        <item>MATH2022</item>
+        <item>MATH2025</item>
+        <item>MATH3001</item>
+        <item>MATH3003</item>
+        <item>MATH3004</item>
+        <item>MATH3006</item>
+        <item>MATH3009</item>
+        <item>MATH3010</item>
+        <item>MATH3031</item>
+        <item>MATH3032</item>
+        <item>MATH3034</item>
     </string-array>
 </resources>
