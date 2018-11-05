@@ -205,7 +205,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     public void openPdf() {
 
-       String mCourse = spinnerCourses.getSelectedItem().toString();
+       String mCourse = spinnerCourses.getSelectedItem().toString().trim();
        /* String mStdNo = stdNo.getText().toString();*/
 
        /* if (mCourse.isEmpty() || mStdNo.isEmpty()) {
@@ -213,18 +213,19 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 Toast.makeText(getApplicationContext(), "Please select Course",
                         Toast.LENGTH_SHORT).show();
                 return;
-            } else if (mCourse.equals("Course List")) {
+            }*/
+       if (mCourse.equals("Course List")) {
                 Toast.makeText(getApplicationContext(), "Please select Course",
                         Toast.LENGTH_SHORT).show();
                 return;
-            }*/
+       }
 
-            if (bmp == null) {
-                /*Context context = getApplicationContext();
+          if (bmp == null) {
+                Context context = getApplicationContext();
                 CharSequence meessage = "Please select an image!";
                 int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, meessage, duration).show();*/
-            } else {
+                Toast.makeText(context, meessage, duration).show();
+            }else{
                 PdfDocument pdf = new PdfDocument();
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
                 PdfDocument.Page page = pdf.startPage(pageInfo);
@@ -504,7 +505,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                 }*/
                                 if(task.isSuccessful()) {
 
-
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(StudentUpload.this)
                                             .withUsername("witsbrogrammers@gmail.com")
@@ -530,10 +530,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                             })
                                             .send();
 
-                                    //progressDialog.dismiss();
+                                    progressDialog.dismiss();
                                     Toast.makeText(StudentUpload.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    /*Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
-                                    startActivity(activity);*/
+                                    Intent activity = new Intent(StudentUpload.this, StudentMenuActivity.class);
+                                    startActivity(activity);
                                 }
                                 else {
                                     Toast.makeText(StudentUpload.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();

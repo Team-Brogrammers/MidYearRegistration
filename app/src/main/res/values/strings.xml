@@ -87,4 +87,5 @@
     <string name="add_courses">Select new courses:</string>
     <string name="course_title">Course Title:</string>
     <string name="todo">TODO</string>
+    <string name="send">send</string>
 </resources>
