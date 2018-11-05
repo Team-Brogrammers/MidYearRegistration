@@ -254,7 +254,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                 //String targetPdf = "/test.pdf";
                 root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-                Toast.makeText(StudentUpload.this, "Pdf Uri: " + root, Toast.LENGTH_LONG).show();
+               // Toast.makeText(StudentUpload.this, "Pdf Uri: " + root, Toast.LENGTH_LONG).show();
                 if (!root.exists()) {
                     root.mkdir();
                 }
@@ -283,7 +283,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 text.setText(studentNumber + "_" + mCourse + "_" + dateToStr + ".pdf");
 
                 Toast toast = Toast.makeText(context, meessage, duration);
-                toast.show();
+                //toast.show();
             }
         }
 /*    private static boolean checkString(String mCourse) {
@@ -526,7 +526,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                                 @Override
                                                 public void onSuccess() {
-                                                    Toast.makeText(StudentUpload.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                  //  Toast.makeText(StudentUpload.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
                                                 }
                                             })
                                             .withOnFailCallback(new BackgroundMail.OnFailCallback() {
@@ -572,7 +572,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         courses = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),courses,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(parent.getContext(),courses,Toast.LENGTH_SHORT).show();
 
     }
 

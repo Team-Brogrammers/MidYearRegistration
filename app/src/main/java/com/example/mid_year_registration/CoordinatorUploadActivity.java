@@ -313,7 +313,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             pdfName = mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf";
 
             Toast toast = Toast.makeText(context, meessage, duration);
-            toast.show();
+            //toast.show();
             text.setVisibility(View.VISIBLE);
             textfilename.setVisibility(View.VISIBLE);
             //nextFab.setVisibility(View.VISIBLE);
@@ -544,6 +544,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
+        progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(Uri.fromFile(new File(root+"/"+pdfName)))
@@ -603,7 +604,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                                 @Override
                                                 public void onSuccess() {
-                                                    Toast.makeText(CoordinatorUploadActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                   // Toast.makeText(CoordinatorUploadActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
                                                 }
                                             })
                                             .withOnFailCallback(new BackgroundMail.OnFailCallback() {
@@ -614,8 +615,8 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                             })
                                             .send();
 
-                                    //progressDialog.dismiss();
-                                    Toast.makeText(CoordinatorUploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Toast.makeText(CoordinatorUploadActivity.this, "The form was successfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }

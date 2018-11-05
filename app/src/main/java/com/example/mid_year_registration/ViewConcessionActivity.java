@@ -225,7 +225,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                 @Override
                                 public void onSuccess() {
-                                    Toast.makeText(ViewConcessionActivity.this, "Student has been notified of your request", Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(ViewConcessionActivity.this, "Student has been notified of your request", Toast.LENGTH_LONG).show();
                                 }
                             })
                             .withOnFailCallback(new BackgroundMail.OnFailCallback() {
