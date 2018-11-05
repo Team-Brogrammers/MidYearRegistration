@@ -14,7 +14,7 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="28dp"
         android:layout_weight="1"
-        android:onClick="nextPage"
+        android:onClick="uploadPdf"
         android:src="@drawable/ic_forward"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
         android:layout_marginBottom="28dp"
         android:layout_marginStart="32dp"
         android:layout_weight="1"
-        android:onClick="openPdf"
+        android:onClick="selectPdf"
         android:src="@drawable/ic_convert"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,19 +59,37 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="120dp"
         android:text="@string/file_name1"
         app:layout_constraintEnd_toStartOf="@+id/fileName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/uploadComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write comment" />
+    </android.support.design.widget.TextInputLayout>
+
     <TextView
         android:id="@+id/fileName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/fileNameIdentifier"
@@ -123,7 +141,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
-        android:layout_height="290dp"
+        android:layout_height="87dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -134,24 +152,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <ImageView
-            android:id="@+id/formImageView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            app:srcCompat="@drawable/upload_logo_upload"
-            tools:layout_editor_absoluteX="304dp"
-            tools:layout_editor_absoluteY="95dp"
-            android:contentDescription="@string/todo" />
-
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/PdfView"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="244dp"
             android:layout_weight="1"
             tools:layout_editor_absoluteX="376dp"
-            tools:layout_editor_absoluteY="303dp" />
+            tools:layout_editor_absoluteY="303dp" >
+
+        </com.github.barteksc.pdfviewer.PDFView>
 
     </LinearLayout>
 
