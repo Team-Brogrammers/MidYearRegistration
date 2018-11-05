@@ -85,6 +85,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private ProgressDialog mProgressDialog;
     Bundle bundle;
     String personNumber, pdfName;
+    EditText message;
 
 
     //Firebase
@@ -107,6 +108,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         ivImage = findViewById(R.id.formImageView);
         text = findViewById(R.id.fileName);
         upload = findViewById(R.id.submitButton);
+        message = findViewById(R.id.commentEditext);
 
        /* bundle = getIntent().getExtras();
         personNumber = bundle.getString("personNumber");*/
@@ -282,21 +284,17 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String dateToStr = format.format(today);
 
-            if(!mCourse.equals("Course List")){
-                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                pdfName =  mStdNo+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    pdf.writeTo(fileOutputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                Toast.makeText(getApplicationContext(), "Please Select Valid Course", Toast.LENGTH_SHORT).show();
-                return;
+            File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                pdf.writeTo(fileOutputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             pdf.close();
 
           /*  pdfView.fromFile(file)
@@ -546,6 +544,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
+        progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(Uri.fromFile(new File(root+"/"+pdfName)))
@@ -555,6 +554,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                         // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
                         String url = taskSnapshot.getUploadSessionUri().toString();
+                        String comment = message.getText().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
                         //String studentNo = bundle.getString("studentNumber");
@@ -567,7 +567,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                 stdNo.getText().toString(),
                                 text.getText().toString(),
                                 courseSpinner.getSelectedItem().toString(),
-                                "hey",
+                                comment,
                                 url,
                                 status
 
@@ -615,7 +615,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                             })
                                             .send();
 
-                                    //progressDialog.dismiss();
+                                    progressDialog.dismiss();
                                     Toast.makeText(CoordinatorUploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);

@@ -21,6 +21,7 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
 
     String arrayName[] = {"Upload Student Form", "Add Courses", "Reset Password","Logout", "View Student Request"};
     ConstraintLayout mConstraintLayout;
+    boolean b1 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,54 +44,132 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
                     public void onMenuSelected(int index) {
 
                         if(arrayName[index].contains("Upload Student Form")){
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, CoordinatorUploadActivity.class);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+                            builder.setMessage("Upload a student's form?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(CoordinatorMenuActivity.this, CoordinatorUploadActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
                         }
                         if(arrayName[index].contains("View Student Request")){
                             if( isConnectingToInternet(CoordinatorMenuActivity.this) == false) {
                                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                                 return;
-
                             }
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, MainActivity.class);
-                            startActivity(activity);
+
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+                            builder.setMessage("View Student Request?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Toast.makeText(CoordinatorMenuActivity.this, "You selected View Student Request", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(CoordinatorMenuActivity.this, MainActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
                         }
                         if(arrayName[index].contains("Add Courses")){
                             if( isConnectingToInternet(CoordinatorMenuActivity.this) == false) {
                                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
-
                                 return;
-
                             }
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, AddCoursesActivity.class);
-                            startActivity(activity);
+
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+                            builder.setMessage("Add/View Courses?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(CoordinatorMenuActivity.this, AddCoursesActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
                         }
                         if(arrayName[index].contains("Reset Password")){
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, PasswordResetActivity.class);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+                            builder.setMessage("Do you want to reset your password?").setCancelable(false);
+                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(CoordinatorMenuActivity.this, PasswordResetActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         }
                         if(arrayName[index].contains("Logout")){
-                            Toast.makeText(CoordinatorMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(CoordinatorMenuActivity.this, LoginActivity.class);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+                            builder.setMessage("Are you sure you want to logout?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(CoordinatorMenuActivity.this, LoginActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         }
                     }
 
                 }).setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {
 
             @Override
-            public void onMenuOpened() {}
+            public void onMenuOpened() {
+
+            }
 
             @Override
-            public void onMenuClosed() {}
+            public void onMenuClosed() {
+
+            }
 
         });
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -112,4 +191,25 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
         alertDialog.show();
 
     }
+
+    public void onSelectedOption() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
+        builder.setMessage("Sure to exit the App?").setCancelable(false);
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        android.app.AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
 }

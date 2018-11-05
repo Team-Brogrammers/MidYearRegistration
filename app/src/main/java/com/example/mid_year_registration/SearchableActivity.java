@@ -29,6 +29,7 @@ public class SearchableActivity extends AppCompatActivity {
     private ArrayList<String> mStudentNos = new ArrayList<>();
     private ArrayList<String> mCourses = new ArrayList<>();
     private ProgressDialog mProgressDialog;
+    int numberOfResults = 0;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef;
@@ -51,7 +52,7 @@ public class SearchableActivity extends AppCompatActivity {
     }
 
     private void initImageBitmap(String url, String name, String studentNo, String course){
-       // Log.d(TAG, "initImageBitmaps: preparing bitmaps");
+        // Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
         mImageUrls.add(url);
         mNames.add(name);
@@ -60,21 +61,21 @@ public class SearchableActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-       // Log.d(TAG, "initRecyclerView: init RecyclerView");
+        // Log.d(TAG, "initRecyclerView: init RecyclerView");
         RecyclerView recyclerView=findViewById(R.id.searchRecyclerview);
         RecyclerViewAdapter3 adapter= new RecyclerViewAdapter3(this, mNames, mImageUrls, mStudentNos, mCourses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-       // mProgressDialog.dismiss();
+        // mProgressDialog.dismiss();
     }
 
     private void doMySearch(final String search_string) {
 
-
+        numberOfResults=0;
         DatabaseReference databaseRef1 = database.getReference().child("Concessions");
-       // mProgressDialog.setTitle("Loading Concessions");
-      //  mProgressDialog.setMessage("Please wait...");
-       // mProgressDialog.setCanceledOnTouchOutside(false);
+        // mProgressDialog.setTitle("Loading Concessions");
+        //  mProgressDialog.setMessage("Please wait...");
+        // mProgressDialog.setCanceledOnTouchOutside(false);
         //mProgressDialog.show();
 
         /*Query query =  databaseRef1.orderByChild()
@@ -89,17 +90,20 @@ public class SearchableActivity extends AppCompatActivity {
 
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
 
-                   if (search_string.equals(childSnap.child("studentNo").getValue()) || search_string.equals(childSnap.child("courseCode").getValue())){
+                    if (search_string.equals(childSnap.child("studentNo").getValue()) || search_string.equals(childSnap.child("courseCode").getValue())){
 
 
 
                         Concessions concession = childSnap.getValue(Concessions.class);
                         Log.d("Concession", concession.getPdfUrl());
 
+                        numberOfResults++;
+
                         initImageBitmap(concession.getPdfUrl(), concession.pdfName, concession.studentNo, concession.courseCode);
 
 
                     }
+                    getSupportActionBar().setTitle(numberOfResults+" Results Found");
                    /* else if(search_string.equals(childSnap.child("courseCode").getValue())){
                        Concessions concession = childSnap.getValue(Concessions.class);
                        Log.d("Concession", concession.getPdfUrl());

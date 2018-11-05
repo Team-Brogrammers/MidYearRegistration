@@ -45,38 +45,102 @@ public class StudentMenuActivity extends AppCompatActivity {
                     public void onMenuSelected(int index) {
 
                         if(arrayName[index].contains("Upload Request")){
-                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
-                            activity.putExtra("studentNumber", studentNumber);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
+                            builder.setMessage("Upload a concession request").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(StudentMenuActivity.this, StudentUpload.class);
+                                    activity.putExtra("studentNumber", studentNumber);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
                         }
                         if(arrayName[index].contains("View Request")){ // it should go to a page where the student will view his submitted request
                             if(  isConnectingToInternet(StudentMenuActivity.this) == false) {
                                 Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
                                 //mProgressDialog.dismiss();
                                 return;
-
                             }
 
-                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(StudentMenuActivity.this, StudentConcessionsActivity.class);
-                            startActivity(intent);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
+                            builder.setMessage("View your concession request(s)").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(StudentMenuActivity.this, StudentConcessionsActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
                         }
-                        //allow user to add courses which they're coordinating
+
                         if(arrayName[index].contains("")){
-                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
+                            if(  isConnectingToInternet(StudentMenuActivity.this) == false) {
+                                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                //mProgressDialog.dismiss();
+                                return;
+                            }else{
+                                Snackbar.make(mConstraintLayout, "You are Connected", Snackbar.LENGTH_LONG).show();
+                            }
+                            //Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
                             //Intent activity = new Intent(StudentMenuActivity.this, AddCoursesActivity.class);
                             //startActivity(activity);
                         }
                         if(arrayName[index].contains("Reset Password")){
-                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(StudentMenuActivity.this, PasswordResetActivity.class);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
+                            builder.setMessage("Do you want to reset your password?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(StudentMenuActivity.this, PasswordResetActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         }
                         if(arrayName[index].contains("Logout")){
-                            Toast.makeText(StudentMenuActivity.this, "You selected "+arrayName[index], Toast.LENGTH_SHORT).show();
-                            Intent activity = new Intent(StudentMenuActivity.this, LoginActivity.class);
-                            startActivity(activity);
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
+                            builder.setMessage("Are you sure you want to logout?").setCancelable(false);
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent activity = new Intent(StudentMenuActivity.this, LoginActivity.class);
+                                    startActivity(activity);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         }
 
 
