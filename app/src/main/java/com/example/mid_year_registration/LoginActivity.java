@@ -134,15 +134,16 @@ public class LoginActivity extends AppCompatActivity {
 
                                                 mProgressDialog.dismiss();
 
-                                                String personNumber = email.substring(0, email.indexOf("@"));
+                                                String studentNumber = email.substring(0, email.indexOf("@"));
+                                                //Toast.makeText(LoginActivity.this, "Your student number is " +studentNumber, Toast.LENGTH_LONG).show();
                                                 if (email.endsWith("@students.wits.ac.za")) {
                                                     Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
-                                                    activity.putExtra("personNumber", personNumber);
+                                                    activity.putExtra("studentNumber", studentNumber);
                                                     startActivity(activity);
 
                                                 } else if (email.endsWith("@wits.ac.za")) {
                                                     Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
-                                                    activity.putExtra("personNumber", personNumber);
+                                                    activity.putExtra("studentNumber", studentNumber);
                                                     startActivity(activity);
 
                                                 }
