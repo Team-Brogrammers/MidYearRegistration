@@ -284,21 +284,17 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String dateToStr = format.format(today);
 
-            if(!mCourse.equals("Course List")){
-                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                pdfName =  mStdNo+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    pdf.writeTo(fileOutputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                Toast.makeText(getApplicationContext(), "Please Select Valid Course", Toast.LENGTH_SHORT).show();
-                return;
+            File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                pdf.writeTo(fileOutputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             pdf.close();
 
           /*  pdfView.fromFile(file)
