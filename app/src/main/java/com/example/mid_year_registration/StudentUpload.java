@@ -109,7 +109,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
-       // sendHint = (TextView)findViewById(R.id.nextFabTextview);
+        sendHint = (TextView)findViewById(R.id.nextFabTextview) ;
         sendHint.setVisibility(View.INVISIBLE);
 
         convertFab.setVisibility(View.INVISIBLE);
@@ -420,28 +420,22 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 }
 
                 String mCourse = courses;
-                String mStdNo = studentNumber;
+                String mStdNo =studentNumber;
 
                 Date today = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 String dateToStr = format.format(today);
 
-                if(!mCourse.equals("Course List")){
-                    File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                    pdfName =  studentNumber+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
-                    try {
-                        FileOutputStream fileOutputStream = new FileOutputStream(file);
-                        pdf.writeTo(fileOutputStream);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "Please Select Valid Course", Toast.LENGTH_SHORT).show();
-                    return;
+                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+                pdfName =  studentNumber+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    pdf.writeTo(fileOutputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
 
                 pdf.close();
 
@@ -556,6 +550,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             }
         });
+
+
 
     }
 
