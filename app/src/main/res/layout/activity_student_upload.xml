@@ -43,10 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-<<<<<<< HEAD
-=======
                 android:inputType="textPersonName"
->>>>>>> 944facbfa5079e4d6a30aa68ef1a234879f7b83f
                 android:text="SELECT COURSE :"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
