@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //Reference variables
     private ProgressDialog mProgressDialog;
-   static private EditText etEmail;
+    static private EditText etEmail;
     private EditText etPassword;
     private ConstraintLayout mConstraintLayout;
     static FirebaseUser user = null;
@@ -103,65 +103,65 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                             else if( isConnectingToInternet(LoginActivity.this) == true){
-                            mAuth = FirebaseAuth.getInstance();
-                            mAuth.fetchProvidersForEmail(etEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener <ProviderQueryResult>() {
+                                mAuth = FirebaseAuth.getInstance();
+                                mAuth.fetchProvidersForEmail(etEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener <ProviderQueryResult>() {
 
-                                @Override
-                                public void onComplete(@NonNull Task <ProviderQueryResult> task1) {
-                                    if (!task1.getResult().getProviders().isEmpty()) {
+                                    @Override
+                                    public void onComplete(@NonNull Task <ProviderQueryResult> task1) {
+                                        if (!task1.getResult().getProviders().isEmpty()) {
 
-                                        if (user != null) {
-                                            FirebaseAuth.getInstance().getCurrentUser().reload();
-                                            if (!user.isEmailVerified()) {
+/*                                            if (user != null) {
+                                                FirebaseAuth.getInstance().getCurrentUser().reload();
+                                                if (!user.isEmailVerified()) {
+                                                    mProgressDialog.dismiss();
+                                                    Snackbar.make(mConstraintLayout, "Unverified Email", Snackbar.LENGTH_LONG)
+                                                            .setAction("verify email?", new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View view) {
+                                                                    user.sendEmailVerification();
+                                                                }
+                                                            })
+                                                            .setActionTextColor(Color.GREEN)
+                                                            .show();
+
+                                                    // Toast.makeText(LoginActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+
+                                                    return;
+                                                }*/
+
+                                            if (task.isSuccessful()) {
+
+
                                                 mProgressDialog.dismiss();
-                                                Snackbar.make(mConstraintLayout, "Unverified Email", Snackbar.LENGTH_LONG)
-                                                        .setAction("verify email?", new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View view) {
-                                                                user.sendEmailVerification();
-                                                            }
-                                                        })
-                                                        .setActionTextColor(Color.GREEN)
-                                                        .show();
 
-                                                // Toast.makeText(LoginActivity.this, "Please click the sent Verification Link to your email", Toast.LENGTH_LONG).show();
+                                                String personNumber = email.substring(0, email.indexOf("@"));
+                                                if (email.endsWith("@students.wits.ac.za")) {
+                                                    Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
+                                                    activity.putExtra("personNumber", personNumber);
+                                                    startActivity(activity);
 
-                                                return;
-                                            }
-                                        }
+                                                } else if (email.endsWith("@wits.ac.za")) {
+                                                    Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
+                                                    activity.putExtra("personNumber", personNumber);
+                                                    startActivity(activity);
 
-                                        if (task.isSuccessful()) {
+                                                }
 
-
-                                            mProgressDialog.dismiss();
-
-                                            String studentNumber = email.substring(0, email.indexOf("@"));
-                                            if (email.endsWith("@students.wits.ac.za")) {
-                                                Intent activity = new Intent(LoginActivity.this, StudentMenuActivity.class);
-                                                activity.putExtra("studentNumber", studentNumber);
-                                                startActivity(activity);
-
-                                            } else if (email.endsWith("@wits.ac.za")) {
-                                                Intent activity = new Intent(LoginActivity.this, CoordinatorMenuActivity.class);
-                                                startActivity(activity);
+                                            } else {
+                                                //mProgressDialog.dismiss();
+                                                Snackbar.make(mConstraintLayout, "Authentication Failed, wrong Password!", Snackbar.LENGTH_LONG).show();
+                                                mProgressDialog.dismiss();
 
                                             }
 
                                         } else {
-                                            //mProgressDialog.dismiss();
-                                            Snackbar.make(mConstraintLayout, "Authentication Failed, wrong Password!", Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(mConstraintLayout, "You are not registered, please sign up  first!", Snackbar.LENGTH_LONG).show();
                                             mProgressDialog.dismiss();
-
+                                            return;
                                         }
-
-                                    } else {
-                                        Snackbar.make(mConstraintLayout, "You are not registered, please sign up  first!", Snackbar.LENGTH_LONG).show();
-                                        mProgressDialog.dismiss();
-                                        return;
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
                         }
                     });
 
@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /************Checking if Mobile data is Avalaible*****/
-   public static boolean isOnline() {
+    public static boolean isOnline() {
 
         try {
 
@@ -286,3 +286,4 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 }
+
