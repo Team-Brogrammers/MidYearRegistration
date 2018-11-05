@@ -90,6 +90,13 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     String courses;
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), StudentMenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_student_upload);
@@ -109,7 +116,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
-       // sendHint = (TextView)findViewById(R.id.nextFabTextview);
+        sendHint = (TextView)findViewById(R.id.nextFabTextview) ;
         sendHint.setVisibility(View.INVISIBLE);
 
         convertFab.setVisibility(View.INVISIBLE);
@@ -203,9 +210,15 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         return hasImage;
     }*/
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     public void openPdf() {
 
-       String mCourse = spinnerCourses.getSelectedItem().toString().trim();
+       String mCourse = spinnerCourses.getSelectedItem().toString();
        /* String mStdNo = stdNo.getText().toString();*/
 
        /* if (mCourse.isEmpty() || mStdNo.isEmpty()) {
@@ -213,19 +226,18 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 Toast.makeText(getApplicationContext(), "Please select Course",
                         Toast.LENGTH_SHORT).show();
                 return;
-            }*/
-       if (mCourse.equals("Course List")) {
+            } else if (mCourse.equals("Course List")) {
                 Toast.makeText(getApplicationContext(), "Please select Course",
                         Toast.LENGTH_SHORT).show();
                 return;
-       }
+            }*/
 
-          if (bmp == null) {
-                Context context = getApplicationContext();
+            if (bmp == null) {
+                /*Context context = getApplicationContext();
                 CharSequence meessage = "Please select an image!";
                 int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, meessage, duration).show();
-            }else{
+                Toast.makeText(context, meessage, duration).show();*/
+            } else {
                 PdfDocument pdf = new PdfDocument();
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
                 PdfDocument.Page page = pdf.startPage(pageInfo);
@@ -421,28 +433,22 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 }
 
                 String mCourse = courses;
-                String mStdNo = studentNumber;
+                String mStdNo =studentNumber;
 
                 Date today = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 String dateToStr = format.format(today);
 
-                if(!mCourse.equals("Course List")){
-                    File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-                    pdfName =  studentNumber+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
-                    try {
-                        FileOutputStream fileOutputStream = new FileOutputStream(file);
-                        pdf.writeTo(fileOutputStream);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "Please Select Valid Course", Toast.LENGTH_SHORT).show();
-                    return;
+                File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
+                pdfName =  studentNumber+ "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    pdf.writeTo(fileOutputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
 
                 pdf.close();
 
@@ -478,11 +484,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                         //String comment = message.getText().toString();
                         final String status = "accepted";
 
-                        Concessions concessions = new Concessions(
+                        CoordinatorConcession concessions = new CoordinatorConcession(
                                 firebaseUser.getUid(),
                                 studentNumber,
                                 text.getText().toString(),
                                 spinnerCourses.getSelectedItem().toString(),
+                                "hey",
                                 url,
                                 status
 
@@ -503,6 +510,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                                 }*/
                                 if(task.isSuccessful()) {
+
 
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(StudentUpload.this)
@@ -531,7 +539,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                                     progressDialog.dismiss();
                                     Toast.makeText(StudentUpload.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(StudentUpload.this, StudentMenuActivity.class);
+                                    Intent activity = new Intent(getApplicationContext(), CoordinatorMenuActivity.class);
                                     startActivity(activity);
                                 }
                                 else {
@@ -555,6 +563,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
             }
         });
+
+
 
     }
 
