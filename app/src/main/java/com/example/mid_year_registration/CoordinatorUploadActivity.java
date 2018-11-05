@@ -544,7 +544,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
-        progressDialog.show();
 
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(Uri.fromFile(new File(root+"/"+pdfName)))
@@ -615,7 +614,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                             })
                                             .send();
 
-                                    progressDialog.dismiss();
+                                    //progressDialog.dismiss();
                                     Toast.makeText(CoordinatorUploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
                                     Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
                                     startActivity(activity);

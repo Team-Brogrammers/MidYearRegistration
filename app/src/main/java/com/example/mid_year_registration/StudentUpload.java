@@ -478,11 +478,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                         //String comment = message.getText().toString();
                         final String status = "accepted";
 
-                        Concessions concessions = new Concessions(
+                        CoordinatorConcession concessions = new CoordinatorConcession(
                                 firebaseUser.getUid(),
                                 studentNumber,
                                 text.getText().toString(),
                                 spinnerCourses.getSelectedItem().toString(),
+                                "hey",
                                 url,
                                 status
 

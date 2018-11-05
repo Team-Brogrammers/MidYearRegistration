@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         numberOfResults=0;
 
 
-
         DatabaseReference databaseRef1 = database.getReference().child("Concessions");
         mProgressDialog.setTitle("Loading Concessions");
         mProgressDialog.setMessage("Please wait...");
