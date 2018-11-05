@@ -85,6 +85,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private ProgressDialog mProgressDialog;
     Bundle bundle;
     String personNumber, pdfName;
+    EditText message;
 
 
     //Firebase
@@ -107,6 +108,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         ivImage = findViewById(R.id.formImageView);
         text = findViewById(R.id.fileName);
         upload = findViewById(R.id.submitButton);
+        message = findViewById(R.id.commentEditext);
 
        /* bundle = getIntent().getExtras();
         personNumber = bundle.getString("personNumber");*/
@@ -555,6 +557,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                         // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
                         String url = taskSnapshot.getUploadSessionUri().toString();
+                        String comment = message.getText().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
                         //String studentNo = bundle.getString("studentNumber");
@@ -567,7 +570,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                 stdNo.getText().toString(),
                                 text.getText().toString(),
                                 courseSpinner.getSelectedItem().toString(),
-                                "hey",
+                                comment,
                                 url,
                                 status
 

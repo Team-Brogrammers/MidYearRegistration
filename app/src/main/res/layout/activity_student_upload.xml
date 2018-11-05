@@ -41,7 +41,7 @@
                 android:id="@+id/stdNoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_marginStart="40dp"
+                android:layout_marginStart="40dp"
                 android:text="SELECT COURSE :"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
