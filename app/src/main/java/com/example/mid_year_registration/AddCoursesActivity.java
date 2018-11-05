@@ -181,6 +181,11 @@ public class AddCoursesActivity extends AppCompatActivity{
 
     private void updateAccount() {
         assert mFirebaseAuth.getCurrentUser() != null;
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Updating");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
         final String user_id = mFirebaseAuth.getCurrentUser().getUid();
         String email = mFirebaseAuth.getCurrentUser().getEmail();
         CourseListAdapter newAdapter = (CourseListAdapter) rvNewCourses.getAdapter();
@@ -208,6 +213,7 @@ public class AddCoursesActivity extends AppCompatActivity{
         }
 
         Toast.makeText(AddCoursesActivity.this, "Profile Successfully updated",Toast.LENGTH_SHORT);
+        mProgressDialog.dismiss();
         Intent intent = new Intent(AddCoursesActivity.this, CoordinatorMenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
