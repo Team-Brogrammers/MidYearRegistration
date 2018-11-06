@@ -320,6 +320,8 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals("Camera")) {
+                    nextFab.setVisibility(View.VISIBLE);
+                    sendHint.setVisibility(View.VISIBLE);
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                     if (intent.resolveActivity(getPackageManager()) != null) {
@@ -539,7 +541,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                                     progressDialog.dismiss();
                                     Toast.makeText(StudentUpload.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
-                                    Intent activity = new Intent(getApplicationContext(), CoordinatorMenuActivity.class);
+                                    Intent activity = new Intent(getApplicationContext(), StudentMenuActivity.class);
                                     startActivity(activity);
                                 }
                                 else {
