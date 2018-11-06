@@ -57,7 +57,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         onView(withId(R.id.fileName)).check(matches(isDisplayed()));
 
         onView(withId(R.id.stdNoEditText)).check(matches(isDisplayed()));
-        onView(withId(R.id.etCourse)).check(matches(isDisplayed()));
+        //onView(withId(R.id.etCourse)).check(matches(isDisplayed()));
 
         onView(withId(R.id.addImageFab)).check(matches(isDisplayed()));
         onView(withId(R.id.convertImageFab)).check(matches(isDisplayed()));
@@ -102,7 +102,7 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
         intending(toPackage("com.example.mid_year_registration")).respondWith(result);
         onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
+        //onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
         onView(withId(R.id.nextFab)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), UploadActivity.class)));
         Intents.release();
