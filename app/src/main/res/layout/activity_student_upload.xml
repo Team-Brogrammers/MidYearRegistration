@@ -10,40 +10,43 @@
         android:id="@+id/fileName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fileName">
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-           <TextView
+            <TextView
                 android:id="@+id/stdNoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_marginStart="40dp"
+                android:layout_marginStart="40dp"
+                android:inputType="textPersonName"
                 android:text="SELECT COURSE :"
-                android:inputType="textPersonName" />
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -65,11 +68,13 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
-        android:layout_height="290dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/fileName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,86 +93,116 @@
     </LinearLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addImageFab"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_weight="1"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_my_icon"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/addimageTextview"
-        app:layout_constraintStart_toStartOf="parent" />
-    <TextView
-        android:id="@+id/addimageTextview"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout13"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-
-        android:layout_marginStart="19dp"
-        android:layout_weight="1"
-        android:text="camera"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/convertImageFab"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_weight="1"
-
-        android:src="@drawable/ic_convert"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/nextFab"
-        app:layout_constraintStart_toEndOf="@+id/addImageFab" />
-    <TextView
-        android:id="@+id/convertTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="170dp"
-        android:layout_weight="1"
-        android:text="convert"
-        android:visibility="invisible"
+        android:orientation="horizontal"
+        android:weightSum="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-     />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/nextFab"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="8dp"
-        android:layout_weight="1"
-        android:onClick="nextPage"
-        android:src="@drawable/ic_send"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/nextFabTextview"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <TextView
-        android:id="@+id/nextFabTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="4dp"
-        android:layout_weight="1"
-        android:text="send"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/addImageFab"
+                android:layout_width="49dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_my_icon"
+                android:tint="@color/white"
+                tools:layout_editor_absoluteX="57dp"
+                tools:layout_editor_absoluteY="60dp" />
+
+            <TextView
+                android:id="@+id/addimageTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="camera"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="57dp"
+                tools:layout_editor_absoluteY="175dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/convertImageFab"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+
+                android:src="@drawable/ic_convert"
+                android:tint="@color/white"
+                tools:layout_editor_absoluteX="154dp"
+                tools:layout_editor_absoluteY="69dp" />
+
+            <TextView
+                android:id="@+id/convertTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="convert"
+                android:visibility="invisible"
+                tools:layout_editor_absoluteX="156dp"
+                tools:layout_editor_absoluteY="187dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/nextFab"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:onClick="nextPage"
+                android:src="@drawable/ic_send"
+                android:tint="@color/white"
+                tools:layout_editor_absoluteX="259dp"
+                tools:layout_editor_absoluteY="69dp" />
+
+            <TextView
+                android:id="@+id/nextFabTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="send"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="291dp"
+                tools:layout_editor_absoluteY="221dp" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

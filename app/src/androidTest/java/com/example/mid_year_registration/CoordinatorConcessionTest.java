@@ -15,6 +15,7 @@ public class CoordinatorConcessionTest{
 
     // Test the empty constructor
     @Test
+    @SmallTest
     public void testVoidConcession() {
         CoordinatorConcession instance = new CoordinatorConcession();
         assertEquals(instance.getUid(), "");
@@ -24,11 +25,12 @@ public class CoordinatorConcessionTest{
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getComment(), "");
-        assertEquals(instance.getStatus(), "Test for status");
+        assertEquals(instance.getStatus(), "");
     }
 
     // Test the full constructor
     @Test
+    @SmallTest
     public void testFullConcession(){
         CoordinatorConcession instance = new CoordinatorConcession("TestUid", "test567", "TestPdfName", "TEST1001", "Test Comment", "Test_URL.test.com", "Test for status");
         assertEquals(instance.getUid(), "TestUid");
@@ -41,6 +43,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testSetStatus() {
         String status = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -49,6 +52,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetStatus() {
         String expStatus = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -59,6 +63,7 @@ public class CoordinatorConcessionTest{
 
 
     @Test
+    @SmallTest
     public void testSetComment() {
         String comment = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -67,6 +72,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetComment() {
         String expComment = "Please come see me";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -76,6 +82,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testSetUid() {
         String uid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -84,6 +91,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetUid() {
         String expUid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -93,6 +101,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testSetPdfName() {
         String pdfName = "11434236_M12__2018-09-07";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -101,6 +110,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetPdfName() {
         String expPdfName = "11434236_M12__2018-09-07";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -110,6 +120,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testSetCourseCode() {
         String courseCode = "MATH3001";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -118,6 +129,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetCourseCode() {
         String expCourseCode = "MATH3001";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -135,6 +147,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetPdfUrl() {
         String expPdfUrl = "https://firebasestorage.googleapis.com/v0/b/mid-year-registration-ef4af.appspot.com/o?name=CoordinatorConcession%2F11434236_M12__2018-09-07.pdf&uploadType=resumable&upload_id=AEnB2Upgf0l364_j740hccLiHo-JApF5dH6E33vzNkKIblxewE3BQQY6tcfYuB0ZVJUy1kFiCD1cLjJSKQOfhMC76EykaUcKX3wZ9GLfLg2NOckRaYep6d0&upload_protocol=resumable";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -146,6 +159,7 @@ public class CoordinatorConcessionTest{
 
 
     @Test
+    @SmallTest
     public void testSetStudentNo() {
         String stdNo = "1153631";
         CoordinatorConcession instance = new CoordinatorConcession();
@@ -154,6 +168,7 @@ public class CoordinatorConcessionTest{
     }
 
     @Test
+    @SmallTest
     public void testGetStudentNo() {
         String expStdNo = "1153631";
         CoordinatorConcession instance = new CoordinatorConcession();
