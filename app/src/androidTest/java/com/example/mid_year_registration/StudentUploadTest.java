@@ -65,12 +65,12 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
 
     }
 
-    @SmallTest
-    public void testButtonsClickable(){
-        onView(withId(R.id.addImageFab)).check(matches(isClickable()));
-        onView(withId(R.id.convertImageFab)).check(matches(isClickable()));
-        onView(withId(R.id.nextFab)).check(matches(isClickable()));
-    }
+//    @SmallTest
+//    public void testButtonsClickable(){
+//        onView(withId(R.id.addImageFab)).check(matches(isClickable()));
+//        onView(withId(R.id.convertImageFab)).check(matches(isClickable()));
+//        onView(withId(R.id.nextFab)).check(matches(isClickable()));
+//    }
 
 //    @MediumTest
 //    public void activityResult_DisplaysImage() {
@@ -95,31 +95,31 @@ public class StudentUploadTest extends ActivityInstrumentationTestCase2<StudentU
 //        //onView(withId(R.id.fileName)).perform(setName(filename), ;
 //    }
 
-    @SmallTest
-    public void testValidInputNextButton(){
-        Intents.init();
-        Intent resultData = new Intent();
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
-        onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
-        //onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
-        onView(withId(R.id.nextFab)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), UploadActivity.class)));
-        Intents.release();
-    }
+//    @SmallTest
+//    public void testValidInputNextButton(){
+//        Intents.init();
+//        Intent resultData = new Intent();
+//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+//        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+//        onView(withId(R.id.stdNoEditText)).perform(typeText("1234567"), closeSoftKeyboard());
+//        //onView(withId(R.id.etCourse)).perform(typeText("MATH3001"), closeSoftKeyboard());
+//        onView(withId(R.id.nextFab)).perform(click());
+//        intended(hasComponent(new ComponentName(getTargetContext(), UploadActivity.class)));
+//        Intents.release();
+//    }
 
-    @Test
-    @SmallTest
-    public void testLogoutButton(){
-
-        Intents.init();
-        Intent resultData = new Intent();
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText(R.string.logout)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
-        Intents.release();
-    }
+//    @Test
+//    @SmallTest
+//    public void testLogoutButton(){
+//
+//        Intents.init();
+//        Intent resultData = new Intent();
+//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+//        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+//        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+//        onView(withText(R.string.logout)).perform(click());
+//        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
+//        Intents.release();
+//    }
 
 }
