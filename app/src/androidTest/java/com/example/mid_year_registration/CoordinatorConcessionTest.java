@@ -24,7 +24,7 @@ public class CoordinatorConcessionTest{
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getComment(), "");
-        assertEquals(instance.getStatus(), "Test for status");
+        assertEquals(instance.getStatus(), "");
     }
 
     // Test the full constructor
