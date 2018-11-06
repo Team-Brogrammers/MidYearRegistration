@@ -3,11 +3,11 @@ package com.example.mid_year_registration;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +21,7 @@ import com.google.firebase.auth.ProviderQueryResult;
 
 import java.util.List;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
 import static com.example.mid_year_registration.LoginActivity.isValidEmail;
 
 public class PasswordResetActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         getSupportActionBar().setTitle("Reset Password");
-
+     
         // Initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
 
@@ -52,6 +53,12 @@ public class PasswordResetActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email = emailEditText.getText().toString();
+                if(isConnectingToInternet(PasswordResetActivity.this) == false) {
+                    Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+                    return;
+
+                }
                 checkEmailExistsInFirebase(email);
             }
         });
@@ -103,6 +110,8 @@ public class PasswordResetActivity extends AppCompatActivity {
                 break;
             }
         }
+
+
         if(!flag){
            // progressDialog.dismiss();
             Snackbar.make(constraintLayout, "An account with this Email Doesn't Exists!", Snackbar.LENGTH_LONG ).show();
@@ -134,10 +143,28 @@ public class PasswordResetActivity extends AppCompatActivity {
                                         }})
                                     .setActionTextColor(Color.RED)
                                     .show();
-
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+
+        if(item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(PasswordResetActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

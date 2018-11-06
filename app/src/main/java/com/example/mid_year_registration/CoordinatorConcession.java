@@ -8,6 +8,7 @@ public class CoordinatorConcession {
     String courseCode;
     String comment;
     String pdfUrl;
+    String status;
 
     // Overload empty constructor to keep firebase happy when downloading concessions created under the Concessions.class scheme.
     // The attributes will be set by the firebase fetch methods using the get() and set() methods in this class.
@@ -19,15 +20,17 @@ public class CoordinatorConcession {
         this.courseCode = "";
         this.comment = "";
         this.pdfUrl = "";
+        this.status = "";
     }
 
-    public CoordinatorConcession(String uid, String studentNo, String pdfName, String courseCode, String comment, String pdfUrl) {
+    public CoordinatorConcession(String uid, String studentNo, String pdfName, String courseCode, String comment, String pdfUrl, String status) {
         this.uid = uid;
         this.studentNo = studentNo;
         this.pdfName = pdfName;
         this.courseCode = courseCode;
         this.comment = comment;
         this.pdfUrl = pdfUrl;
+        this.status = status;
     }
 
 
@@ -78,6 +81,11 @@ public class CoordinatorConcession {
     public void setPdfUrl(String pdfUrl) {
         this.pdfUrl = pdfUrl;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) {this.status = status; }
+
 
 
 

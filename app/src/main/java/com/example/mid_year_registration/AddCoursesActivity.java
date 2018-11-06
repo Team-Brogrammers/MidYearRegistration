@@ -2,18 +2,29 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +35,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.UploadTask;
+
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
+//import static com.example.mid_year_registration.LoginActivity.hasInternetAccess;
+
+import java.util.ArrayList;
 
 public class AddCoursesActivity extends AppCompatActivity{
 
@@ -32,11 +48,12 @@ public class AddCoursesActivity extends AppCompatActivity{
     private static final String ANONYMOUS = "anonymous";
     private ProgressDialog mProgressDialog;
     private ConstraintLayout constraintLayout;
-    private TextView getEmail;
-    private EditText getCourse1;
-    private EditText getCourse2;
-    private EditText getCourse3;
     private Button UpdateButton;
+    private RecyclerView rvCurrentCourses;
+    private RecyclerView rvNewCourses;
+    private Spinner  courseSpinner;
+    private ArrayAdapter<String> adapter;
+    private boolean isSpinnerTouched = false;
 
     // initialize Firebase variables
     private FirebaseAuth mFirebaseAuth;
@@ -46,6 +63,10 @@ public class AddCoursesActivity extends AppCompatActivity{
 
     private String mAuthor;
     public String mUsersKey;
+    private ArrayList<Course> currentCourses;
+    private ArrayList<Course> oldCourses;
+    private ArrayList<Course> courseList;
+    private ArrayList<Course> newCourseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +79,11 @@ public class AddCoursesActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuthor = ANONYMOUS;
+        currentCourses = new ArrayList<>();
+        courseList = new ArrayList<>();
+        courseList.add(new Course());
+        newCourseList = new ArrayList<>();
+        oldCourses = new ArrayList<>();
 
         // Initialize Firebase components
         mFireBaseDatabase = FirebaseDatabase.getInstance();
@@ -69,12 +95,11 @@ public class AddCoursesActivity extends AppCompatActivity{
         mUsersKey = mFirebaseAuth.getCurrentUser().getUid();
 
         // get references
-        getCourse1 = findViewById(R.id.course1EditText);
-        getCourse2 = findViewById(R.id.course2EditText);
-        getCourse3 = findViewById(R.id.course3EditText);
-        getEmail = findViewById(R.id.addEmailTextInputLayout);
+        rvCurrentCourses = findViewById(R.id.rvCurrentCourses);
+        rvNewCourses = findViewById(R.id.rvNewCourses);
         UpdateButton = findViewById(R.id.updateBotton);
         constraintLayout = findViewById(R.id.addCoursesConstraintLayout);
+        courseSpinner = findViewById(R.id.courseSelectionSpinner2);
 
         // initialize progressbar
         mProgressDialog = new ProgressDialog(this);
@@ -83,25 +108,33 @@ public class AddCoursesActivity extends AppCompatActivity{
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
-        // Display current user profile details
-        mUserDatabaseReference.child(mUsersKey).addValueEventListener(new ValueEventListener() {
+        // Display current user profile details and populate spinner
+
+        mFireBaseDatabase.getReference().child("Courses").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                    Course course = childSnap.getValue(Course.class);
+                    course.setCode(childSnap.getKey());
 
-                String user_course1 = (String) dataSnapshot.child("course1").getValue();
-                String user_course2 = (String) dataSnapshot.child("course2").getValue();
-                String user_course3 = (String) dataSnapshot.child("course3").getValue();
-                String user_email = mFirebaseAuth.getCurrentUser().getEmail();
-
-                getCourse1.setText(user_course1);
-                getEmail.setText(user_email);
-                getCourse2.setText(user_course2);
-                getCourse3.setText(user_course3);
-
-                mProgressDialog.dismiss();
+                    // Only show courses without a coordinator
+                    if(course.getCoordinator_uid().equals("")){
+                        courseList.add(course);
+                    }
+                    else if(course.getCoordinator_uid().equals(mFirebaseUser.getUid())){
+                        currentCourses.add(course);
+                        oldCourses.add(course);
+                    }
+                }
+                rvCurrentCourses.setAdapter(new CourseListAdapter(currentCourses));
+                initSpinner();
+                initCourseListView();
+                initNewCourseList();
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AddCoursesActivity.this, "Failed to download course list", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -109,7 +142,22 @@ public class AddCoursesActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // update account changes
+
+                if(  isConnectingToInternet(AddCoursesActivity.this) == false) {
+                    Snackbar.make(constraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+                    return;
+
+                }
                 updateAccount();
+            }
+        });
+
+        courseSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                isSpinnerTouched = true;
+                return false;
             }
         });
 
@@ -131,47 +179,84 @@ public class AddCoursesActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    //
     private void updateAccount() {
         assert mFirebaseAuth.getCurrentUser() != null;
         final String user_id = mFirebaseAuth.getCurrentUser().getUid();
-        final String course1 = getCourse1.getText().toString();
-        final String course2 = getCourse2.getText().toString();
-        final String course3 = getCourse3.getText().toString();
         String email = mFirebaseAuth.getCurrentUser().getEmail();
+        CourseListAdapter newAdapter = (CourseListAdapter) rvNewCourses.getAdapter();
+        CourseListAdapter currAdapter = (CourseListAdapter) rvCurrentCourses.getAdapter();
 
-        if(email.isEmpty()){
-            getEmail.setError("Provide email address");
-            return;
-        }
-        if((course1.isEmpty() && course2.isEmpty() && course3.isEmpty())){
-            Snackbar.make(constraintLayout, "Provide at least one course that you're coordinating!", Snackbar.LENGTH_LONG ).show();
-            return;
+        ArrayList<Course> newCourses = newAdapter.getCourses();
+        if(newCourses.isEmpty() && currentCourses.equals(oldCourses)){
+            Toast.makeText(AddCoursesActivity.this,"You haven't made any changes",Toast.LENGTH_SHORT);
         }
 
-        if(!TextUtils.isEmpty(mAuthor) && !TextUtils.isEmpty(email)){
-            mProgressDialog.setTitle("Setting Up Profile");
-            mProgressDialog.setMessage("Please wait...");
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.show();
+        for (Course course : newCourses){
 
-            mUserDatabaseReference.child(user_id).child("email").setValue(email);
-            mUserDatabaseReference.child(user_id).child("course1").setValue(course1);
-            mUserDatabaseReference.child(user_id).child("course2").setValue(course2);
-            mUserDatabaseReference.child(user_id).child("course3").setValue(course3);
-
-            mProgressDialog.dismiss();
-            Toast.makeText(AddCoursesActivity.this, "Profile successfully updated", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(AddCoursesActivity.this, CoordinatorMenuActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-
-        }else{
-            mProgressDialog.dismiss();
-            Toast.makeText(AddCoursesActivity.this, "Failed to update your profile, please try again.", Toast.LENGTH_LONG).show();
+            DatabaseReference ref = mFireBaseDatabase.getReference().child("Courses").child(course.getCode());
+            ref.child("Coordinator_uid").setValue(user_id);
         }
 
+
+
+        // remove the chosen courses
+        for (Course course : oldCourses){
+            if(!currentCourses.contains(course)){
+                DatabaseReference ref = mFireBaseDatabase.getReference().child("Courses").child(course.getCode());
+                ref.child("Coordinator_uid").setValue("");
+            }
+        }
+
+        Toast.makeText(AddCoursesActivity.this, "Profile Successfully updated",Toast.LENGTH_SHORT);
+        Intent intent = new Intent(AddCoursesActivity.this, CoordinatorMenuActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
+
+    private void initNewCourseList(){
+        RecyclerView newCourseListView = findViewById(R.id.rvNewCourses);
+        CourseListAdapter adapter = new CourseListAdapter(newCourseList);
+        newCourseListView.setAdapter(adapter);
+        newCourseListView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initCourseListView(){
+        RecyclerView currentCourseListView = findViewById(R.id.rvCurrentCourses);
+        CourseListAdapter adapter = new CourseListAdapter(currentCourses);
+        currentCourseListView.setAdapter(adapter);
+        currentCourseListView.setLayoutManager(new LinearLayoutManager(this));
+        mProgressDialog.dismiss();
+    }
+
+    private void initSpinner(){
+        ArrayList<String> codes = new ArrayList<>();
+        for (Course c : courseList){
+            codes.add(c.getCode());
+        }
+        adapter = new ArrayAdapter<String>(AddCoursesActivity.this, android.R.layout.simple_spinner_item, codes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseSpinner.setAdapter(adapter);
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!isSpinnerTouched){
+                    return;
+                }
+                newCourseList.add(courseList.get(i));
+                rvNewCourses.setAdapter(new CourseListAdapter(newCourseList));
+                courseList.remove(i);
+                initSpinner();
+                initNewCourseList();
+                isSpinnerTouched = false;
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }

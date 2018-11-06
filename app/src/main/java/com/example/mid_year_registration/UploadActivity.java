@@ -3,8 +3,11 @@ package com.example.mid_year_registration;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,6 +33,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class UploadActivity extends AppCompatActivity {
     Button addPdf, upload;
     PDFView pdfView;
@@ -49,6 +54,7 @@ public class UploadActivity extends AppCompatActivity {
     FirebaseDatabase database; //Used to store URLs of uploaded files
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
+    private ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class UploadActivity extends AppCompatActivity {
 
         text = findViewById(R.id.pdfNameTextView);
         pdfView = findViewById(R.id.PdfView);
+        mConstraintLayout = findViewById(R.id.relativeLayout);
 
         //attachment = findViewById(R.id.)
 
@@ -103,6 +110,7 @@ public class UploadActivity extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
+            Toast.makeText(UploadActivity.this, "Pdf Uri: "+pdfUri, Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
@@ -126,7 +134,12 @@ public class UploadActivity extends AppCompatActivity {
         progressDialog.setTitle("Uploading File...");
         progressDialog.setProgress(0);
         //progressDialog.show();
+        if(  isConnectingToInternet(UploadActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+            //ProgressDialog.dismiss();
+            return;
 
+        }
         final StorageReference storageReference = storage.getReference(); //Returns root path
         storageReference.child("Concessions").child(text.getText().toString()).putFile(pdf)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -140,19 +153,27 @@ public class UploadActivity extends AppCompatActivity {
                         final String pdfId = databaseReference.push().getKey();
                         String studentNo = bundle.getString("studentNumber");
                         final String courseCode = bundle.getString("courseCode");
+                        final String status = "pending";
 
                         Concessions concessions = new Concessions(
                                 firebaseUser.getUid(),
                                 studentNo,
                                 filename,
                                 courseCode,
-                                url
+                                url,
+                                status
 
                         );
 
                         databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                if( isConnectingToInternet(UploadActivity.this) == false) {
+                                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                    //ProgressDialog.dismiss();
+                                    return;
+
+                                }
                                 if(task.isSuccessful()) {
 
                                     // Send email in the background

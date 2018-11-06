@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+import static com.example.mid_year_registration.LoginActivity.isConnectingToInternet;
+
 public class ViewConcessionActivity extends AppCompatActivity {
 
     String name;
@@ -59,6 +63,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
 
     EditText message;
     Button submit;
+    ConstraintLayout mConstraintLayout;
+
 
 
     @Override
@@ -73,7 +79,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("View Concession");
         Log.d("Name", name);
         /* Set up the action bar */
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -82,6 +88,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.CoordPdfView);
         message = findViewById(R.id.viewConcessionComment);
         submit = findViewById(R.id.submitResponseButton);
+        submit.setEnabled(false);
+        mConstraintLayout = findViewById(R.id.viewconcessionConstraintLayout);
 
         tvStudentNo.setText(studentNo);
         tvCourseCode.setText(course);
@@ -90,7 +98,11 @@ public class ViewConcessionActivity extends AppCompatActivity {
         mProgressDialog.setTitle("Loading Concession PDF");
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCanceledOnTouchOutside(false);
-       // mProgressDialog.show();
+        mProgressDialog.show();
+
+        if(  isConnectingToInternet(ViewConcessionActivity.this) == true) {
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -102,6 +114,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         storageReference.getFile(localPdf).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
                 pdfView.fromFile(localPdf).
                         defaultPage(0).enableSwipe(true)
                         .swipeHorizontal(false)
@@ -114,8 +127,9 @@ public class ViewConcessionActivity extends AppCompatActivity {
 //                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 //                Intent intent = Intent.createChooser(target, "Open File");
 //                startActivity(intent);
-                //mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
+                submit.setEnabled(true);
+                mProgressDialog.dismiss();
+                Toast.makeText(ViewConcessionActivity.this, "Download Success!", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -123,10 +137,11 @@ public class ViewConcessionActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d("GetFile", "Fail");
                 Log.e("GetFile", e.getMessage());
-                //mProgressDialog.dismiss();
-                Toast.makeText(ViewConcessionActivity.this,"File Download Failed!", Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+                Toast.makeText(ViewConcessionActivity.this, "File Download Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         databaseRef = database.getReference().child("Concessions");
         databaseRef.addValueEventListener(new ValueEventListener() {
@@ -137,7 +152,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                    if(studentNo.equals(childSnap.child("studentNo").getValue())){
                        pdfKey=childSnap.getKey().toString();
                        uid=childSnap.child("uid").getValue().toString();
-                       Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(ViewConcessionActivity.this,"PDFId: "+pdfKey, Toast.LENGTH_SHORT).show();
                        break;
                    }
                 }
@@ -149,16 +164,45 @@ public class ViewConcessionActivity extends AppCompatActivity {
                 Log.d("DB Error", databaseError.toString()); //TODO handle error properly
             }
         });
+    } else if(isConnectingToInternet(ViewConcessionActivity.this) == false) {
+        Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+        mProgressDialog.dismiss();
+        return;
 
+
+    }
     }
 
     public void onClick(View view){
 
+        if( isConnectingToInternet(ViewConcessionActivity.this) == false) {
+            Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+
+            mProgressDialog.dismiss();
+            return;
+        }
+
         final String responseId = databaseRef.push().getKey();
         final String coordId = firebaseAuth.getUid();
         final String comment = message.getText().toString();
+        final String status = "rejected";
 
-        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
+        CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment, status);
+
+        if(comment.length() < 4  && isConnectingToInternet(ViewConcessionActivity.this) == true){
+            Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(comment.length() < 4){
+            Toast.makeText(ViewConcessionActivity.this, "Feedback required", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        /*if( pdfView.setActivated()){
+
+        }*/
+       // CoordinatorResponse response = new CoordinatorResponse(uid, coordId, pdfKey, comment);
 
         DatabaseReference databaseReference = database.getReference().child("Comments");
 
@@ -176,7 +220,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                             .withSubject("Response To Concession")
                             .withBody("Good day, the coordinator"+" has responded to your concession"
                                     +" for the "+course+" course which you want to register for."
-                                    +" Message from coordinator: "+message
+                                    +" Message from coordinator: "+comment
                             )
                             .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
                                 @Override

@@ -24,19 +24,39 @@ public class CoordinatorConcessionTest{
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getPdfUrl(), "");
         assertEquals(instance.getComment(), "");
+        assertEquals(instance.getStatus(), "Test for status");
     }
 
     // Test the full constructor
     @Test
     public void testFullConcession(){
-        CoordinatorConcession instance = new CoordinatorConcession("TestUid", "test567", "TestPdfName", "TEST1001", "Test Comment", "Test_URL.test.com");
+        CoordinatorConcession instance = new CoordinatorConcession("TestUid", "test567", "TestPdfName", "TEST1001", "Test Comment", "Test_URL.test.com", "Test for status");
         assertEquals(instance.getUid(), "TestUid");
         assertEquals(instance.getStudentNo(), "test567");
         assertEquals(instance.getPdfName(), "TestPdfName");
         assertEquals(instance.getCourseCode(),"TEST1001");
         assertEquals(instance.getComment(), "Test Comment");
         assertEquals(instance.getPdfUrl(), "Test_URL.test.com");
+        assertEquals(instance.getStatus(), "Test for status");
     }
+
+    @Test
+    public void testSetStatus() {
+        String status = "Please come see me";
+        CoordinatorConcession instance = new CoordinatorConcession();
+        instance.setStatus(status);
+        assertEquals(instance.getStatus(), status);
+    }
+
+    @Test
+    public void testGetStatus() {
+        String expStatus = "Please come see me";
+        CoordinatorConcession instance = new CoordinatorConcession();
+        instance.setStatus("Please come see me");
+        String status = instance.getStatus();
+        assertEquals(expStatus, status);
+    }
+
 
     @Test
     public void testSetComment() {

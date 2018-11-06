@@ -57,6 +57,10 @@ public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<Coor
     @Test
     @SmallTest
     public void testBackButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
 
         Intents.init();
         Intent resultData = new Intent();
@@ -70,6 +74,10 @@ public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<Coor
     @Test
     @SmallTest
     public void testLogoutButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
 
         Intents.init();
         Intent resultData = new Intent();

@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,24 +26,41 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -51,16 +69,28 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     ImageView ivImage;
     Button addImage, upload;
-    EditText course, stdNo;
+    File root;
+    EditText stdNo;
+    Spinner  courseSpinner;
     PDFView pdfView;
     Bitmap bmp;
     TextView text;
+    TextView textfilename,cameraClue;
     boolean imageSelected = false;
     Uri pdfUri;
     ProgressDialog progressDialog;
     FloatingActionButton addImageFab, convertFab, nextFab;
+    private ArrayList<String> courseList;
+    private ArrayAdapter<String> adapter;
+    private ProgressDialog mProgressDialog;
+    Bundle bundle;
+    String personNumber, pdfName;
+    EditText message;
+
 
     //Firebase
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
     FirebaseStorage storage; //Used for uploading pdfs
     FirebaseDatabase database; //Used to store URLs of uploaded files
 
@@ -70,24 +100,62 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         setContentView(R.layout.activity_coordinator_upload);
 
 
-        course=findViewById(R.id.etCourse);
-        stdNo=findViewById(R.id.stdNoEditText);
-        pdfView=findViewById(R.id.PdfView);
+        courseSpinner=findViewById(R.id.courseSelectionSpinner);
+        //pdfView=findViewById(R.id.PdfView);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         ivImage = findViewById(R.id.formImageView);
         text = findViewById(R.id.fileName);
         upload = findViewById(R.id.submitButton);
+        message = findViewById(R.id.commentEditext);
+
+       /* bundle = getIntent().getExtras();
+        personNumber = bundle.getString("personNumber");*/
+        stdNo = (EditText)findViewById(R.id.staffNumber);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
         nextFab = findViewById(R.id.nextFab);
-
+        textfilename = findViewById(R.id.fileNameIdentifier);
+        cameraClue = (TextView)findViewById(R.id.nextFabTextview);
+        cameraClue.setVisibility(View.INVISIBLE);
         convertFab.setVisibility(View.INVISIBLE);
         nextFab.setVisibility(View.INVISIBLE);
+        text.setVisibility(View.INVISIBLE);
+        textfilename.setVisibility(View.INVISIBLE);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        mProgressDialog = new ProgressDialog(CoordinatorUploadActivity.this);
+        mProgressDialog.setTitle("Loading Data");
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
+        // Populate the course list
+        courseList = new ArrayList<String>();
+        database.getReference().child("Courses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnap : dataSnapshot.getChildren()){
+                    Course course = childSnap.getValue(Course.class);
+                    course.setCode(childSnap.getKey());
+                    courseList.add(course.getCode());
+                }
+                // Add the courses to the spinner
+                adapter = new ArrayAdapter<String>(CoordinatorUploadActivity.this, android.R.layout.simple_spinner_item, courseList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                courseSpinner.setAdapter(adapter);
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         addImageFab.setOnClickListener(new View.OnClickListener(){
@@ -102,12 +170,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-       /*addImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                SelectImage();
-            }
-        });*/
     }
 
     @Override
@@ -150,55 +212,40 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         return false;
     }
 
+    public void openPdf(){
 
-
-    /*private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-        }
-
-        return hasImage;
-    }*/
-
-    public void openPdf(View view){
-
-        String mCourse=course.getText().toString();
+        String mCourse = courseSpinner.getSelectedItem().toString();
         String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() || mStdNo.isEmpty() ){
-            if(mCourse.isEmpty()) {
-                course.setError("input is empty!");
+        if(mStdNo.isEmpty() ){
 
+            Toast.makeText(getApplicationContext(), "recepient student number is required",
+                    Toast.LENGTH_SHORT).show();
             }
-            else if(mStdNo.isEmpty()) {
-                stdNo.setError("input is empty!");
-            }
-            else if(mCourse.isEmpty() && mCourse.isEmpty()){
-                stdNo.setError("input is empty!");
-                course.setError("input is empty!");
-            }
-        }
-        else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
-            if(!isValidStudentNo(mStdNo)) {
-                stdNo.setError("invalid student number!");
-            }
-            else if(!checkString(mCourse)) {
-                course.setError("Course code is upper case and numbers only");
-            }
-            else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
-                stdNo.setError("invalid student number!");
-                course.setError("Course code is upper case and numbers only");
-            }
-        }
-        else if(bmp == null){
+            else if(bmp == null){
             Context context = getApplicationContext();
             CharSequence meessage = "Please select an image!";
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, meessage, duration).show();
         }
+//            else if(mCourse.isEmpty() && mCourse.isEmpty()){
+//                stdNo.setError("input is empty!");
+//                course.setError("input is empty!");
+//            }
+      /*  }
+        else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
+            if(!isValidStudentNo(mStdNo)) {
+                // stdNo.setError("invalid student number!");
+            }
+            else if(!checkString(mCourse)) {
+//                course.setError("Course code is upper case and numbers only");
+            }
+            else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
+                //stdNo.setError("invalid student number!");
+//                course.setError("Course code is upper case and numbers only");
+            }
+        }*/
+
 
 
         /*else if(!imageSelected){
@@ -228,7 +275,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             pdf.finishPage(page);
 
             //String targetPdf = "/test.pdf";
-            File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+            root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
             if (!root.exists()) {
                 root.mkdir();
             }
@@ -238,6 +285,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             String dateToStr = format.format(today);
 
             File file = new File(root, mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 pdf.writeTo(fileOutputStream);
@@ -249,23 +297,27 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             pdf.close();
 
-            pdfView.fromFile(file)
+          /*  pdfView.fromFile(file)
                     .defaultPage(0).enableSwipe(true)
                     .swipeHorizontal(false)
                     .onPageChange(this)
                     .enableAnnotationRendering(true)
                     .onLoad(this)
                     .scrollHandle(new DefaultScrollHandle(this))
-                    .load();
+                    .load();*/
             Context context = getApplicationContext();
             CharSequence meessage = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
 
             text.setText(mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf");
+            pdfName = mStdNo + "_" + mCourse + "_" + dateToStr + ".pdf";
 
             Toast toast = Toast.makeText(context, meessage, duration);
             toast.show();
-            nextFab.setVisibility(View.VISIBLE);
+            text.setVisibility(View.VISIBLE);
+            textfilename.setVisibility(View.VISIBLE);
+            //nextFab.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -312,16 +364,21 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                         if (intent.resolveActivity(getPackageManager()) != null) {
+                            nextFab.setVisibility(View.VISIBLE);
+                            cameraClue.setVisibility(View.VISIBLE);
                             startActivityForResult(intent, REQUEST_CAMERA);
                         }
                     }
 
-                    convertFab.setVisibility(View.VISIBLE);
+                   // convertFab.setVisibility(View.VISIBLE);
+
 
                 } else if (items[i].equals("Gallery")) {
 
                     final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     if (EasyPermissions.hasPermissions(CoordinatorUploadActivity.this, galleryPermissions)) {
+                        nextFab.setVisibility(View.VISIBLE);
+                        cameraClue.setVisibility(View.VISIBLE);
                         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         intent.setType("image/*");
                         //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
@@ -332,9 +389,12 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                         EasyPermissions.requestPermissions(CoordinatorUploadActivity.this, "Access for storage",
                                 101, galleryPermissions);
                     }
-                    convertFab.setVisibility(View.VISIBLE);
+                   //convertFab.setVisibility(View.VISIBLE);
+
 
                 } else if (items[i].equals("Cancel")) {
+                    nextFab.setVisibility(View.INVISIBLE);
+                    cameraClue.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
             }
@@ -344,12 +404,14 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     }
 
     public void nextPage(View view){
-        String mCourse=course.getText().toString();
-        String mStdNo=stdNo.getText().toString();
+        openPdf();
+        UploadFileFromStorage();
+       // String mCourse=courseSpinner.getSelectedItem().toString();
+        //String mStdNo=stdNo.getText().toString();
 
-        if(mCourse.isEmpty() && mStdNo.isEmpty() ){
+        /*if(mCourse.isEmpty() && mStdNo.isEmpty() ){
 
-            course.setError("input is empty!");
+//            course.setError("input is empty!");
             stdNo.setError("input is empty!");
         }
         else if( mStdNo.isEmpty()){
@@ -357,22 +419,23 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
 
         else if(mCourse.isEmpty()){
-            course.setError("Course code is empty!");
+//            course.setError("Course code is empty!");
         }
 
         else if(!isValidStudentNo(mStdNo)) {
             stdNo.setError("invalid student number!");
-        }
+        }*
         else if(!checkString(mCourse)){
-            course.setError("Course code is upper case and numbers only");
-        }
-        else {
-            Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
+//            course.setError("Course code is upper case and numbers only");
+        }*/
+
+           /* Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
             intent.putExtra("filename", text.getText().toString());
-            intent.putExtra("studentNumber", stdNo.getText().toString());
-            intent.putExtra("courseCode", course.getText().toString());
-            startActivity(intent);
-        }
+            intent.putExtra("studentNumber", stdNo);
+            intent.putExtra("courseCode", courseSpinner.getSelectedItem().toString());
+
+            startActivity(intent);*/
+
     }
 
     @Override
@@ -384,9 +447,9 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             if(requestCode==REQUEST_CAMERA){
 
                 //Bundle bundle = data.getExtras();
+
                 bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
-
                 //Uri selectedImageUri = data.getData();
 
 
@@ -440,13 +503,13 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 pdf.finishPage(page);
 
                 //String targetPdf = "/test.pdf";
-                File root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
+                 root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
 
                 if (!root.exists()) {
                     root.mkdir();
                 }
 
-                String mCourse = course.getText().toString();
+                String mCourse = courseSpinner.getSelectedItem().toString();
                 String mStdNo = stdNo.getText().toString();
 
                 Date today = new Date();
@@ -454,7 +517,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 String dateToStr = format.format(today);
 
                 File file = new File(root, mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf");
-
+                pdfName = mStdNo + "_" + mCourse + "_" + "_" + dateToStr + ".pdf";
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     pdf.writeTo(fileOutputStream);
@@ -475,7 +538,117 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         }
     }
 
+    public void UploadFileFromStorage(){
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        final StorageReference storageReference = storage.getReference(); //Returns root path
+        storageReference.child("Concessions").child(text.getText().toString()).putFile(Uri.fromFile(new File(root+"/"+pdfName)))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
+                        String url = taskSnapshot.getUploadSessionUri().toString();
+                        String comment = message.getText().toString();
+                        DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
+                        final String pdfId = databaseReference.push().getKey();
+                        //String studentNo = bundle.getString("studentNumber");
+                        //String courseCode = bundle.getString("courseCode");
+                        //String comment = message.getText().toString();
+                        final String status = "accepted";
+
+                        CoordinatorConcession concessions = new CoordinatorConcession(
+                                firebaseUser.getUid(),
+                                stdNo.getText().toString(),
+                                text.getText().toString(),
+                                courseSpinner.getSelectedItem().toString(),
+                                comment,
+                                url,
+                                status
+
+                        );
+
+                        //String email= firebaseAuth.getCurrentUser().getEmail();
+
+                        databaseReference.child(pdfId).setValue(concessions).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                /*if( isConnectingToInternet(CoordinatorUploadPdfActivity.this)  == false) {
+                                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                    //ProgressDialog.dismiss();
+                                    return;
+
+                                }*/
+                                if(task.isSuccessful()) {
+
+
+                                    // send email to the relevant student
+                                    BackgroundMail.newBuilder(CoordinatorUploadActivity.this)
+                                            .withUsername("witsbrogrammers@gmail.com")
+                                            .withPassword("witsbrogrammers100")
+                                            .withMailto("musa950820@gmail.com") //student's email
+                                            .withType(BackgroundMail.TYPE_PLAIN)
+                                            .withSubject("Response To Concession")
+                                            .withBody("Good day, the coordinator"+" has responded to your concession"
+                                                    +" for the "+courseSpinner.getSelectedItem().toString()+" course which you want to register for."
+                                                    +" Please open the MidYearRegistration Application for more details."
+                                            )
+                                            .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Toast.makeText(CoordinatorUploadActivity.this, "Coordinator has been notified of your request", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                                                @Override
+                                                public void onFail() {
+                                                    Toast.makeText(CoordinatorUploadActivity.this, "Failed to send email!", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .send();
+
+                                    progressDialog.dismiss();
+                                    Toast.makeText(CoordinatorUploadActivity.this, "The form was succesfully uploaded", Toast.LENGTH_SHORT).show();
+                                    Intent activity = new Intent(CoordinatorUploadActivity.this, CoordinatorMenuActivity.class);
+                                    startActivity(activity);
+                                }
+                                else {
+                                    Toast.makeText(CoordinatorUploadActivity.this, "Couldn't upload the form to the database", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CoordinatorUploadActivity.this, "Couldn't upload the file to the database storage", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                //track progress of our upload
+                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                progressDialog.setProgress(currentProgress);
+
+            }
+        });
+
+
+
+    }
+
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
+    }
 }
 
 

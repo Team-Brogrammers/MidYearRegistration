@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Mid-Year-Registration</string>
+    <string name="app_label1">Search Results</string>
     <string name="email">Email</string>
+    <string name="hint">Search for concession</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? sign up</string>
     <string name="need_an_account">Need an account?</string>
@@ -44,7 +46,6 @@
     <string name="no_comment">No response comment has been added to this concession request.</string>
     <string name="file_name">FILE NAME :</string>
     <string name="file_name1">File name</string>
-    <string name="todo">TODO</string>
     <string name="write_a_comment">Write a comment</string>
     <string name="preview">PREVIEW</string>
     <string name="student_number1">Student Number</string>
@@ -55,4 +56,36 @@
     <string name="courses_logo">courses logo</string>
     <string name="sign_in">Sign In</string>
     <string name="wits_logo">Wits Logo</string>
+
+    <!--Computer Science Courses-->
+    <string-array name="courses">
+        <!--LEVEL ONE-->
+        <item>Course List</item>
+        <item>COMS1015</item>
+        <item>COMS1016</item>
+        <item>COMS1017</item>
+        <item>COMS1018</item>
+        <!--LEVEL TWO-->
+        <item>COMS2002</item>
+        <item>COMS2013</item>
+        <item>COMS2014</item>
+        <item>COMS2015</item>
+        <!--LEVEL THREE-->
+        <item>COMS3002</item>
+        <item>COMS3003</item>
+        <item>COMS3005</item>
+        <item>COMS3007</item>
+        <item>COMS3008</item>
+        <item>COMS3009</item>
+        <item>COMS3010</item>
+        <item>COMS3006</item>
+        <item>COMS3011</item>
+
+
+    </string-array>
+    <string name="your_courses">Your Courses:</string>
+    <string name="add_courses">Select new courses:</string>
+    <string name="course_title">Course Title:</string>
+    <string name="todo">TODO</string>
+    <string name="send">send</string>
 </resources>
