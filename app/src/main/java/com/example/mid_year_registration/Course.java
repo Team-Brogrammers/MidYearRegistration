@@ -37,7 +37,6 @@ public class Course {
         this.Coordinator_uid = "";
     }
 
-
     public String getCode() {
         return Code;
     }
@@ -60,10 +59,6 @@ public class Course {
 
     public String getPre_requisite() {
         return Pre_requisite;
-    }
-
-    public String getSchool() {
-        return School;
     }
 
     public String getSemester() {
@@ -96,10 +91,6 @@ public class Course {
 
     public void setPre_requisite(String pre_requisite) {
         Pre_requisite = pre_requisite;
-    }
-
-    public void setSchool(String school) {
-        School = school;
     }
 
     public void setSemester(String semester) {
