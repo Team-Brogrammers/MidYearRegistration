@@ -242,6 +242,11 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            case android.R.id.home:
+                Intent backIntent = new Intent(StudentConcessionsActivity.this, StudentMenuActivity.class);
+                startActivity(backIntent);
+                finish();
+                return true;
 
             case R.id.action_accepted:
                 //Toast.makeText(ViewConcessionActivity.this, "You selected Accepted", Toast.LENGTH_SHORT).show();
