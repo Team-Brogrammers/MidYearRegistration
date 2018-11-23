@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,10 +89,14 @@ public class SearchableActivity extends AppCompatActivity {
                 // populate the list with concessions
 
 
+
+
                 for(DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    String s=search_string.toUpperCase();
+                    //Toast.makeText(SearchableActivity.this, "The string"+s, Toast.LENGTH_LONG).show();
+                    if (s.equals(childSnap.child("studentNo").getValue()) || s.equals(childSnap.child("courseCode").getValue().toString())){
 
-                    if (search_string.equals(childSnap.child("studentNo").getValue()) || search_string.equals(childSnap.child("courseCode").getValue())){
-
+                    //if(s.startsWith(search_string)){
 
 
                         Concessions concession = childSnap.getValue(Concessions.class);
@@ -103,6 +108,7 @@ public class SearchableActivity extends AppCompatActivity {
 
 
                     }
+
                     getSupportActionBar().setTitle(numberOfResults+" Results Found");
                    /* else if(search_string.equals(childSnap.child("courseCode").getValue())){
                        Concessions concession = childSnap.getValue(Concessions.class);
