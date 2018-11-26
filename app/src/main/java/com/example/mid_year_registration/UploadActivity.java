@@ -110,7 +110,7 @@ public class UploadActivity extends AppCompatActivity {
                     .enableAnnotationRendering(true)
                     .scrollHandle(new DefaultScrollHandle(this))
                     .load();
-            Toast.makeText(UploadActivity.this, "Pdf Uri: "+pdfUri, Toast.LENGTH_LONG).show();
+            //Toast.makeText(UploadActivity.this, "", Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(UploadActivity.this, "Please select your file", Toast.LENGTH_SHORT).show();
@@ -259,7 +259,7 @@ public class UploadActivity extends AppCompatActivity {
         // Send email in the background
         BackgroundMail.newBuilder(UploadActivity.this)
                 .withUsername("witsbrogrammers@gmail.com")
-                .withPassword("witsbrogrammers100")
+                .withPassword("bro54321gram")
                 .withMailto("CoordEmail") //coordinator's email
                 .withType(BackgroundMail.TYPE_PLAIN)
                 .withSubject("Concession Request")

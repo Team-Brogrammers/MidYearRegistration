@@ -77,7 +77,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
         studentNo = intent.getStringExtra("studentNo");
         course = intent.getStringExtra("course");
         getSupportActionBar().setTitle("View Concession");
-        Log.d("Name", name);
+        //Log.d("Name", name);
         /* Set up the action bar */
         if (getSupportActionBar() != null) {
             //enable back button
@@ -135,8 +135,8 @@ public class ViewConcessionActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("GetFile", "Fail");
-                Log.e("GetFile", e.getMessage());
+//                Log.d("GetFile", "Fail");
+//                Log.e("GetFile", e.getMessage());
                 mProgressDialog.dismiss();
                 Toast.makeText(ViewConcessionActivity.this, "File Download Failed!", Toast.LENGTH_SHORT).show();
             }
@@ -214,7 +214,7 @@ public class ViewConcessionActivity extends AppCompatActivity {
                     // send email to the relevant student
                     BackgroundMail.newBuilder(ViewConcessionActivity.this)
                             .withUsername("witsbrogrammers@gmail.com")
-                            .withPassword("witsbrogrammers100")
+                            .withPassword("bro54321gram")
                             .withMailto("musa950820@gmail.com") //student's email
                             .withType(BackgroundMail.TYPE_PLAIN)
                             .withSubject("Response To Concession")
