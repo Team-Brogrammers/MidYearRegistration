@@ -87,7 +87,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     String personNumber, pdfName;
     EditText message;
 
-
     //Firebase
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
@@ -99,9 +98,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coordinator_upload);
 
-
         courseSpinner=findViewById(R.id.courseSelectionSpinner);
-        //pdfView=findViewById(R.id.PdfView);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -110,8 +107,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
         upload = findViewById(R.id.submitButton);
         message = findViewById(R.id.commentEditext);
 
-       /* bundle = getIntent().getExtras();
-        personNumber = bundle.getString("personNumber");*/
         stdNo = (EditText)findViewById(R.id.staffNumber);
 
         addImageFab = findViewById(R.id.addImageFab);
@@ -228,37 +223,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, meessage, duration).show();
         }
-//            else if(mCourse.isEmpty() && mCourse.isEmpty()){
-//                stdNo.setError("input is empty!");
-//                course.setError("input is empty!");
-//            }
-      /*  }
-        else if(!isValidStudentNo(mStdNo) || !checkString(mCourse)){
-            if(!isValidStudentNo(mStdNo)) {
-                // stdNo.setError("invalid student number!");
-            }
-            else if(!checkString(mCourse)) {
-//                course.setError("Course code is upper case and numbers only");
-            }
-            else if(!isValidStudentNo(mStdNo) && !checkString(mCourse)){
-                //stdNo.setError("invalid student number!");
-//                course.setError("Course code is upper case and numbers only");
-            }
-        }*/
-
-
-
-        /*else if(!imageSelected){
-            Context context = getApplicationContext();
-            CharSequence text = "Please select add an image";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }*/
-
-
-
         else {
             PdfDocument pdf = new PdfDocument();
             PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
@@ -274,7 +238,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             canvas.drawBitmap(bmp, 0, 0, null);
             pdf.finishPage(page);
 
-            //String targetPdf = "/test.pdf";
             root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
             if (!root.exists()) {
                 root.mkdir();
@@ -297,14 +260,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             pdf.close();
 
-          /*  pdfView.fromFile(file)
-                    .defaultPage(0).enableSwipe(true)
-                    .swipeHorizontal(false)
-                    .onPageChange(this)
-                    .enableAnnotationRendering(true)
-                    .onLoad(this)
-                    .scrollHandle(new DefaultScrollHandle(this))
-                    .load();*/
             Context context = getApplicationContext();
             CharSequence meessage = "Image Successfully converted!";
             int duration = Toast.LENGTH_SHORT;
@@ -316,7 +271,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
             toast.show();
             text.setVisibility(View.VISIBLE);
             textfilename.setVisibility(View.VISIBLE);
-            //nextFab.setVisibility(View.VISIBLE);
 
         }
     }
@@ -370,9 +324,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                         }
                     }
 
-                   // convertFab.setVisibility(View.VISIBLE);
-
-
                 } else if (items[i].equals("Gallery")) {
 
                     final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -406,35 +357,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
     public void nextPage(View view){
         openPdf();
         UploadFileFromStorage();
-       // String mCourse=courseSpinner.getSelectedItem().toString();
-        //String mStdNo=stdNo.getText().toString();
-
-        /*if(mCourse.isEmpty() && mStdNo.isEmpty() ){
-
-//            course.setError("input is empty!");
-            stdNo.setError("input is empty!");
-        }
-        else if( mStdNo.isEmpty()){
-            stdNo.setError("student number is empty!");
-        }
-
-        else if(mCourse.isEmpty()){
-//            course.setError("Course code is empty!");
-        }
-
-        else if(!isValidStudentNo(mStdNo)) {
-            stdNo.setError("invalid student number!");
-        }*
-        else if(!checkString(mCourse)){
-//            course.setError("Course code is upper case and numbers only");
-        }*/
-
-           /* Intent intent = new Intent(CoordinatorUploadActivity.this, CoordinatorUploadPdfActivity.class);
-            intent.putExtra("filename", text.getText().toString());
-            intent.putExtra("studentNumber", stdNo);
-            intent.putExtra("courseCode", courseSpinner.getSelectedItem().toString());
-
-            startActivity(intent);*/
 
     }
 
@@ -446,28 +368,10 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             if(requestCode==REQUEST_CAMERA){
 
-                //Bundle bundle = data.getExtras();
-
                 bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
-                //Uri selectedImageUri = data.getData();
-
 
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                //Cursor cursor = getContentResolver().query(
-                //        selectedImageUri, filePathColumn, null, null, null);
-                //  cursor.moveToFirst();
-
-                //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                // String filePath = cursor.getString(columnIndex);
-                //  cursor.close();
-
-                //bmp = BitmapFactory.decodeFile(filePath);
-                // ivImage.setImageURI(selectedImageUri);
-
-                //imageSelected = true;
-
 
             }else if(requestCode==SELECT_FILE){
 
@@ -487,7 +391,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 bmp = BitmapFactory.decodeFile(filePath);
                 ivImage.setImageURI(selectedImageUri);
 
-                //imageSelected = true;
                 PdfDocument pdf = new PdfDocument();
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
                 PdfDocument.Page page = pdf.startPage(pageInfo);
@@ -502,7 +405,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                 canvas.drawBitmap(bmp, 0, 0, null);
                 pdf.finishPage(page);
 
-                //String targetPdf = "/test.pdf";
                  root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
 
                 if (!root.exists()) {
@@ -529,10 +431,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
                 pdf.close();
 
-                //pdfUri = ;
-
-
-
             }
 
         }
@@ -552,14 +450,10 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        // String url = storageReference.getDownloadUrl().toString(); // returns url of uploaded file
                         String url = taskSnapshot.getUploadSessionUri().toString();
                         String comment = message.getText().toString();
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
-                        //String studentNo = bundle.getString("studentNumber");
-                        //String courseCode = bundle.getString("courseCode");
-                        //String comment = message.getText().toString();
                         final String status = "accepted";
 
                         CoordinatorConcession concessions = new CoordinatorConcession(
@@ -581,14 +475,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
-                                /*if( isConnectingToInternet(CoordinatorUploadPdfActivity.this)  == false) {
-                                    Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
-                                    //ProgressDialog.dismiss();
-                                    return;
-
-                                }*/
                                 if(task.isSuccessful()) {
-
 
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(CoordinatorUploadActivity.this)
@@ -641,8 +528,6 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
 
             }
         });
-
-
 
     }
 

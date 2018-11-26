@@ -52,7 +52,6 @@
         <activity android:name=".StudentUpload" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".PasswordResetActivity" />
-        <activity android:name=".CoordinatorUploadPdfActivity" />
         <activity android:name=".ViewConcessionActivity" />
         <activity android:name=".AddCoursesActivity" />
         <activity android:name=".CoordinatorMenuActivity" />
