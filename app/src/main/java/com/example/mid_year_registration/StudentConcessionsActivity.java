@@ -191,7 +191,7 @@ public class StudentConcessionsActivity extends AppCompatActivity {
                     //final String comment = childSnap.getKey();
                     if (test.equals(childSnap.child("status").getValue())) {
                         final String pdfKey = childSnap.child("pdfId").getValue().toString();
-                        Toast.makeText(StudentConcessionsActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(StudentConcessionsActivity.this, "Concession id: "+pdfKey, Toast.LENGTH_LONG).show();
                         databaseRef2.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

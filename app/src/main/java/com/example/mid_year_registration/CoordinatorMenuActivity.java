@@ -44,6 +44,12 @@ public class CoordinatorMenuActivity extends AppCompatActivity {
                     public void onMenuSelected(int index) {
 
                         if(arrayName[index].contains("Upload Student Form")){
+                            if(  isConnectingToInternet(CoordinatorMenuActivity.this) == false) {
+                                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                //mProgressDialog.dismiss();
+                                return;
+                            }
+
                             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CoordinatorMenuActivity.this);
                             builder.setMessage("Upload a student's form?").setCancelable(false);
                             builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {

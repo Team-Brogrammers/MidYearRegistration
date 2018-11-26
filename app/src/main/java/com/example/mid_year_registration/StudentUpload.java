@@ -206,7 +206,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                 //String targetPdf = "/test.pdf";
                 root = new File(Environment.getExternalStorageDirectory(), "PDF folder");
-                Toast.makeText(StudentUpload.this, "Pdf Uri: " + root, Toast.LENGTH_LONG).show();
+                //Toast.makeText(StudentUpload.this, "Pdf Uri: " + root, Toast.LENGTH_LONG).show();
                 if (!root.exists()) {
                     root.mkdir();
                 }
@@ -230,12 +230,12 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                 Context context = getApplicationContext();
                 CharSequence meessage = "Image Successfully converted!";
-                int duration = Toast.LENGTH_SHORT;
-
-                text.setText(studentNumber + "_" + mCourse + "_" + dateToStr + ".pdf");
-
-                Toast toast = Toast.makeText(context, meessage, duration);
-                toast.show();
+//                int duration = Toast.LENGTH_SHORT;
+//
+//                text.setText(studentNumber + "_" + mCourse + "_" + dateToStr + ".pdf");
+//
+//                Toast toast = Toast.makeText(context, meessage, duration);
+//                toast.show();
             }
         }
 

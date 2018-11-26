@@ -45,6 +45,12 @@ public class StudentMenuActivity extends AppCompatActivity {
                     public void onMenuSelected(int index) {
 
                         if(arrayName[index].contains("Upload Request")){
+                            if(  isConnectingToInternet(StudentMenuActivity.this) == false) {
+                                Snackbar.make(mConstraintLayout, "No Internet Connection ", Snackbar.LENGTH_LONG).show();
+                                //mProgressDialog.dismiss();
+                                return;
+                            }
+
                             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentMenuActivity.this);
                             builder.setMessage("Upload a concession request").setCancelable(false);
                             builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
