@@ -71,22 +71,22 @@ public class CoordinatorUploadTest extends ActivityInstrumentationTestCase2<Coor
         Intents.release();
     }
 
-    @Test
-    @SmallTest
-    public void testLogoutButton(){
-        // dismiss the progress dialog
-        if(activity.getmProgressDialog().isShowing()){
-            activity.getmProgressDialog().dismiss();
-        }
-
-        Intents.init();
-        Intent resultData = new Intent();
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText(R.string.logout)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
-        Intents.release();
-    }
+//    @Test
+//    @SmallTest
+//    public void testLogoutButton(){
+//        // dismiss the progress dialog
+//        if(activity.getmProgressDialog().isShowing()){
+//            activity.getmProgressDialog().dismiss();
+//        }
+//
+//        Intents.init();
+//        Intent resultData = new Intent();
+//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+//        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+//        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+//        onView(withText(R.string.logout)).perform(click());
+//        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
+//        Intents.release();
+//    }
 
 }

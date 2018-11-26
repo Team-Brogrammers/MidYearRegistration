@@ -40,16 +40,16 @@ public class CourseClassTest {
 
     @Test
     public void testFullConstructor(){
-        Course instance = new Course("COMS1001", "Computer Science Test Course");
+        Course instance = new Course("COMS1001", "COMS1002", "0", "Computer Science Test Course", "0", "", "Computer Science", "1",  "CoordinatorTestUid");
         assertEquals("COMS1001", instance.getCode());
-        assertEquals("", instance.getCo_requisite());
+        assertEquals("COMS1002", instance.getCo_requisite());
         assertEquals("0", instance.getCredits());
         assertEquals("Computer Science Test Course", instance.getDescription());
         assertEquals("0", instance.getLevel());
         assertEquals("", instance.getPre_requisite());
-        assertEquals("", instance.getSchool());
+        assertEquals("Computer Science", instance.getSchool());
         assertEquals("1", instance.getSemester());
-        assertEquals("", instance.getCoordinator_uid());
+        assertEquals("CoordinatorTestUid", instance.getCoordinator_uid());
     }
 
     @Test
