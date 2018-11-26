@@ -44,60 +44,60 @@ public class StudentViewConcessionActivityTest extends ActivityInstrumentationTe
         activity = getActivity();
     }
 
-//    @SmallTest
-//    public void testVisibility(){
-//        // dismiss the progress dialog
-//        if(activity.getmProgressDialog().isShowing()){
-//            activity.getmProgressDialog().dismiss();
-//        }
-//
-//        onView(withId(R.id.tvStudentConcessionCourse)).check(matches(isDisplayed()));
-//        onView(withId(R.id.tvStudentConcessionCourseVal)).check(matches(isDisplayed()));
-//        onView(withId(R.id.tvCommentView)).check(matches(isDisplayed()));
-//        onView(withId(R.id.StudentPdfView)).check(matches(isDisplayed()));
-//    }
+    @SmallTest
+    public void testVisibility(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
 
-//    @Test
-//    @SmallTest
-//    public void testBackButton(){
-//        // dismiss the progress dialog
-//        if(activity.getmProgressDialog().isShowing()){
-//            activity.getmProgressDialog().dismiss();
-//        }
-//
-//        Intents.init();
-//        Intent resultData = new Intent();
-//        resultData.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
-//        resultData.putExtra("studentNo","9876543");
-//        resultData.putExtra("course","COMS1099");
-//        resultData.putExtra("comment", "No Comment");
-//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-//        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
-//        onView(withContentDescription("Navigate up")).perform(click());
-//        intended(hasComponent(new ComponentName(getTargetContext(), StudentConcessionsActivity.class)));
-//        Intents.release();
-//    }
+        onView(withId(R.id.tvStudentConcessionCourse)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvStudentConcessionCourseVal)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvCommentView)).check(matches(isDisplayed()));
+        onView(withId(R.id.StudentPdfView)).check(matches(isDisplayed()));
+    }
 
-//    @Test
-//    @SmallTest
-//    public void testLogoutButton(){
-//        // dismiss the progress dialog
-//        if(activity.getmProgressDialog().isShowing()){
-//            activity.getmProgressDialog().dismiss();
-//        }
-//
-//        Intents.init();
-//        Intent resultData = new Intent();
-//        resultData.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
-//        resultData.putExtra("studentNo","9876543");
-//        resultData.putExtra("course","COMS1099");
-//        resultData.putExtra("comment", "No Comment");
-//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-//        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
-//        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-//        onView(withText(R.string.logout)).perform(click());
-//        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
-//        Intents.release();
-//    }
+    @Test
+    @SmallTest
+    public void testBackButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
+
+        Intents.init();
+        Intent resultData = new Intent();
+        resultData.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
+        resultData.putExtra("studentNo","9876543");
+        resultData.putExtra("course","COMS1099");
+        resultData.putExtra("comment", "No Comment");
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+        onView(withContentDescription("Navigate up")).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), StudentConcessionsActivity.class)));
+        Intents.release();
+    }
+
+    @Test
+    @SmallTest
+    public void testLogoutButton(){
+        // dismiss the progress dialog
+        if(activity.getmProgressDialog().isShowing()){
+            activity.getmProgressDialog().dismiss();
+        }
+
+        Intents.init();
+        Intent resultData = new Intent();
+        resultData.putExtra("name", "9876543_COMS1099_2018-09-27.pdf");
+        resultData.putExtra("studentNo","9876543");
+        resultData.putExtra("course","COMS1099");
+        resultData.putExtra("comment", "No Comment");
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(toPackage("com.example.mid_year_registration")).respondWith(result);
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText(R.string.logout)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), LoginActivity.class)));
+        Intents.release();
+    }
 
 }

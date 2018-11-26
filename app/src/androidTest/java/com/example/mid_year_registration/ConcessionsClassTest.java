@@ -24,6 +24,18 @@ public class ConcessionsClassTest{
     }
 
     @Test
+    public void testFullConstructor() {
+        Concessions instance = new Concessions("testUID", "12345", "test.pdf", "COMS1001", "url/test.pdf", "pending");
+        assertEquals("testUID", instance.uid);
+        assertEquals("12345", instance.studentNo);
+        assertEquals("test.pdf", instance.pdfName);
+        assertEquals("COMS1001", instance.courseCode);
+        assertEquals("url/test.pdf", instance.getPdfUrl());
+        assertEquals("pending", instance.getStatus());
+
+    }
+
+    @Test
     public void testSetStatus() {
         String status = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
         Concessions instance = new Concessions();
@@ -107,8 +119,6 @@ public class ConcessionsClassTest{
         String pdfUrl = instance.getPdfUrl();
         assertEquals(expPdfUrl, pdfUrl);
     }
-
-
 
     @Test
     public void testSetStudentNo() {
