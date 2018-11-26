@@ -22,6 +22,7 @@ public class Course {
         this.Description = "";
         this.Level = "0";
         this.Pre_requisite = "";
+        this.School = "";
         this.Semester = "1";
         this.Coordinator_uid = "";
     }
@@ -33,8 +34,21 @@ public class Course {
         this.Description = Description;
         this.Level = "0";
         this.Pre_requisite = "";
+        this.School = "";
         this.Semester = "1";
         this.Coordinator_uid = "";
+    }
+
+    public Course(String Code, String Co_requisite, String Credits, String Description, String Level, String Pre_requisite, String School, String Semester,  String Coordinator_uid){
+        this.Code = Code;
+        this.Co_requisite = Co_requisite;
+        this.Credits = Credits;
+        this.Description = Description;
+        this.Level = Level;
+        this.Pre_requisite = Pre_requisite;
+        this.School = School;
+        this.Semester = Semester;
+        this.Coordinator_uid = Coordinator_uid;
     }
 
     public String getCode() {
@@ -59,6 +73,10 @@ public class Course {
 
     public String getPre_requisite() {
         return Pre_requisite;
+    }
+
+    public String getSchool() {
+        return School;
     }
 
     public String getSemester() {
@@ -91,6 +109,10 @@ public class Course {
 
     public void setPre_requisite(String pre_requisite) {
         Pre_requisite = pre_requisite;
+    }
+
+    public void setSchool(String school) {
+        School = school;
     }
 
     public void setSemester(String semester) {

@@ -19,6 +19,21 @@ public class CourseClassTest {
         assertEquals("", instance.getDescription());
         assertEquals("0", instance.getLevel());
         assertEquals("", instance.getPre_requisite());
+        assertEquals("", instance.getSchool());
+        assertEquals("1", instance.getSemester());
+        assertEquals("", instance.getCoordinator_uid());
+    }
+
+    @Test
+    public void testStandardConstructor(){
+        Course instance = new Course("COMS1001", "Computer Science Test Course");
+        assertEquals("COMS1001", instance.getCode());
+        assertEquals("", instance.getCo_requisite());
+        assertEquals("0", instance.getCredits());
+        assertEquals("Computer Science Test Course", instance.getDescription());
+        assertEquals("0", instance.getLevel());
+        assertEquals("", instance.getPre_requisite());
+        assertEquals("", instance.getSchool());
         assertEquals("1", instance.getSemester());
         assertEquals("", instance.getCoordinator_uid());
     }
@@ -32,6 +47,7 @@ public class CourseClassTest {
         assertEquals("Computer Science Test Course", instance.getDescription());
         assertEquals("0", instance.getLevel());
         assertEquals("", instance.getPre_requisite());
+        assertEquals("", instance.getSchool());
         assertEquals("1", instance.getSemester());
         assertEquals("", instance.getCoordinator_uid());
     }
@@ -76,6 +92,13 @@ public class CourseClassTest {
         Course instance = new Course();
         instance.setPre_requisite("COMS1001");
         assertEquals("COMS1001", instance.getPre_requisite());
+    }
+
+    @Test
+    public void testSetSchool(){
+        Course instance = new Course();
+        instance.setSchool("Statistics");
+        assertEquals("Statistics", instance.getSchool());
     }
 
     @Test
