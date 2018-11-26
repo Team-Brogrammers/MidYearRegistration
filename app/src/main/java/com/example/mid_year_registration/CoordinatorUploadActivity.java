@@ -593,7 +593,7 @@ public class CoordinatorUploadActivity extends AppCompatActivity implements OnPa
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(CoordinatorUploadActivity.this)
                                             .withUsername("witsbrogrammers@gmail.com")
-                                            .withPassword("witsbrogrammers100")
+                                            .withPassword("bro54321gram")
                                             .withMailto("musa950820@gmail.com") //student's email
                                             .withType(BackgroundMail.TYPE_PLAIN)
                                             .withSubject("Response To Concession")

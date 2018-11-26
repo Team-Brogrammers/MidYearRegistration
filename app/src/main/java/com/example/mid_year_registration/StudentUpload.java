@@ -67,14 +67,10 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     private static final int REQUEST_CAMERA = 1, SELECT_FILE = 0;
     File root;
     ImageView ivImage;
-    Button addImage, upload;
     EditText course;
-   // EditText stdNo;
-   // PDFView pdfView;
     Bitmap bmp;
     TextView text,sendHint;
     boolean imageSelected = false;
-    Uri pdfUri;
     ProgressDialog progressDialog;
     FloatingActionButton addImageFab, convertFab, nextFab;
     Spinner spinnerCourses;
@@ -101,17 +97,13 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
         super.onCreate(savedInstanceState);
         setContentView(activity_student_upload);
 
-        //course=findViewById(R.id.etCourse);
         bundle1 = getIntent().getExtras();
         studentNumber = bundle1.getString("studentNumber");
        // pdfView=findViewById(R.id.PdfView);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         ivImage = findViewById(R.id.formImageView);
-        // addImage=findViewById(R.id.btnAddImage);
         text = findViewById(R.id.fileName);
-        //stdNo =(EditText) findViewById(R.id.stdNoEditText);
-        //upload = findViewById(R.id.submitButton1);
 
         addImageFab = findViewById(R.id.addImageFab);
         convertFab = findViewById(R.id.convertImageFab);
@@ -138,13 +130,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
             //enable back button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-       /*addImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                SelectImage();
-            }
-        });*/
 
        spinnerCourses = (Spinner)findViewById(R.id.spinnerCourses);
        pickCourses();
@@ -192,24 +177,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
     }
 
-/*    private boolean isValidStudentNo(String pass) {
-        if (pass != null && pass.length() >= 6) {
-            return true;
-        }
-        return false;
-    }*/
-
-
-
-    /*private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-        }
-        return hasImage;
-    }*/
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -219,24 +186,9 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     public void openPdf() {
 
        String mCourse = spinnerCourses.getSelectedItem().toString();
-       /* String mStdNo = stdNo.getText().toString();*/
-
-       /* if (mCourse.isEmpty() || mStdNo.isEmpty()) {
-            if (mCourse.equals("Course List")) {
-                Toast.makeText(getApplicationContext(), "Please select Course",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            } else if (mCourse.equals("Course List")) {
-                Toast.makeText(getApplicationContext(), "Please select Course",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }*/
 
             if (bmp == null) {
-                /*Context context = getApplicationContext();
-                CharSequence meessage = "Please select an image!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, meessage, duration).show();*/
+                // Do nothing
             } else {
                 PdfDocument pdf = new PdfDocument();
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bmp.getWidth(), bmp.getHeight(), 1).create();
@@ -286,26 +238,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 toast.show();
             }
         }
-/*    private static boolean checkString(String mCourse) {
-        char ch;
-        boolean capitalFlag = false;
-        boolean lowerCaseFlag = false;
-        boolean numberFlag = false;
-        for(int i=0;i < mCourse.length();i++) {
-            ch = mCourse.charAt(i);
-            if( Character.isDigit(ch)) {
-                numberFlag = true;
-            }
-            else if (Character.isUpperCase(ch)) {
-                capitalFlag = true;
-            } else if (Character.isLowerCase(ch)) {
-                lowerCaseFlag = true;
-            }
-            if(numberFlag && capitalFlag && !lowerCaseFlag)
-                return true;
-        }
-        return false;
-    }*/
 
     private void SelectImage(){
 
@@ -334,7 +266,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                         startActivityForResult(intent, REQUEST_CAMERA);
                     }*/
 
-
                 } else if (items[i].equals("Gallery")) {
 
                     final String[] galleryPermissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -344,7 +275,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         intent.setType("image/*");
-                        //startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
                         startActivityForResult(intent, SELECT_FILE);
                     }
 
@@ -366,7 +296,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
     }
 
     public void nextPage(View view){
-        //
         openPdf();
         UploadFileFromStorage();
 
@@ -397,7 +326,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                 if( selectedImageUri == null){
                     nextFab.setVisibility(View.INVISIBLE);
                 }
-
 
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -454,10 +382,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
 
                 pdf.close();
 
-                //pdfUri = ;
                 text.setVisibility(View.VISIBLE);
-
-
             }
 
         }
@@ -482,7 +407,6 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                         DatabaseReference databaseReference = database.getReference().child("Concessions"); // return the path to root
                         final String pdfId = databaseReference.push().getKey();
                         //String studentNo = bundle.getString("studentNumber");
-                        //String courseCode = bundle.getString("courseCode");
                         //String comment = message.getText().toString();
                         final String status = "accepted";
 
@@ -491,7 +415,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                 studentNumber,
                                 text.getText().toString(),
                                 spinnerCourses.getSelectedItem().toString(),
-                                "hey",
+                                "",
                                 url,
                                 status
 
@@ -517,7 +441,7 @@ public class StudentUpload extends AppCompatActivity implements OnPageChangeList
                                     // send email to the relevant student
                                     BackgroundMail.newBuilder(StudentUpload.this)
                                             .withUsername("witsbrogrammers@gmail.com")
-                                            .withPassword("witsbrogrammers100")
+                                            .withPassword("bro54321gram")
                                             .withMailto("musa950820@gmail.com") //student's email
                                             .withType(BackgroundMail.TYPE_PLAIN)
                                             .withSubject("Response To Concession")

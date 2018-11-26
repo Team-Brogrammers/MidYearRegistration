@@ -60,7 +60,7 @@
     <!--Computer Science Courses-->
     <string-array name="courses">
         <!--LEVEL ONE-->
-        <item>Course List</item>
+        <item>COMS1000</item>
         <item>COMS1015</item>
         <item>COMS1016</item>
         <item>COMS1017</item>
