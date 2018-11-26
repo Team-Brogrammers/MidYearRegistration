@@ -2,8 +2,6 @@ package com.example.mid_year_registration;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -11,21 +9,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,12 +83,17 @@ public class AddCoursesActivity extends AppCompatActivity{
 
         // get current user
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mUsersKey = mFirebaseAuth.getCurrentUser().getUid();
+        if(mFirebaseUser == null){
+            mUsersKey = "MDsQFBNEemPXL0z8gcvUTEkw8053";
+        }
+        else{
+            mUsersKey = mFirebaseAuth.getCurrentUser().getUid();
+        }
 
         // get references
         rvCurrentCourses = findViewById(R.id.rvCurrentCourses);
         rvNewCourses = findViewById(R.id.rvNewCourses);
-        UpdateButton = findViewById(R.id.updateBotton);
+        UpdateButton = findViewById(R.id.updateButton);
         constraintLayout = findViewById(R.id.addCoursesConstraintLayout);
         courseSpinner = findViewById(R.id.courseSelectionSpinner2);
 
@@ -121,7 +117,7 @@ public class AddCoursesActivity extends AppCompatActivity{
                     if(course.getCoordinator_uid().equals("")){
                         courseList.add(course);
                     }
-                    else if(course.getCoordinator_uid().equals(mFirebaseUser.getUid())){
+                    else if(course.getCoordinator_uid().equals(mUsersKey)){
                         currentCourses.add(course);
                         oldCourses.add(course);
                     }
@@ -258,5 +254,9 @@ public class AddCoursesActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    public ProgressDialog getmProgressDialog() {
+        return mProgressDialog;
     }
 }
