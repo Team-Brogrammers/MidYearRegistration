@@ -44,29 +44,11 @@ public class ConcessionsClassTest{
     }
 
     @Test
-    public void testGetStatus() {
-        String expStatus = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
-        Concessions instance = new Concessions();
-        instance.setStatus("YqAJgqrNL3c4cWJ2p2S8hUIl9K22");
-        String status = instance.getStatus();
-        assertEquals(expStatus, status);
-    }
-
-    @Test
     public void testSetUid() {
         String uid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
         Concessions instance = new Concessions();
         instance.setUid(uid);
         assertEquals(instance.getUid(), uid);
-    }
-
-    @Test
-    public void testGetUid() {
-        String expUid = "YqAJgqrNL3c4cWJ2p2S8hUIl9K22";
-        Concessions instance = new Concessions();
-        instance.setUid("YqAJgqrNL3c4cWJ2p2S8hUIl9K22");
-        String uid = instance.getUid();
-        assertEquals(expUid, uid);
     }
 
     @Test
@@ -78,29 +60,11 @@ public class ConcessionsClassTest{
     }
 
     @Test
-    public void testGetPdfName() {
-        String expPdfName = "11434236_M12__2018-09-07";
-        Concessions instance = new Concessions();
-        instance.setPdfName("11434236_M12__2018-09-07");
-        String pdfName = instance.getPdfName();
-        assertEquals(expPdfName, pdfName);
-    }
-
-    @Test
     public void testSetCourseCode() {
         String courseCode = "MATH3001";
         Concessions instance = new Concessions();
         instance.setCourseCode(courseCode);
         assertEquals(instance.getCourseCode(), courseCode);
-    }
-
-    @Test
-    public void testGetCourseCode() {
-        String expCourseCode = "MATH3001";
-        Concessions instance = new Concessions();
-        instance.setCourseCode("MATH3001");
-        String courseCode = instance.getCourseCode();
-        assertEquals(expCourseCode, courseCode);
     }
 
     @Test
@@ -112,15 +76,6 @@ public class ConcessionsClassTest{
     }
 
     @Test
-    public void testGetPdfUrl() {
-        String expPdfUrl = "https://firebasestorage.googleapis.com/v0/b/mid-year-registration-ef4af.appspot.com/o?name=Concessions%2F11434236_M12__2018-09-07.pdf&uploadType=resumable&upload_id=AEnB2Upgf0l364_j740hccLiHo-JApF5dH6E33vzNkKIblxewE3BQQY6tcfYuB0ZVJUy1kFiCD1cLjJSKQOfhMC76EykaUcKX3wZ9GLfLg2NOckRaYep6d0&upload_protocol=resumable";
-        Concessions instance = new Concessions();
-        instance.setPdfUrl("https://firebasestorage.googleapis.com/v0/b/mid-year-registration-ef4af.appspot.com/o?name=Concessions%2F11434236_M12__2018-09-07.pdf&uploadType=resumable&upload_id=AEnB2Upgf0l364_j740hccLiHo-JApF5dH6E33vzNkKIblxewE3BQQY6tcfYuB0ZVJUy1kFiCD1cLjJSKQOfhMC76EykaUcKX3wZ9GLfLg2NOckRaYep6d0&upload_protocol=resumable");
-        String pdfUrl = instance.getPdfUrl();
-        assertEquals(expPdfUrl, pdfUrl);
-    }
-
-    @Test
     public void testSetStudentNo() {
         String stdNo = "1153631";
         Concessions instance = new Concessions();
@@ -128,13 +83,5 @@ public class ConcessionsClassTest{
         assertEquals(instance.getStudentNo(), stdNo);
     }
 
-    @Test
-    public void testGetStudentNo() {
-        String expStdNo = "1153631";
-        Concessions instance = new Concessions();
-        instance.setStudentNo("1153631");
-        String stdNo = instance.getStudentNo();
-        assertEquals(expStdNo, stdNo);
-    }
 }
 
